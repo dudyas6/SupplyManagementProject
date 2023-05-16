@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 
 const app = express();
 const PORT = 3001; // Choose a port number
+const PATH = require("path");
 
+app.use(express.json());
+// Serve the client-side code from the 'build' folder
+app.use(express.static(PATH.join(__dirname, "build")));
 
 const MONGODB_URI = 'mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.net/SupplyManagement?retryWrites=true&w=majority';
 
@@ -41,6 +45,13 @@ app.get("/api/getAllItems", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+// Serve the client-side code for all other requests
+app.get('*', (req, res) => {
+  res.sendFile(PATH.join(__dirname, 'build', 'index.html'));
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
