@@ -1,103 +1,54 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const path = require("path");
-const port = process.env.PORT || 3000;
-const app = express();
+// const express = require('express');
+// const mongoose = require('mongoose');
 
-app.use(express.json());
+// const app = express();
+// const PORT = 3001; // Choose a port number
 
-// Serve the client-side code from the 'build' folder
-app.use(express.static(path.join(__dirname, "build")));
 
-const uri =
-  "mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.net/?retryWrites=true&w=majority";
+// const MONGODB_URI = 'mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.net/?retryWrites=true&w=majority';
 
-mongoose
-  .connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.log("Error connecting to MongoDB:", error.message);
-  });
-
-// define a schema for your data
-const itemSchema = new mongoose.Schema({
-  ItemId: Number,
-  ItemName: String,
-  Description: String
-});
-
-// // define a model for your data
-const Item = mongoose.model("Item", itemSchema);
-
-// Define a route to get all bugs
-app.get("/api/getAllItems", async (req, res) => {
-  try {
-    const allItems = await Item.find({});
-    console.log(res)
-    res.json(allItems);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-// // Define a route to add a new bug
-// app.post("/api/addBug", async (req, res) => {
-//   try {
-//     const newBug = new Bug(req.body);
-//     await newBug.save();
-//     res.json({ message: "Bug added successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
-
-// // Define a route to delete a bug by _id
-// app.delete("/api/getAllBugs/:id", (req, res) => {
-//   const id = req.params.id;
-//   Bug.findByIdAndDelete(id)
-//     .then((deletedBug) => {
-//       if (!deletedBug) {
-//         res.status(404).send(`Bug with ID ${id} not found`);
-//       } else {
-//         res.status(200).send(`Bug with ID ${id} deleted successfully`);
-//       }
+// mongoose
+//   .connect(MONGODB_URI, 
+//     { 
+//       useNewUrlParser: true, 
+//       useUnifiedTopology: true 
 //     })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//     });
+//   .then(() => console.log('Connected to MongoDB'))
+//   .catch((error) => console.error('Error connecting to MongoDB:', error));
+
+// const db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+
+// app.listen(PORT, () => {
+//   console.log(`Server listening on ${PORT}`);
 // });
 
-// // Define a route to edit a bug by _id
-// app.put("/api/getAllBugs/:id", async (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     const updatedBug = await Bug.findByIdAndUpdate(id, req.body, {
-//       new: true,
-//       useFindAndModify: false,
-//     });
-//     if (!updatedBug) {
-//       res.status(404).send(`Bug with ID ${id} not found`);
-//     } else {
-//       res.json(updatedBug);
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// });
 
-// Serve the client-side code for all other requests
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+var axios = require('axios');
+var data = JSON.stringify({
+    "collection": "items",
+    "database": "SupplyManagement",
+    "dataSource": "SupplyManagement",
+    "projection": {
+        "_id": 1
+    }
 });
-
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+            
+var config = {
+    method: 'post',
+    url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-sjlfd/endpoint/data/v1/action/findOne',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Request-Headers': '*',
+      'api-key': '8CddyRYbE2FYO49xv7Ew1LB4nuzuBg44OEOIqZgwJUfZdZE3WdpqsYHCPBeSGupk',
+    },
+    data: data
+};
+            
+axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
