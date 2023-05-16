@@ -1,54 +1,76 @@
-// const express = require('express');
-// const mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
 
-// const app = express();
-// const PORT = 3001; // Choose a port number
-
-
-// const MONGODB_URI = 'mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.net/?retryWrites=true&w=majority';
-
-// mongoose
-//   .connect(MONGODB_URI, 
-//     { 
-//       useNewUrlParser: true, 
-//       useUnifiedTopology: true 
-//     })
-//   .then(() => console.log('Connected to MongoDB'))
-//   .catch((error) => console.error('Error connecting to MongoDB:', error));
-
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-
-// app.listen(PORT, () => {
-//   console.log(`Server listening on ${PORT}`);
-// });
+const app = express();
+const PORT = 3001; // Choose a port number
 
 
-var axios = require('axios');
-var data = JSON.stringify({
-    "collection": "items",
-    "database": "SupplyManagement",
-    "dataSource": "SupplyManagement",
-    "projection": {
-        "_id": 1
-    }
+const MONGODB_URI = 'mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.net/SupplyManagement?retryWrites=true&w=majority';
+
+// define a schema for your data
+const itemSchema = new mongoose.Schema({
+    ItemId: Number,
+    ItemName: String,
+    Description: String,
+  });
+  
+// // define a model for your data
+const items = mongoose.model("items", itemSchema);
+
+mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("Error connecting to MongoDB:", error.message);
+  });
+
+
+
+// Define a route to get all bugs
+app.get("/api/getAllItems", async (req, res) => {
+  try {
+    const allItems = await items.find({});
+    res.json(allItems);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
+
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+
+// var axios = require('axios');
+// var data = JSON.stringify({
+//     "collection": "items",
+//     "database": "SupplyManagement",
+//     "dataSource": "SupplyManagement",
+//     "projection": {
+//         "_id": 1
+//     }
+// });
             
-var config = {
-    method: 'post',
-    url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-sjlfd/endpoint/data/v1/action/findOne',
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Request-Headers': '*',
-      'api-key': '8CddyRYbE2FYO49xv7Ew1LB4nuzuBg44OEOIqZgwJUfZdZE3WdpqsYHCPBeSGupk',
-    },
-    data: data
-};
+// var config = {
+//     method: 'post',
+//     url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-sjlfd/endpoint/data/v1/action/findOne',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Access-Control-Request-Headers': '*',
+//       'api-key': '8CddyRYbE2FYO49xv7Ew1LB4nuzuBg44OEOIqZgwJUfZdZE3WdpqsYHCPBeSGupk',
+//     },
+//     data: data
+// };
             
-axios(config)
-    .then(function (response) {
-        console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+// axios(config)
+//     .then(function (response) {
+//         console.log(JSON.stringify(response.data));
+//     })
+//     .catch(function (error) {
+//         console.log(error);
+//     });
