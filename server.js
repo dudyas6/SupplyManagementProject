@@ -13,13 +13,20 @@ const MONGODB_URI = 'mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.ne
 
 // define a schema for your data
 const itemSchema = new mongoose.Schema({
-    ItemId: Number,
-    ItemName: String,
-    Description: String,
-  });
-  
-// // define a model for your data
+  ItemId: Number,
+  ItemName: String,
+  Description: String,
+});
+
+const userSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  role: String,
+});
+
+// 
 const items = mongoose.model("items", itemSchema);
+const users = mongoose.model("users", userSchema);
 
 mongoose
   .connect(MONGODB_URI, {
@@ -40,6 +47,18 @@ app.get("/api/getAllItems", async (req, res) => {
   try {
     const allItems = await items.find({});
     res.json(allItems);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+// Define a route to get all bugs
+app.get("/api/getAllUsers", async (req, res) => {
+  try {
+    const allUsers = await users.find({});
+    res.json(allUsers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

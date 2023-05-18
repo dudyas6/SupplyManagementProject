@@ -4,8 +4,10 @@ import Header from "./Header";
 import MainBody from "./MainBody";
 import Sidebar from "./Sidebar";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
 // import React, { useState, useEffect } from "react";
 // import axios from "axios";
+
 
 function App() {
   return (
@@ -16,8 +18,9 @@ function App() {
           <Sidebar />
           <Router>
             <Routes>
-              <Route exact path="/" element={<MainBody />} />
-              <Route path="/about" element={<CreateItem />} />
+              <Route exact path="/" element={<LoginPage />} />
+              <Route path="/index" element={<MainBody />} />
+              <Route path="/otherr" element={<CreateItem />} />
             </Routes>
           </Router>
         </div>
