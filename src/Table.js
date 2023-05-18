@@ -1,8 +1,10 @@
 import React from "react";
 import TableRow from "./TableRow";
+import AddItemPopup from "./AddItemPopup";  
 
 export default function Table() {
   const [table, setTable] = React.useState([]);
+  const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
 
   function fillTable() {
     fetch("https://dummyjson.com/products")
@@ -24,6 +26,10 @@ export default function Table() {
       });
   }
 
+  function addItemPopupHandle() {
+    setIsAddItemClicked(!isAddItemClicked);
+  }
+
   function generateTableRows() {
     return table.map((item, index) => (
       <TableRow key={item.id} index={index} item={item}></TableRow>
@@ -35,39 +41,43 @@ export default function Table() {
   }, []);
 
   return (
-    <div className="flex-1 p-3 overflow-hidden">
-      <div className="flex flex-col items-center ">
-        <div className="mt-4 mb-2 w-full">
-          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full float-right">
-            Add Item
-          </button>
-        </div>
-        <div class="flex flex-1  flex-col md:flex-row lg:flex-row mx-2">
-          <div class="mb-2 border-solid border-gray-300 rounded border shadow-sm w-full">
-            <div class="bg-gray-200 px-2 py-3 border-solid border-gray-200 border-b">
-              Insert Warehouse Name Here
-            </div>
-            <div class="p-3">
-              <table class="table-responsive w-full rounded">
-                <thead>
-                  <tr>
-                    <th class="border w-1/4 px-4 py-2">Name</th>
-                    <th class="border w-1/6 px-4 py-2">Description</th>
-                    <th class="border w-1/6 px-4 py-2">Price</th>
-                    <th class="border w-1/6 px-4 py-2">Current Quantity</th>
-                    <th class="border w-1/7 px-4 py-2">Minimum Quantity</th>
-                    <th class="border w-1/8 px-4 py-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {generateTableRows()}
-                </tbody>
-              </table>
+    <>
+      { isAddItemClicked? <AddItemPopup onClose={addItemPopupHandle}></AddItemPopup> : ""}
+      <div className="flex-1 p-3 overflow-hidden">
+        <div className="flex flex-col items-center ">
+          <div className="mt-4 mb-2 w-full">
+            <button onClick={addItemPopupHandle} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full float-right">
+              + Add Item
+            </button>
+          </div>
+          <div class="flex flex-1  flex-col md:flex-row lg:flex-row mx-2">
+            <div class="mb-2 border-solid border-gray-300 rounded border shadow-sm w-full">
+              <div class="bg-gray-200 px-2 py-3 border-solid border-gray-200 border-b">
+                Insert Warehouse Name Here
+              </div>
+              <div class="p-3">
+                <table class="table-responsive w-full rounded">
+                  <thead>
+                    <tr>
+                      <th class="border w-1/8 px-4 py-2">Image</th>
+                      <th class="border w-1/6 px-4 py-2">Name</th>
+                      <th class="border w-1/2 px-4 py-2">Description</th>
+                      <th class="border w-1/8 px-4 py-2">Price</th>
+                      <th class="border w-1/8 px-4 py-2">Current Quantity</th>
+                      <th class="border w-1/8 px-4 py-2">Minimum Quantity</th>
+                      <th class="border w-1/6 px-4 py-2">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {generateTableRows()}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
