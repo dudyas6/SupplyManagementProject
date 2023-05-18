@@ -59,13 +59,13 @@ export default function Table() {
                 <table class="table-responsive w-full rounded">
                   <thead>
                     <tr>
-                      <th class="border w-1/8 px-4 py-2">Image</th>
+                      <th class="border w-1/8 px-4 py-2 ">Image</th>
                       <th class="border w-1/6 px-4 py-2">Name</th>
                       <th class="border w-1/2 px-4 py-2">Description</th>
-                      <th class="border w-1/8 px-4 py-2">Price</th>
-                      <th class="border w-1/8 px-4 py-2">Current Quantity</th>
-                      <th class="border w-1/8 px-4 py-2">Minimum Quantity</th>
-                      <th class="border w-1/6 px-4 py-2">Actions</th>
+                      <th class="border w-1/8 px-6 py-2">Price</th>
+                      <th class="border w-1/8 px-4 py-2 text-center">Current Quantity</th>
+                      <th class="border w-1/8 px-4 py-2 text-center">Minimum Quantity</th>
+                      <th class="border w-1/8 px-4 py-2">Actions</th>
                     </tr>
                   </thead>
                   <tbody>

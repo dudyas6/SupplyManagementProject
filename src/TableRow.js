@@ -14,16 +14,10 @@ export default function TableRow({ index, item }) {
       </td>
       <td className="border py-2">{item.name}</td>
       <td className="border w-1/2 py-2">{item.description}</td>
-      <td className="border py-2">{item.price}</td>
-      <td className="border py-2">{item.currentQuantity}</td>
-      <td className="border py-2">{item.minimumQuantity}</td>
+      <td className="border py-2 text-center">{item.price}</td>
+      <td className="border py-2 text-center">{item.currentQuantity}</td>
+      <td className="border py-2 text-center">{item.minimumQuantity}</td>
       <td className="border py-2 flex items-center justify-center">
-        <button>
-          <img className='w-10 h-10' src={plusImg} alt="plus" />
-        </button>
-        <button>
-          <img className='w-10 h-10' src={minusImg} alt="minus" />
-        </button>
         <button>
           <img className='w-10 h-10' src={editImg} alt="edit" />
         </button>
