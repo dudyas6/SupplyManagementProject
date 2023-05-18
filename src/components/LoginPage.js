@@ -8,46 +8,42 @@ function ValidateUsernamePasswordSyntax(username, password) {
   return "";
 }
 
-function ValidateUsernamePasswordDB(username, password) {
+function ValidateUsernamePasswordDB(allUsers, username, password) {
   // return true if username and password are valid in DB
     try{
-        const isValid = users.some((user) => user.username === username && user.password === password);
-        return isValid;
+        return allUsers.find((user) => user.username === username && user.password === password);
     } catch {
-        console.log("ERROR");
+        return "ERROR";
     }
-  return "";
-  // useEffect(() => {
-
-  //     const isValid = users.some((user) => user.username === username && user.password === password);
-  //     return isValid;
-
-  // }, [users]);
-
-  // Validation logic here
-  // Example: check if the username and password exist in the users state
 }
-function Login() {
+
+function Login(allUsers) {
   // if username or password empty
   // show message
 
   var username = document.getElementById("grid-username").value;
   var password = document.getElementById("grid-password").value;
-  console.log(username, password);
 
   let res = ValidateUsernamePasswordSyntax(username, password);
   if (res !== "") {
     console.log(res);
     return;
   }
-  res = ValidateUsernamePasswordDB(username, password);
-  if (res !== "") {
-    console.log(res);
+  let user = ValidateUsernamePasswordDB(allUsers, username, password);
+  if (user === null || user === "ERROR") {
+    console.log("Not Found");
     return;
   }
 
   // success login
   console.log("SUCCESS");
+
+  // TODO: Assigne the "currentUser"
+  sessionStorage.setItem('currentUser', JSON.stringify(user));
+
+  // navigate to next page
+  document.location.href = "/index";
+
   return;
 }
 
@@ -67,9 +63,7 @@ export default function LoginPage() {
     getUsersData(); // Call the function to fetch and set the users data
   }, []);
 
-  function print() {
-    console.log(users);
-  }
+
   return (
     <div className="flex flex-row items-center justify-center mx-auto">
       <div className="flex-1 mx-2 md:flex-row lg:flex-row">
@@ -118,7 +112,7 @@ export default function LoginPage() {
             </form>
             <div className="w-full mt-10 mb-2">
               <button
-                onClick={Login}
+                onClick={() => Login(users)}
                 className="float-right px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
               >
                 Login

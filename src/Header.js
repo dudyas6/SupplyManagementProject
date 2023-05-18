@@ -1,5 +1,7 @@
 import './styles.css'
 function Header() {
+  const userJson = sessionStorage.getItem('currentUser');
+  var currentUser = JSON.parse(userJson)
   // header className was: App-header
   return (
     <header className="bg-nav"> 
@@ -13,7 +15,7 @@ function Header() {
 
 
               <img onclick="profileToggle()" className="inline-block w-8 h-8 rounded-full" src="https://avatars0.githubusercontent.com/u/4323180?s=460&v=4" alt="" /> 
-              <a href="#" onclick="profileToggle()" className="hidden p-2 text-white no-underline md:block lg:block">Username</a> 
+              <a href="#" onclick="profileToggle()" className="hidden p-2 text-white no-underline md:block lg:block">{currentUser.username}</a> 
               <div id="ProfileDropDown" className="absolute hidden mt-12 mr-1 bg-white rounded shadow-md pin-t pin-r">
                   <ul className="list-reset">
                     <li><a href="#" className="block px-4 py-2 text-black no-underline hover:bg-grey-light">My account</a></li>
