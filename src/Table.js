@@ -91,24 +91,3 @@ class SingleProduct {
     this.minimumQuantity = minimumQuantity;
   }
 }
-
-// eslint-disable-next-line no-lone-blocks
-{
-  /* <div className='w-full max-w-[calc(100vh-120px)]'>
-            <table className='table-auto min-w-full'>
-                    <thead>
-                        <tr>
-                        <th className='flex items-center justify-center w-max' >Name</th>
-                        <th className=' items-center justify-center w-max' >Description</th>
-                        <th className=' items-center justify-center w-max' >Price</th>
-                        <th className=' items-center justify-center w-max' >Current Quantity</th>
-                        <th className=' items-center justify-center w-max' >Minimum Quantity</th>  
-                        <th className=' items-center justify-center w-max' >Controls</th> 
-                        </tr>
-                    </thead>    
-                    <tbody>
-                        {createTableRow()}
-                    </tbody>
-                </table>
-            </div> */
-}
