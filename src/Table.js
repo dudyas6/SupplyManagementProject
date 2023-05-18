@@ -46,7 +46,7 @@ export default function Table() {
       <div className="flex-1 p-3 overflow-hidden">
         <div className="flex flex-col items-center ">
           <div className="mt-4 mb-2 w-full">
-            <button onClick={addItemPopupHandle} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full float-right">
+            <button href='about' className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full float-right">
               + Add Item
             </button>
           </div>
