@@ -1,8 +1,5 @@
 import './styles.css'
-function Header() {
-  const userJson = sessionStorage.getItem('currentUser');
-  var currentUser = JSON.parse(userJson)
-  // header className was: App-header
+function Header({currentUser}) {
   return (
     <header className="bg-nav"> 
       <div className="flex justify-between">
