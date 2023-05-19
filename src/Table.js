@@ -1,30 +1,33 @@
 import React from "react";
 import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";  
+import axios from "axios";
 
 export default function Table() {
   const [table, setTable] = React.useState([]);
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
 
   function fillTable() {
-    console.log("filling table");
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        const tableData = data.products.map((product) => {
-          const item = new SingleProduct(
-            product.id,
-            product.title,
-            product.description,
-            product.price,
-            product.stock,
-            product.stock - product.stock / 2
-          );
-          return item;
-        });
-        setTable(tableData);
+    axios
+    .get(`http://localhost:3001/api/getAllItems`)
+    .then((response) => {
+      const tableData = response.data.map((product) => {
+        const item = new SingleItem(
+          product.ItemImage,
+          product.ItemId,
+          product.ItemName,
+          product.Description,
+          product.Price,
+          product.CurrentQuantity,
+          product.MinimumQuantity
+        );
+        return item;
       });
+      setTable(tableData);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   function addItemPopupHandle() {
@@ -32,8 +35,9 @@ export default function Table() {
   }
 
   function generateTableRows() {
+    console.log(table);
     return table.map((item, index) => (
-      <TableRow key={item.id} index={index} item={item}></TableRow>
+      <TableRow key={item.ItemId} index={index} item={item}></TableRow>
     ));
   }
 
@@ -52,10 +56,10 @@ export default function Table() {
               + Add Item
             </button>
           </div>
-          <div className="flex flex-1  flex-col md:flex-row lg:flex-row mx-2">
+          <div className="flex flex-1 w-full flex-col mx-2">
             <div className="mb-2 border-solid border-gray-300 rounded border shadow-sm w-full">
               <div className="bg-gray-200 px-2 py-3 border-solid border-gray-200 border-b">
-                Insert Warehouse Name Here
+                Haifa Store Inventory
               </div>
               <div className="p-3">
                 <table className="table-responsive w-full rounded">
@@ -83,13 +87,14 @@ export default function Table() {
   );
 }
 
-class SingleProduct {
-  constructor(id, name, description, price, currentQuantity, minimumQuantity) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.price = price;
-    this.currentQuantity = currentQuantity;
-    this.minimumQuantity = minimumQuantity;
+class SingleItem {
+  constructor(ItemImage, ItemId, ItemName, Description, Price, CurrentQuantity, MinimumQuantity) {
+    this.ItemImage = ItemImage;
+    this.ItemId = ItemId;
+    this.ItemName = ItemName;
+    this.Description = Description;
+    this.Price = Price;
+    this.CurrentQuantity = CurrentQuantity;
+    this.MinimumQuantity = MinimumQuantity;
   }
 }

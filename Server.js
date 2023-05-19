@@ -14,9 +14,13 @@ const MONGODB_URI = 'mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.ne
 
 // define a schema for your data
 const itemSchema = new mongoose.Schema({
+  ItemImage: String,
   ItemId: Number,
   ItemName: String,
   Description: String,
+  Price: Number,
+  CurrentQuantity: Number,
+  MinimumQuantity: Number,
 });
 
 const userSchema = new mongoose.Schema({
