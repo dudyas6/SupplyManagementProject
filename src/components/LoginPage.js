@@ -51,7 +51,7 @@ export default function LoginPage() {
 
   const getUsersData = () => {
     axios
-      .get("/api/getAllUsers")
+      .get(`http://localhost:3001/api/getAllUsers`)
       .then((response) => {
         setUsers(response.data); // Set the response data to the users state
       })
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 <div className="w-full px-3 mb-6 md:w-1/2 md:mb-0">
                   <label
                     className="block mb-1 text-xs font-light tracking-wide text-gray-700 uppercase"
-                    for="grid-username"
+                    htmlFor="grid-username"
                   >
                     Username
                   </label>
@@ -93,7 +93,7 @@ export default function LoginPage() {
                 <div className="w-full px-3 md:w-1/2">
                   <label
                     className="block mb-1 text-xs font-light tracking-wide text-gray-700 uppercase"
-                    for="grid-password"
+                    htmlFor="grid-password"
                   >
                     Password
                   </label>

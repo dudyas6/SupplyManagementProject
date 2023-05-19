@@ -1,13 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
 const app = express();
 const PORT = 3001; // Choose a port number
 const PATH = require("path");
 
 app.use(express.json());
+app.use(cors());
 // Serve the client-side code from the 'build' folder
-app.use(express.static(PATH.join(__dirname, "build")));
+// app.use(express.static(PATH.join(__dirname, "build")));
 
 const MONGODB_URI = 'mongodb+srv://root:root@supplymanagement.mkhycx5.mongodb.net/SupplyManagement?retryWrites=true&w=majority';
 
