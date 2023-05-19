@@ -8,6 +8,7 @@ import {
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 // import React, { useState, useEffect } from "react";
@@ -40,7 +41,7 @@ function AuthenticatedLayout({ children }) {
         <Header currentUser={currentUser} />
         <div className="flex flex-1">
           <Sidebar />
-          {children}
+          <Outlet />
         </div>
       </div>
     </div>
