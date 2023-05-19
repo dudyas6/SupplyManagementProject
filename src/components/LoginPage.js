@@ -20,7 +20,6 @@ function ValidateUsernamePasswordDB(allUsers, username, password) {
 function Login(allUsers) {
   // if username or password empty
   // show message
-
   var username = document.getElementById("grid-username").value;
   var password = document.getElementById("grid-password").value;
 
@@ -30,7 +29,7 @@ function Login(allUsers) {
     return;
   }
   let user = ValidateUsernamePasswordDB(allUsers, username, password);
-  if (user === null || user === "ERROR") {
+  if (user === undefined || user === "ERROR") {
     console.log("Not Found");
     return;
   }

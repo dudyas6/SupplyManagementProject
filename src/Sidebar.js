@@ -6,7 +6,7 @@ function Sidebar() {
 
                 <ul class="list-reset flex flex-col">
                     <li class=" w-full h-full py-3 px-2 border-b border-light-border bg-white">
-                        <a href="/"
+                        <a href="/index"
                            class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
                             <i class="fas fa-tachometer-alt float-left mx-2"></i>
                             Dashboard

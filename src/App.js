@@ -3,7 +3,12 @@ import CreateItem from "./CreateItem";
 import Header from "./Header";
 import MainBody from "./MainBody";
 import Sidebar from "./Sidebar";
-import { BrowserRouter as Router, Routes, Route, Navigate  } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 // import React, { useState, useEffect } from "react";
 // import axios from "axios";
@@ -22,7 +27,7 @@ function App() {
 }
 
 function AuthenticatedLayout({ children }) {
-  const userJson = sessionStorage.getItem('currentUser');
+  const userJson = sessionStorage.getItem("currentUser");
   const currentUser = JSON.parse(userJson);
 
   if (!currentUser) {
@@ -32,7 +37,7 @@ function AuthenticatedLayout({ children }) {
   return (
     <div className="mx-auto bg-grey-400">
       <div className="flex flex-col min-h-screen">
-        <Header currentUser={currentUser}/>
+        <Header currentUser={currentUser} />
         <div className="flex flex-1">
           <Sidebar />
           {children}
