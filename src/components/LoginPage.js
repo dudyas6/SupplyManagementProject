@@ -7,29 +7,27 @@ export default function LoginPage() {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [labelMsg, setLabelMsg] = useState("");
   const [signInStatus, setSignInStatus] = useState(null);
 
   const ValidateLogin = () => {
     if (username === "" || password === "") {
-      setError("Please fill all fields");
+      setLabelMsg("Please fill all fields");
       setSignInStatus("error");
     } else {
       const user = users.find((user) => user.username === username);
       if (user && user.password === password) {
         setSignInStatus("success");
+        setLabelMsg("Sign-in successful. Move to the dashboard.");
         sessionStorage.setItem("currentUser", JSON.stringify(user));
       } else {
-        setError("Invalid username or password");
+        setLabelMsg("Invalid username or password");
         setSignInStatus("error");
       }
     }
-    setTimeout(() => {
-      if (signInStatus === "success") {console.log("B"); document.location.href = "/warehouse"; }
-      setSignInStatus(null);
-    }, 3000);
     return;
   };
+
 
   const getUsersData = () => {
     axios
@@ -39,6 +37,16 @@ export default function LoginPage() {
       })
       .catch((error) => console.error(error));
   };
+  // ---- USE EFFECTS ----
+  useEffect(() => {
+    if (signInStatus === null) return;
+    setTimeout(() => {
+      if (signInStatus === "success") 
+        document.location.href = "/warehouse";
+      
+      setSignInStatus(null);
+    }, 3000);
+  }, [signInStatus]);
 
   useEffect(() => {
     getUsersData();
@@ -106,15 +114,8 @@ export default function LoginPage() {
             </form>
           </div>
         </div>
-        {signInStatus === "success" && (
-          <SuccessLabel
-            innerText="Sign-in successful. Move to the dashboard."
-          />
-        )}
-        {signInStatus === "error" && (
-          // Error msg
-          <ErrorLabel innerText={error} />
-        )}
+        {signInStatus === "success" && <SuccessLabel innerText={labelMsg} />}
+        {signInStatus === "error" && <ErrorLabel innerText={labelMsg} />}
       </div>
     </div>
   );
