@@ -51,7 +51,7 @@ export default function LoginPage() {
 
   const getUsersData = () => {
     axios
-      .get(`http://localhost:3001/api/getAllUsers`)
+      .get(`http://localhost:3001/users/get`)
       .then((response) => {
         setUsers(response.data); // Set the response data to the users state
       })

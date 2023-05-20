@@ -14,7 +14,7 @@ function Sidebar() {
                         </a>
                     </li>
                     <li className="w-full h-full py-3 px-2 border-b border-light-border">
-                        <a href="/about"
+                        <a href="/warehouse"
                            className="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
                             <i className="fab fa-wpforms float-left mx-2"></i>
                             Table

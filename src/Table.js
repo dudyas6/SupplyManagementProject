@@ -9,7 +9,7 @@ export default function Table() {
 
   function fillTable() {
     axios
-    .get(`http://localhost:3001/api/getAllItems`)
+    .get(`http://localhost:3001/items/get/`)
     .then((response) => {
       const tableData = response.data.map((product) => {
         const item = new SingleItem(

@@ -1,7 +1,7 @@
 import "./App.css";
 import CreateItem from "./CreateItem";
 import Header from "./Header";
-import MainBody from "./MainBody";
+import Table from "./Table";
 import Sidebar from "./Sidebar";
 import {
   BrowserRouter as Router,
@@ -19,15 +19,15 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route element={<AuthenticatedLayout />}>
-          <Route path="/index" element={<MainBody />} />
-          <Route path="/otherr" element={<CreateItem />} />
+          <Route path="/index" element={<CreateItem />} />
+          <Route path="/warehouse" element={<Table />} />
         </Route>
       </Routes>
     </Router>
   );
 }
 
-function AuthenticatedLayout({ children }) {
+function AuthenticatedLayout() {
   const userJson = sessionStorage.getItem("currentUser");
   const currentUser = JSON.parse(userJson);
 
