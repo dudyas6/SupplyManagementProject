@@ -2,23 +2,23 @@ import './styles.css'
 
 function Sidebar() {
   return (
-    <aside id="sidebar" className="bg-side-nav w-1/2 md:w-1/6 lg:w-1/6 border-r border-side-nav hidden md:block lg:block">
+    <aside id="sidebar" className="hidden w-1/2 border-r bg-side-nav md:w-1/6 lg:w-1/6 border-side-nav md:block lg:block">
 
-                <ul className="list-reset flex flex-col">
-                    <li className=" w-full h-full py-3 px-2 border-b border-light-border bg-white">
-                        <a href="/index"
-                           className="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
-                            <i className="fas fa-tachometer-alt float-left mx-2"></i>
+                <ul className="flex flex-col list-reset">
+                    <li className="w-full h-full px-2 py-3 bg-white border-b border-light-border">
+                        <a href="/dashboard"
+                           className="font-sans text-sm font-hairline no-underline hover:font-normal text-nav-item">
+                            <i className="float-left mx-2 fas fa-tachometer-alt"></i>
                             Dashboard
-                            <span><i className="fas fa-angle-right float-right"></i></span>
+                            <span><i className="float-right fas fa-angle-right"></i></span>
                         </a>
                     </li>
-                    <li className="w-full h-full py-3 px-2 border-b border-light-border">
+                    <li className="w-full h-full px-2 py-3 border-b border-light-border">
                         <a href="/warehouse"
-                           className="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
-                            <i className="fab fa-wpforms float-left mx-2"></i>
+                           className="font-sans text-sm font-hairline no-underline hover:font-normal text-nav-item">
+                            <i className="float-left mx-2 fab fa-wpforms"></i>
                             Table
-                            <span><i className="fa fa-angle-right float-right"></i></span>
+                            <span><i className="float-right fa fa-angle-right"></i></span>
                         </a>
                     </li>
                 </ul>

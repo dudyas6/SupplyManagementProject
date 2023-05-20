@@ -41,7 +41,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (signInStatus === null) return;
     setTimeout(() => {
-      if (signInStatus === "success") document.location.href = "/warehouse";
+      if (signInStatus === "success") document.location.href = "/dashboard";
       setSignInStatus(null);
     }, 3000);
   }, [signInStatus]);

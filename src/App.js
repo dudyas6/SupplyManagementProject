@@ -3,6 +3,8 @@ import CreateItem from "./CreateItem";
 import Header from "./Header";
 import Table from "./Table";
 import Sidebar from "./Sidebar";
+import { DashboardPage } from "./components/Dashboard/Dashboard";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,6 +23,7 @@ function App() {
         <Route element={<AuthenticatedLayout />}>
           <Route path="/index" element={<CreateItem />} />
           <Route path="/warehouse" element={<Table />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
       </Routes>
     </Router>
@@ -37,14 +40,16 @@ function AuthenticatedLayout() {
 
   return (
     <div className="mx-auto bg-grey-400">
-      <div className="flex flex-col min-h-screen">
-        <Header currentUser={currentUser} />
-        <div className="flex flex-1">
-          <Sidebar />
-          <Outlet />
+    <div className="flex flex-col justify-center min-h-screen">
+      <Header currentUser={currentUser} />
+      <div className="flex flex-1">
+        <Sidebar />
+        <div className="flex-1 p-3 overflow-hidden bg-white-300">
+        <Outlet />
         </div>
       </div>
     </div>
+  </div>
   );
 }
 export default App;
