@@ -1,67 +1,48 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
-function ValidateUsernamePasswordSyntax(username, password) {
-  // return string if username and password are syntax valid
-  if (username === "" || password === "") return "Please fill all fields";
-  return "";
-}
-
-function ValidateUsernamePasswordDB(allUsers, username, password) {
-  // return true if username and password are valid in DB
-    try{
-        return allUsers.find((user) => user.username === username && user.password === password);
-    } catch {
-        return "ERROR";
-    }
-}
-
-function Login(allUsers) {
-  // if username or password empty
-  // show message
-  var username = document.getElementById("grid-username").value;
-  var password = document.getElementById("grid-password").value;
-
-  let res = ValidateUsernamePasswordSyntax(username, password);
-  if (res !== "") {
-    console.log(res);
-    return;
-  }
-  let user = ValidateUsernamePasswordDB(allUsers, username, password);
-  if (user === undefined || user === "ERROR") {
-    console.log("Not Found");
-    return;
-  }
-
-  // success login
-  console.log("SUCCESS");
-
-  // TODO: Assigne the "currentUser"
-  sessionStorage.setItem('currentUser', JSON.stringify(user));
-
-  // navigate to next page
-  document.location.href = "/index";
-
-  return;
-}
+import { SuccessLabel, ErrorLabel } from "../common/LittleLabels";
 
 export default function LoginPage() {
   const [users, setUsers] = useState([]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [signInStatus, setSignInStatus] = useState(null);
+
+  const ValidateLogin = () => {
+    if (username === "" || password === "") {
+      setError("Please fill all fields");
+      setSignInStatus("error");
+    } else {
+      const user = users.find((user) => user.username === username);
+      if (user && user.password === password) {
+        setSignInStatus("success");
+        sessionStorage.setItem("currentUser", JSON.stringify(user));
+      } else {
+        setError("Invalid username or password");
+        setSignInStatus("error");
+      }
+    }
+    setTimeout(() => {
+      if (signInStatus === "success") {console.log("B"); document.location.href = "/warehouse"; }
+      setSignInStatus(null);
+    }, 3000);
+    return;
+  };
 
   const getUsersData = () => {
     axios
       .get(`http://localhost:3001/users/get`)
       .then((response) => {
-        setUsers(response.data); // Set the response data to the users state
+        setUsers(response.data);
       })
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
-    getUsersData(); // Call the function to fetch and set the users data
+    getUsersData();
   }, []);
-
 
   return (
     <div className="flex flex-row items-center justify-center mx-auto">
@@ -85,6 +66,7 @@ export default function LoginPage() {
                     id="grid-username"
                     type="text"
                     placeholder="Username"
+                    onChange={(e) => setUsername(e.target.value)}
                   />
                   <p className="text-xs italic text-red-500">
                     Please fill out this field.
@@ -102,23 +84,37 @@ export default function LoginPage() {
                     id="grid-password"
                     type="password"
                     placeholder="password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <p className="text-xs italic text-red-500">
                     Please fill out this field.
                   </p>
                 </div>
               </div>
+              <div className="w-full mt-10 mb-2">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    ValidateLogin();
+                  }}
+                  className="float-right px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
+                >
+                  Login
+                </button>
+                <div className="clear-both" />
+              </div>
             </form>
-            <div className="w-full mt-10 mb-2">
-              <button
-                onClick={() => Login(users)}
-                className="float-right px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
-              >
-                Login
-              </button>
-            </div>
           </div>
         </div>
+        {signInStatus === "success" && (
+          <SuccessLabel
+            innerText="Sign-in successful. Move to the dashboard."
+          />
+        )}
+        {signInStatus === "error" && (
+          // Error msg
+          <ErrorLabel innerText={error} />
+        )}
       </div>
     </div>
   );
