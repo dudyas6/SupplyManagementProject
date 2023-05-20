@@ -29,7 +29,6 @@ export default function LoginPage() {
     return;
   };
 
-
   const getUsersData = () => {
     axios
       .get(`http://localhost:3001/users/get`)
@@ -42,8 +41,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (signInStatus === null) return;
     setTimeout(() => {
-      if (signInStatus === "success") 
-        document.location.href = "/warehouse";
+      if (signInStatus === "success") document.location.href = "/warehouse";
       setSignInStatus(null);
     }, 3000);
   }, [signInStatus]);
@@ -53,23 +51,33 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex flex-row items-center justify-center mx-auto">
-      <div className="flex-1 mx-2 md:flex-row lg:flex-row">
-        <div className="w-full mb-2 border border-gray-300 border-solid rounded shadow-sm">
-          <div className="px-2 py-3 bg-gray-200 border-b border-gray-200 border-solid">
-            Login
-          </div>
-          <div className="p-3">
-          <LoginForm
-              setUsername={setUsername}
-              setPassword={setPassword}
-              ValidateLogin={ValidateLogin}
-            />
-          </div>
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+        <div className="flex flex-col items-center mb-6">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuCA_pyAUH6qj935MfUrKdydYYQ-9y40uC0A&usqp=CAU"
+            alt="Login"
+            className="w-32 h-32 mb-4 rounded-full"
+          />
+          <h2 className="mb-2 text-2xl font-bold">Login</h2>
         </div>
-        {signInStatus === "success" && <SuccessLabel innerText={labelMsg} />}
-        {signInStatus === "error" && <ErrorLabel innerText={labelMsg} />}
+        <LoginForm
+          setUsername={setUsername}
+          setPassword={setPassword}
+          ValidateLogin={ValidateLogin}
+        />
       </div>
+
+      {signInStatus === "success" && (
+        <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+          <SuccessLabel innerText={labelMsg} />
+        </div>
+      )}
+      {signInStatus === "error" && (
+        <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+          <ErrorLabel innerText={labelMsg} />
+        </div>
+      )}
     </div>
   );
 }
