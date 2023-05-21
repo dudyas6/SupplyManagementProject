@@ -1,8 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SuccessLabel, ErrorLabel } from '../../../common/LittleLabels'
+import { SuccessLabel, ErrorLabel } from "../../../common/LittleLabels";
 import LoginForm from "./LoginForm";
+import { Card } from "../../../common/Elements";
+import logo from "../../../assets/images/logo.png";
 
 export default function LoginPage() {
   const [users, setUsers] = useState([]);
@@ -51,33 +53,38 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
-        <div className="flex flex-col items-center mb-6">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuCA_pyAUH6qj935MfUrKdydYYQ-9y40uC0A&usqp=CAU"
-            alt="Login"
-            className="w-32 h-32 mb-4 rounded-full"
-          />
-          <h2 className="mb-2 text-2xl font-bold">Login</h2>
-        </div>
-        <LoginForm
-          setUsername={setUsername}
-          setPassword={setPassword}
-          ValidateLogin={ValidateLogin}
-        />
+    <>
+      <div className="flex flex-col items-center justify-center bg-gray-100">
+      <img src={logo} alt="Logo" className=""/>
       </div>
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+          <div className="flex flex-col items-center mb-6">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuCA_pyAUH6qj935MfUrKdydYYQ-9y40uC0A&usqp=CAU"
+              alt="Login"
+              className="w-32 h-32 mb-4 rounded-full"
+            />
+            <h2 className="mb-2 text-2xl font-bold">Login</h2>
+          </div>
+          <LoginForm
+            setUsername={setUsername}
+            setPassword={setPassword}
+            ValidateLogin={ValidateLogin}
+          />
+        </div>
 
-      {signInStatus === "success" && (
-        <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
-          <SuccessLabel innerText={labelMsg} />
-        </div>
-      )}
-      {signInStatus === "error" && (
-        <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
-          <ErrorLabel innerText={labelMsg} />
-        </div>
-      )}
-    </div>
+        {signInStatus === "success" && (
+          <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+            <SuccessLabel innerText={labelMsg} />
+          </div>
+        )}
+        {signInStatus === "error" && (
+          <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+            <ErrorLabel innerText={labelMsg} />
+          </div>
+        )}
+      </div>
+    </>
   );
 }

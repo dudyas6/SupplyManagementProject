@@ -68,7 +68,7 @@ export default function VendorOrderTable() {
                       <th className="w-1/6 px-4 py-2 border">Item Name</th>
                       <th className="w-1/5 px-4 py-2 border">Purchase date</th>
                       <th className="w-1/6 px-6 py-2 border">Quantity</th>
-                      <th className="w-1/4 px-6 py-2 border">Status</th>{" "}
+                      <th className="w-1/4 px-6 py-2 border">Status</th>
                       <th className="w-1/4 px-6 py-2 border">Total Price</th>{" "}
                       <th className="w-1/4 px-6 py-2 border">Actions</th>{" "}
                       {/* Pending, shipping, recieve ? */}
