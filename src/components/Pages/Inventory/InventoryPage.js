@@ -1,7 +1,7 @@
 import React from "react";
-import Table from "../Table";
-import { StatisticsCubes } from "./Dashboard/AllPageComponents";
-import { Card } from "../common/Elements";
+import Table from "./Table";
+import { StatisticsCubes } from "../Dashboard/AllPageComponents";
+import { Card } from "../../../common/Elements";
 
 export function InventoryPage() {
   return (

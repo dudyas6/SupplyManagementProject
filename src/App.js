@@ -1,11 +1,10 @@
 import "./App.css";
-import CreateItem from "./CreateItem";
 import Header from "./Header";
-import { InventoryPage } from "./components/InventoryPage";
+import { InventoryPage } from "./components/Pages/Inventory/InventoryPage";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { DashboardPage } from "./components/Dashboard/Dashboard";
-import LoginPage from "./components/LoginPage";
-
+import { DashboardPage } from './components/Pages/Dashboard/Dashboard';
+import LoginPage from "./components/Pages/Login/LoginPage";
+import { TrackingPage } from "./components/Pages/Tracking/TrackingPage";
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,9 +20,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route element={<AuthenticatedLayout />}>
-          <Route path="/index" element={<CreateItem />} />
-          <Route path="/warehouse" element={<InventoryPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/warehouse" element={<InventoryPage />} />
+          <Route path="/tracking" element={<TrackingPage />} />
         </Route>
       </Routes>
     </Router>

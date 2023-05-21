@@ -1,6 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
-import AddItemPopup from "./AddItemPopup";
+import AddItemPopup from "../../../AddItemPopup";
 import axios from "axios";
 
 export default function Table() {

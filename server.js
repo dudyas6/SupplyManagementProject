@@ -11,10 +11,12 @@ app.use(cors());
 // Routes
 const itemsRoute = require("./src/backend/routes/items");
 const usersRoute = require("./src/backend/routes/users");
+const ordersRoute = require("./src/backend/routes/vendor_orders");
 
 // App Uses
 app.use("/items", itemsRoute);
 app.use("/users", usersRoute);
+app.use("/orders/vendor", ordersRoute);
 
 // Serve the client-side code from the 'build' folder
 // app.use(express.static(PATH.join(__dirname, "build")));

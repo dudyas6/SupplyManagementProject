@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SuccessLabel, ErrorLabel } from "../common/LittleLabels";
+import { SuccessLabel, ErrorLabel } from '../../../common/LittleLabels'
 import LoginForm from "./LoginForm";
 
 export default function LoginPage() {
