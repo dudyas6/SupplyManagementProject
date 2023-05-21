@@ -1,9 +1,10 @@
 import "./App.css";
 import CreateItem from "./CreateItem";
 import Header from "./Header";
-import Table from "./Table";
-import Sidebar from "./Sidebar";
+import { InventoryPage } from "./components/InventoryPage";
+import Sidebar from "./components/Sidebar/Sidebar";
 import { DashboardPage } from "./components/Dashboard/Dashboard";
+import LoginPage from "./components/LoginPage";
 
 import {
   BrowserRouter as Router,
@@ -12,9 +13,8 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import LoginPage from "./components/LoginPage";
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
+
+
 function App() {
   return (
     <Router>
@@ -22,7 +22,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route element={<AuthenticatedLayout />}>
           <Route path="/index" element={<CreateItem />} />
-          <Route path="/warehouse" element={<Table />} />
+          <Route path="/warehouse" element={<InventoryPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
       </Routes>
