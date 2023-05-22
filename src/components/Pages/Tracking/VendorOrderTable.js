@@ -2,45 +2,22 @@ import React from "react";
 import axios from "axios";
 import VendorOrderRow from "./VendorOrderRow";
 
-export default function VendorOrderTable() {
-  const [table, setTable] = React.useState([]);
+export default function VendorOrderTable({orders}) {
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
-
-  function GetTableData() {
-    axios
-      .get(`http://localhost:3001/orders/vendor/get/`)
-      .then((response) => {
-        const tableData = response.data.map((order) => {
-          const item = new SingleItem(
-            order.ItemID,
-            order.ItemName,
-            order.PurchaseDate,
-            order.Quantity,
-            order.Status,
-            order.TotalPrice
-          );
-          return item;
-        });
-        setTable(tableData);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
 
   function addItemPopupHandle() {
     setIsAddItemClicked(!isAddItemClicked);
   }
 
   function generateTableRows() {
-    return table.map((order, index) => (
-      <VendorOrderRow key={order.ItemID} order={order}></VendorOrderRow>
+    if (!orders || !Array.isArray(orders)) {
+      return null; // Return null or handle the empty case based on your requirements
+    }
+    return orders.map((order, index) => (
+      <VendorOrderRow key={order.ItemID} order={order} />
     ));
   }
 
-  React.useEffect(() => {
-    GetTableData();
-  }, []);
 
   return (
     <>
@@ -74,7 +51,7 @@ export default function VendorOrderTable() {
                       {/* Pending, shipping, recieve ? */}
                     </tr>
                   </thead>
-                  <tbody>{generateTableRows()}</tbody>
+                  <tbody>{generateTableRows(orders)}</tbody>
                 </table>
               </div>
             </div>
@@ -85,13 +62,3 @@ export default function VendorOrderTable() {
   );
 }
 
-class SingleItem {
-  constructor(ItemID, ItemName, PurchaseDate, Quantity, Status, TotalPrice) {
-    this.ItemID = ItemID;
-    this.ItemName = ItemName;
-    this.PurchaseDate = PurchaseDate;
-    this.Quantity = Quantity;
-    this.Status = Status;
-    this.TotalPrice = TotalPrice;
-  }
-}

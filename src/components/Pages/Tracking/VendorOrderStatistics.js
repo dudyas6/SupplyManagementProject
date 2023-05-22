@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function VendorOrderStatistics() {
+export default function VendorOrderStatistics({orders}) {
   return <ProgressBar />;
 }
 
