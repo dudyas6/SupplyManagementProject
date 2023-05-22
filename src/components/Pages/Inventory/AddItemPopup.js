@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { BsQuestionCircle } from "react-icons/bs";
+import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
 
 export default function AddItemPopup({ onClose }) {
-  function InsertItemToDB() {
+  function InsertProcess() {
     const image = document.getElementById("image").value;
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
@@ -11,40 +12,38 @@ export default function AddItemPopup({ onClose }) {
     const currentQuantity = document.getElementById("currentQuantity").value;
     const minimumQuantity = document.getElementById("minimumQuantity").value;
 
-    const isValid = validateAllInputs(
-      image,
-      name,
-      description,
-      price,
-      currentQuantity,
-      minimumQuantity
-    );
-
-    if (!isValid) {
+    if (
+      !validateAllInputs(
+        image,
+        name,
+        description,
+        price,
+        currentQuantity,
+        minimumQuantity
+      )
+    )
       return;
-    }
 
-    axios
-      .post(`http://localhost:3001/items/add/`, {
+    // Insert in DB
+    InsertNewItem(
+      {
         ItemImage: image,
         ItemName: name,
         Description: description,
         Price: price,
         CurrentQuantity: currentQuantity,
         MinimumQuantity: minimumQuantity,
-      })
-      .then((response) => {
-        let msg = "Item inserted to database successfully";
-        setMsgBox("success", msg);
-        setTimeout(() => {
-          onClose();
-        }, 2000);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      },
+      thenFunc
+    );
   }
-
+  function thenFunc() {
+    let msg = "Item inserted to database successfully";
+    setMsgBox("success", msg);
+    setTimeout(() => {
+      onClose();
+    }, 2000);
+  }
   function validateAllInputs(
     image,
     name,
@@ -95,13 +94,13 @@ export default function AddItemPopup({ onClose }) {
   }
   return (
     <div>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-70"></div>
-      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center ">
-        <div className="flex flex-col bg-white-lightest p-4 rounded-lg">
+      <div className="fixed top-0 bottom-0 left-0 right-0 bg-black opacity-70"></div>
+      <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center ">
+        <div className="flex flex-col p-4 rounded-lg bg-white-lightest">
           <div className="relative">
             <button
               onClick={onClose}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold rounded-full top-0 right-0 m-2 p-0 w-10 h-10 float-right"
+              className="top-0 right-0 float-right w-10 h-10 p-0 m-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-700"
             >
               X
             </button>
@@ -111,101 +110,101 @@ export default function AddItemPopup({ onClose }) {
             className="grid grid-cols-2 gap-4 text-center"
             style={{ gridTemplateColumns: "1fr 2fr" }}
           >
-            <div className="ml-1 flex items-center justify-center">
+            <div className="flex items-center justify-center ml-1">
               Image:
               <BsQuestionCircle
-                className="text-gray-400 text-xs hover:text-gray-600"
+                className="text-xs text-gray-400 hover:text-gray-600"
                 title="Enter the URL of the item image."
               />
             </div>
             <input
               type="text"
               id="image"
-              className="rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 px-4 py-2"
+              className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Image URL"
             />
 
-            <div className="ml-1 flex items-center justify-center">
+            <div className="flex items-center justify-center ml-1">
               Name:
               <BsQuestionCircle
-                className="text-gray-400 text-xs hover:text-gray-600"
+                className="text-xs text-gray-400 hover:text-gray-600"
                 title="Enter the URL of the item image."
               />
             </div>
             <input
               type="text"
               id="name"
-              className="rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 px-4 py-2"
+              className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Item Name"
             />
-            <div className="ml-1 flex items-center justify-center">
+            <div className="flex items-center justify-center ml-1">
               Description:
               <BsQuestionCircle
-                className="text-gray-400 text-xs hover:text-gray-600"
+                className="text-xs text-gray-400 hover:text-gray-600"
                 title="Enter the URL of the item image."
               />
             </div>
             <textarea
               id="description"
               rows="4"
-              className="rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 px-4 py-2"
+              className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Item Description"
             ></textarea>
 
-            <div className="ml-1 flex items-center justify-center">
+            <div className="flex items-center justify-center ml-1">
               Price:
               <BsQuestionCircle
-                className="text-gray-400 text-xs hover:text-gray-600"
+                className="text-xs text-gray-400 hover:text-gray-600"
                 title="Enter the URL of the item image."
               />
             </div>
             <input
               type="number"
               id="price"
-              className="rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 px-4 py-2"
+              className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Item Price"
               min={0}
             />
 
-            <div className="ml-1 flex items-center justify-center">
+            <div className="flex items-center justify-center ml-1">
               Current Quantity:
               <BsQuestionCircle
-                className="text-gray-400 text-xs hover:text-gray-600"
+                className="text-xs text-gray-400 hover:text-gray-600"
                 title="Enter the URL of the item image."
               />
             </div>
             <input
               type="number"
               id="currentQuantity"
-              className="rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 px-4 py-2"
+              className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Item Current Quantity"
               min={0}
             />
 
-            <div className="ml-1 flex items-center justify-center">
+            <div className="flex items-center justify-center ml-1">
               Minimum Quantity:
               <BsQuestionCircle
-                className="text-gray-400 text-xs hover:text-gray-600"
+                className="text-xs text-gray-400 hover:text-gray-600"
                 title="Enter the URL of the item image."
               />
             </div>
             <input
               type="number"
               id="minimumQuantity"
-              className="rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 px-4 py-2"
+              className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Item Minimum Quantity"
               min={0}
             />
 
             <button
-              onClick={InsertItemToDB}
-              className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg col-span-2 w-1/2 mx-auto"
+              onClick={InsertProcess}
+              className="w-1/2 col-span-2 px-4 py-2 mx-auto mt-4 font-bold text-white bg-green-500 rounded-lg hover:bg-green-700"
             >
               Add Item
             </button>
             <p
               id="error-box"
-              className="text-center col-span-2 text-red-600 font-bold"
+              className="col-span-2 font-bold text-center text-red-600"
             ></p>
           </div>
         </div>

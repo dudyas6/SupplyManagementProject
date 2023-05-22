@@ -10,6 +10,7 @@ class SingleOrder {
     this.TotalPrice = TotalPrice;
   }
 }
+
 export function GenerateNewOrder(){
   /// Generate random order into DB
   
@@ -47,3 +48,4 @@ export function GetAllOrders() {
       console.error(error);
     });
 }
+

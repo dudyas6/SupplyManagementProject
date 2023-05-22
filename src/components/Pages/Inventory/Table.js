@@ -1,8 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
-import axios from "axios";
-import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
 
 export default function Table({items}) {
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
