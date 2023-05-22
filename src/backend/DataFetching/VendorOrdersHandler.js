@@ -10,6 +10,12 @@ class SingleOrder {
     this.TotalPrice = TotalPrice;
   }
 }
+export const Status = {
+  PENDING: 'Pending',
+  INPROGRESS: 'In Progress',
+  COMPLETED: 'Completed',
+};
+
 
 export function GenerateNewOrder(){
   /// Generate random order into DB
