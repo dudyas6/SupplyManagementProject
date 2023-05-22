@@ -1,12 +1,12 @@
 import React from "react";
 import axios from "axios";
 import VendorOrderRow from "./VendorOrderRow";
-
+import { AddItemPopup } from "./AddItemPopup";
 export default function VendorOrderTable({orders}) {
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
 
-  function addItemPopupHandle() {
-    setIsAddItemClicked(!isAddItemClicked);
+  function CreateNewOrder() {
+    
   }
 
   function generateTableRows() {
@@ -26,7 +26,7 @@ export default function VendorOrderTable({orders}) {
         <div className="flex flex-col items-center ">
           <div className="w-full mt-4 mb-2">
             <button
-              onClick={addItemPopupHandle}
+              onClick={CreateNewOrder}
               className="float-right px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
             >
               + Add Order

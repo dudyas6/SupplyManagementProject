@@ -10,7 +10,22 @@ class SingleOrder {
     this.TotalPrice = TotalPrice;
   }
 }
+export function GenerateNewOrder(){
+  /// Generate random order into DB
+  
+  // Get random item
 
+  // create SingleOrder object with item ID and Name
+
+  // apply today as PurchaseDate
+
+  // random quantity (1-50)
+
+  // Random Status (Create ENUM)
+
+  // Price - by item price multiple the quantity
+  
+}
 export function GetAllOrders() {
   return axios
     .get(`http://localhost:3001/orders/vendor/get/`)
