@@ -9,7 +9,6 @@ export default function VendorOrderRow({ order }) {
       ? "bg-green-100"
       : "bg-orange-100";
 
-  console.log(order);
   return (
     <tr className={rowColor}>
       <td className="w-1/12 py-2 border">{order.ItemID}</td>
