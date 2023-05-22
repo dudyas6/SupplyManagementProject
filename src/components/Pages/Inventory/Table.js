@@ -1,6 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
-import AddItemPopup from "../../../AddItemPopup";
+import AddItemPopup from "./AddItemPopup";
 import axios from "axios";
 
 export default function Table() {
@@ -68,7 +68,7 @@ export default function Table() {
               </div>
               <div className="p-3">
                 <table className="w-full rounded table-responsive">
-                  <thead>
+                  <thead className="text-white bg-grey-dark text-norma">
                     <tr>
                       <th className="px-4 py-2 border w-1/8 ">Image</th>
                       <th className="w-1/6 px-4 py-2 border">Name</th>
