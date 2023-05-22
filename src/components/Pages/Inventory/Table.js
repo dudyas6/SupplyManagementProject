@@ -2,47 +2,21 @@ import React from "react";
 import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
 import axios from "axios";
+import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
 
-export default function Table() {
-  const [table, setTable] = React.useState([]);
+export default function Table({items}) {
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
 
-  function fillTable() {
-    axios
-      .get(`http://localhost:3001/items/get/`)
-      .then((response) => {
-        const tableData = response.data.map((product) => {
-          const item = new SingleItem(
-            product.ItemImage,
-            product.ItemId,
-            product.ItemName,
-            product.Description,
-            product.Price,
-            product.CurrentQuantity,
-            product.MinimumQuantity
-          );
-          return item;
-        });
-        setTable(tableData);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
+  
   function addItemPopupHandle() {
     setIsAddItemClicked(!isAddItemClicked);
   }
 
   function generateTableRows() {
-    return table.map((item, index) => (
+    return items.map((item, index) => (
       <TableRow key={item.ItemId} index={index} item={item}></TableRow>
     ));
   }
-
-  React.useEffect(() => {
-    fillTable();
-  }, []);
 
   return (
     <>
@@ -90,24 +64,4 @@ export default function Table() {
       </div>
     </>
   );
-}
-
-class SingleItem {
-  constructor(
-    ItemImage,
-    ItemId,
-    ItemName,
-    Description,
-    Price,
-    CurrentQuantity,
-    MinimumQuantity
-  ) {
-    this.ItemImage = ItemImage;
-    this.ItemId = ItemId;
-    this.ItemName = ItemName;
-    this.Description = Description;
-    this.Price = Price;
-    this.CurrentQuantity = CurrentQuantity;
-    this.MinimumQuantity = MinimumQuantity;
-  }
 }
