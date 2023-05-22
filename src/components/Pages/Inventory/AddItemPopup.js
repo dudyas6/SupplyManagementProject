@@ -19,6 +19,7 @@ export default function AddItemPopup({ onClose }) {
       currentQuantity,
       minimumQuantity
     );
+
     if (!isValid) {
       return;
     }
@@ -33,9 +34,11 @@ export default function AddItemPopup({ onClose }) {
         MinimumQuantity: minimumQuantity,
       })
       .then((response) => {
-        console.log(response);
-        document.getElementById("error-box").innerHTML =
-          "Item inserted to database successfully";
+        let msg = "Item inserted to database successfully";
+        setMsgBox("success", msg);
+        setTimeout(() => {
+          onClose();
+        }, 2000);
       })
       .catch((error) => {
         console.error(error);
@@ -51,7 +54,7 @@ export default function AddItemPopup({ onClose }) {
     minimumQuantity
   ) {
     let isValid = true;
-    const errorMsg = document.getElementById("error-box");
+    let errorMsg = "";
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 
     const allFields = [
@@ -62,22 +65,34 @@ export default function AddItemPopup({ onClose }) {
       currentQuantity,
       minimumQuantity,
     ];
-    errorMsg.innerHTML = "";
 
     allFields.forEach((field) => {
       if (field.trim() === "" || field === null) {
-        errorMsg.innerHTML = "Please fill all fields<br />";
+        errorMsg = "Please fill all fields<br />";
         isValid = false;
       }
     });
 
     if (!urlRegex.test(image)) {
-      errorMsg.innerHTML += "Please enter a valid image URL";
+      errorMsg += "Please enter a valid image URL";
       isValid = false;
     }
+
+    setMsgBox("error", errorMsg);
     return isValid;
   }
 
+  function setMsgBox(msgType, msg) {
+    const errorBox = document.getElementById("error-box");
+    if (msgType === "error") {
+      errorBox.style.color = "red";
+      errorBox.innerHTML = msg;
+    } else {
+      errorBox.style.color = "green";
+      errorBox.innerHTML = msg;
+    }
+    return;
+  }
   return (
     <div>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-70"></div>

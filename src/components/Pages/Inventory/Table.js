@@ -35,14 +35,12 @@ export default function Table() {
   }
 
   function generateTableRows() {
-    console.log(table);
     return table.map((item, index) => (
       <TableRow key={item.ItemId} index={index} item={item}></TableRow>
     ));
   }
 
   React.useEffect(() => {
-    console.log("useEffect");
     fillTable();
   }, []);
 
