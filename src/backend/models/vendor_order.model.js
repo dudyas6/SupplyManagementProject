@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const vendor_orders = new Schema({
-  ItemID: Number,
+  OrderId: Number,
   ItemName: String,
   PurchaseDate: String,
   Quantity: Number,

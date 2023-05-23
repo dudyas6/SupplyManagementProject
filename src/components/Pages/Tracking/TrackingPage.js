@@ -8,14 +8,24 @@ import VendorOrderTable from "../Tracking/VendorOrderTable";
 export function TrackingPage() {
   const [orders, setOrders] = React.useState([]);
 
-  async function fetchOrders() {
-    const response = await GetAllOrders();
-    setOrders(response);
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await GetAllOrders();
+        setOrders(response);
+      } catch (error) {
+        // Handle error, e.g., show an error message or log it
+      }
+    }
+  
+    fetchData();
+  }, []);
+
+  // I did here something like delegate
+  function handleTableChange(updatedOrders) {
+    if(updatedOrders == null || updatedOrders === undefined) return;
+    setOrders(orders.concat(updatedOrders));
   }
-  fetchOrders();
-
-  // TODO: "UpdateItems"
-
   return (
     <>
       <Card title="Relevant issues">
@@ -25,7 +35,7 @@ export function TrackingPage() {
       </Card>
 
       <Card title="Orders from vendor">
-        <VendorOrderTable orders={orders} />
+        <VendorOrderTable orders={orders} onChange={handleTableChange} />
       </Card>
 
       <Card title="Orders from user - changeeeeeeeeeeeee content">

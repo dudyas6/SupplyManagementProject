@@ -3,11 +3,12 @@ import VendorOrderRow from "./VendorOrderRow";
 // import { AddItemPopup } from "./AddItemPopup";
 import { GenerateNewOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
 
-export default function VendorOrderTable({orders}) {
+export default function VendorOrderTable({ orders, onChange }) {
   //const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
 
-  function CreateNewOrder() {
-    GenerateNewOrder();
+  async function CreateNewOrder() {
+    const order = await GenerateNewOrder();
+    onChange(order);
   }
 
   function generateTableRows() {
@@ -15,14 +16,12 @@ export default function VendorOrderTable({orders}) {
       return null; // Return null or handle the empty case based on your requirements
     }
     return orders.map((order, index) => (
-      <VendorOrderRow key={order.ItemID} order={order} />
+      <VendorOrderRow key={order.OrderId} order={order} />
     ));
   }
 
-
   return (
     <>
-   
       <div className="flex-1 p-3 overflow-hidden">
         <div className="flex flex-col items-center ">
           <div className="w-full mt-4 mb-2">
@@ -47,7 +46,9 @@ export default function VendorOrderTable({orders}) {
                       <th className="w-1/5 px-4 py-2 border">Purchase date</th>
                       <th className="w-1/6 px-6 py-2 border">Quantity</th>
                       <th className="w-1/4 px-6 py-2 border">Status</th>
-                      <th className="w-1/4 px-6 py-2 border">Total Price</th>{" "}
+                      <th className="w-1/4 px-6 py-2 border">
+                        Total Price
+                      </th>{" "}
                       <th className="w-1/4 px-6 py-2 border">Actions</th>{" "}
                       {/* Pending, shipping, recieve ? */}
                     </tr>
@@ -62,4 +63,3 @@ export default function VendorOrderTable({orders}) {
     </>
   );
 }
-

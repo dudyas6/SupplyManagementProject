@@ -8,13 +8,13 @@ import { Cube } from "../../../common/Elements";
 // generate cubes
 export const VendorStatisticsCubes = ({ orders }) => {
     const [totOrders, setOrders] = React.useState(0);
-    const [totCost, setCost] = React.useState(0);
+    const [totCost, setCost] = React.useState(0.0);
     const [totQuantity, setQuantity] = React.useState(0);
     const [totPending, setPending] = React.useState(0);
   
     React.useEffect(() => {
       let totalOrders = 0;
-      let totalCost = 0;
+      let totalCost = 0.0;
       let totalQuantity = 0;
       let totalPending = 0;
   
@@ -27,9 +27,9 @@ export const VendorStatisticsCubes = ({ orders }) => {
           totalPending += 1;
         }
       });
-  
+      
       setOrders(totalOrders);
-      setCost(totalCost.toFixed(2));
+      setCost(totalCost);
       setQuantity(totalQuantity);
       setPending(totalPending);
     }, [orders]);
@@ -38,7 +38,7 @@ export const VendorStatisticsCubes = ({ orders }) => {
        
       <div className="flex flex-wrap justify-center">
         <Cube inx={i++} big={totOrders} small="Orders" />
-        <Cube inx={i++}  big={`${totCost}$`} small="Total Cost" />
+        <Cube inx={i++}  big={`${parseFloat(totCost).toFixed(2)}$`} small="Total Cost" />
         <Cube inx={i++} big={totQuantity} small="Purchased quantity" />
         <Cube inx={i++} big={totPending} small="Pending Orders" />
       </div>

@@ -8,13 +8,11 @@ router.route("/get").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-
-
 router.route("/add").post((req, res) => {
   vendor_order
-    .findOne({}, {}, { sort: { ItemID: -1 } }) // Find the last item by sorting in descending order of ItemId
+    .findOne({}, { OrderId: 1 }, { sort: { OrderId: -1 } }) // Find the last item by sorting in descending order of OrderId
     .then((lastItem) => {
-      const ItemID = (lastItem ? lastItem.ItemID : 0) + 1;
+      const OrderId = (lastItem ? lastItem.OrderId : 0) + 1;
       const ItemName = req.body.ItemName;
       const PurchaseDate = req.body.PurchaseDate;
       const Quantity = req.body.Quantity;
@@ -22,7 +20,7 @@ router.route("/add").post((req, res) => {
       const TotalPrice = req.body.TotalPrice;
 
       const newItem = new vendor_order({
-        ItemID,
+        OrderId,
         ItemName,
         PurchaseDate,
         Quantity,
@@ -32,7 +30,10 @@ router.route("/add").post((req, res) => {
 
       return newItem.save();
     })
-    .then(() => res.json("Order Placed!"))
+    .then((savedOrder) => { 
+      res.json(savedOrder);   // send the saved order object as the response
+    })
     .catch((err) => res.status(400).json("Error: " + err));
 });
+
 module.exports = router;

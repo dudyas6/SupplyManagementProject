@@ -37,6 +37,8 @@ export default function AddItemPopup({ onClose }) {
       thenFunc
     );
   }
+
+
   function thenFunc() {
     let msg = "Item inserted to database successfully";
     setMsgBox("success", msg);

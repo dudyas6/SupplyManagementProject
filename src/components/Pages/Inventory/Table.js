@@ -1,12 +1,13 @@
 import React from "react";
 import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
-
+import { DeleteOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
 export default function Table({items}) {
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
 
-  
+
   function addItemPopupHandle() {
+    DeleteOrder(11,()=>{return;})
     setIsAddItemClicked(!isAddItemClicked);
   }
 
@@ -19,7 +20,7 @@ export default function Table({items}) {
   return (
     <>
       {isAddItemClicked && (
-        <AddItemPopup onClose={addItemPopupHandle}></AddItemPopup>
+        <AddItemPopup onClose={addItemPopupHandle} ></AddItemPopup>
       )}
       <div className="flex-1 p-3 overflow-hidden">
         <div className="flex flex-col items-center ">
