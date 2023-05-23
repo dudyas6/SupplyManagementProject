@@ -37,11 +37,12 @@ router.route("/add").post((req, res) => {
 });
 
 router.route('/delete').delete((req, res) => {
-  const { orderId } = req.body;
-
+  console.log(req.body);
+  const { OrderId } = req.body;
+  
   // Perform the deletion operation using your preferred method (e.g., MongoDB, Mongoose, etc.)
   // Replace the following code with your actual deletion logic
-  vendor_order.findOneAndDelete({ orderId })
+  vendor_order.findOneAndDelete({ OrderId:OrderId })
     .then((deletedOrder) => {
       if (!deletedOrder) {
         return res.status(404).json({ error: 'Order not found' });
