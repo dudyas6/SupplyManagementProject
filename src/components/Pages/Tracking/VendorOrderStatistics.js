@@ -33,7 +33,7 @@ export default function VendorOrderStatistics({ orders }) {
   const percentagePending = (totPending / totOrders) * 100;
   const percentageCancelled = (totInProgress / totOrders) * 100;
 
-  return <ProgressBar first={percentageCompleted} />;
+  return <ProgressBar first={percentageCompleted.toFixed(2)} />;
 }
 
 function ProgressBar({ first }) {
@@ -46,7 +46,8 @@ function ProgressBar({ first }) {
         </div>
       </div>
   */
-  return (
+
+      return (
     <div className="w-full">
       <div className="w-full mt-2 shadow bg-grey-light">
         <div

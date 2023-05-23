@@ -7,7 +7,7 @@ export default function Table({items}) {
 
 
   function addItemPopupHandle() {
-    DeleteOrder(11,()=>{return;})
+    DeleteOrder(25, ()=>{return;})
     setIsAddItemClicked(!isAddItemClicked);
   }
 

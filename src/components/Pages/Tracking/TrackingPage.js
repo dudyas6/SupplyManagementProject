@@ -13,9 +13,9 @@ export function TrackingPage() {
       try {
         const response = await GetAllOrders();
         setOrders(response);
-      } catch (error) {
-        // Handle error, e.g., show an error message or log it
-      }
+      } catch (error) { 
+        console.log(error)
+       }
     }
   
     fetchData();
@@ -26,6 +26,7 @@ export function TrackingPage() {
     if(updatedOrders == null || updatedOrders === undefined) return;
     setOrders(orders.concat(updatedOrders));
   }
+
   return (
     <>
       <Card title="Relevant issues">

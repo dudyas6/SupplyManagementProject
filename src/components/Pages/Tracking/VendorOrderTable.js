@@ -1,6 +1,5 @@
 import React from "react";
 import VendorOrderRow from "./VendorOrderRow";
-// import { AddItemPopup } from "./AddItemPopup";
 import { GenerateNewOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
 
 export default function VendorOrderTable({ orders, onChange }) {

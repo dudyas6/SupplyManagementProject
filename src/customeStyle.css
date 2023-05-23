@@ -1,0 +1,11 @@
+.sidebar {
+  /* Add your sidebar styles here */
+  /* Set the initial position of the sidebar */
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-open {
+  /* Move the sidebar to the visible position */
+  transform: translateX(0);
+}

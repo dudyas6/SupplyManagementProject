@@ -36,4 +36,23 @@ router.route("/add").post((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route('/delete').delete((req, res) => {
+  const { orderId } = req.body;
+
+  // Perform the deletion operation using your preferred method (e.g., MongoDB, Mongoose, etc.)
+  // Replace the following code with your actual deletion logic
+  vendor_order.findOneAndDelete({ orderId })
+    .then((deletedOrder) => {
+      if (!deletedOrder) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+      res.json({ message: 'Order deleted successfully' });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+
 module.exports = router;
