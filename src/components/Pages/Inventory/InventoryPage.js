@@ -14,6 +14,7 @@ export function InventoryPage() {
   }
   fetchOrders();
 
+
   return (
     <>
       <Card title="Relevant issues">

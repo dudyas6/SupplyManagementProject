@@ -1,12 +1,13 @@
 import React from "react";
-import axios from "axios";
 import VendorOrderRow from "./VendorOrderRow";
-import { AddItemPopup } from "./AddItemPopup";
+// import { AddItemPopup } from "./AddItemPopup";
+import { GenerateNewOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
+
 export default function VendorOrderTable({orders}) {
-  const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
+  //const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
 
   function CreateNewOrder() {
-    
+    GenerateNewOrder();
   }
 
   function generateTableRows() {

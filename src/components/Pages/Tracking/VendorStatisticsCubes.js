@@ -29,7 +29,7 @@ export const VendorStatisticsCubes = ({ orders }) => {
       });
   
       setOrders(totalOrders);
-      setCost(totalCost);
+      setCost(totalCost.toFixed(2));
       setQuantity(totalQuantity);
       setPending(totalPending);
     }, [orders]);
