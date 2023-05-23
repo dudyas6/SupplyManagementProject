@@ -1,4 +1,3 @@
-import React from "react";
 import axios from "axios";
 class SingleOrder {
   constructor(OrderId, ItemName, PurchaseDate, Quantity, Status, TotalPrice) {
