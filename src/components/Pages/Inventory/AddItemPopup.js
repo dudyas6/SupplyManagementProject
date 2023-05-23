@@ -1,9 +1,8 @@
 import React from "react";
-import axios from "axios";
 import { BsQuestionCircle } from "react-icons/bs";
 import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
 
-export default function AddItemPopup({ onClose }) {
+export default function AddItemPopup({ onClose, requestUpdate }) {
   function InsertProcess() {
     const image = document.getElementById("image").value;
     const name = document.getElementById("name").value;
@@ -25,7 +24,7 @@ export default function AddItemPopup({ onClose }) {
       return;
 
     // Insert in DB
-    InsertNewItem(
+    const item = InsertNewItem(
       {
         ItemImage: image,
         ItemName: name,
@@ -36,9 +35,13 @@ export default function AddItemPopup({ onClose }) {
       },
       thenFunc
     );
+    return item;
   }
 
-
+  async function test() {
+    const item = await InsertProcess();
+    requestUpdate(item);
+  }
   function thenFunc() {
     let msg = "Item inserted to database successfully";
     setMsgBox("success", msg);
@@ -181,6 +184,8 @@ export default function AddItemPopup({ onClose }) {
               className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Item Current Quantity"
               min={0}
+              value={0}
+              disabled={true}
             />
 
             <div className="flex items-center justify-center ml-1">
@@ -199,7 +204,7 @@ export default function AddItemPopup({ onClose }) {
             />
 
             <button
-              onClick={InsertProcess}
+              onClick={test}
               className="w-1/2 col-span-2 px-4 py-2 mx-auto mt-4 font-bold text-white bg-green-500 rounded-lg hover:bg-green-700"
             >
               Add Item

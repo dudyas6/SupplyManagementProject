@@ -46,8 +46,7 @@ export function GetAllItems() {
 
 export function InsertNewItem(item, thenFunction) {
   /// The function request to insert new item into DB, and gets a function to execute later
-  console.log(item);
-  axios
+  return axios
       .post(`http://localhost:3001/items/add/`, item)
       .then(() => {
         thenFunction();

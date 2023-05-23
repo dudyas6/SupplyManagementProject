@@ -8,21 +8,33 @@ export function InventoryPage() {
   // The main of Inventory page
   const [items, setItems] = React.useState([]);
 
-  async function fetchOrders() {
-    // gets items async
-    setItems(await GetAllItems());
-  }
-  fetchOrders();
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await GetAllItems();
+        setItems(response);
+      } catch (error) {
+        // Handle error, e.g., show an error message or log it
+      }
+    }
 
+    fetchData();
+  }, [items]);
+
+  function handleTableChange(updatedOrders) {
+    if (updatedOrders == null || updatedOrders === undefined) return;
+    setItems(items.concat(updatedOrders));
+  }
 
   return (
     <>
       <Card title="Relevant issues">
-        <StatisticsCubes /> {/* Change this later to relevant issues !!! */}
+        <StatisticsCubes items={items} />{" "}
+        {/* Change this later to relevant issues !!! */}
       </Card>
 
       <Card title="All inventory items">
-        <Table items={items} />
+        <Table items={items} onChange={handleTableChange} />
       </Card>
     </>
   );
