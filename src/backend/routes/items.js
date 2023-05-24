@@ -8,7 +8,7 @@ router.route("/get").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route("/add").post((req, res) => {
   items
     .findOne({}, {}, { sort: { ItemId: -1 } }) // Find the last item by sorting in descending order of ItemId
     .then((lastItem) => {
@@ -33,7 +33,17 @@ router.route('/add').post((req, res) => {
 
       return newItem.save();
     })
-    .then(() => res.json('Item added!'))
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .then(() => res.json("Item added!"))
+    .catch((err) => res.status(400).json("Error: " + err));
 });
+
+router.route("/update/:id").put((req, res) => {
+  const ItemId = req.params.id;
+  const updatedItem = req.body;
+  items
+    .findOneAndUpdate({ ItemId: ItemId }, updatedItem, { new: true })
+    .then((item) => res.json(item))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 module.exports = router;

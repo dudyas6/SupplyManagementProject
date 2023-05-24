@@ -1,4 +1,4 @@
-import React from "react";
+
 import axios from "axios";
 
 class SingleItem {
@@ -54,4 +54,15 @@ export function InsertNewItem(item, thenFunction) {
       .catch((error) => {
         console.error(error);
       });
+}
+
+export function UpdateItem(itemId, item) {
+  axios
+    .put(`http://localhost:3001/items/update/${itemId}`, item) 
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
