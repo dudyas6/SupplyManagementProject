@@ -7,7 +7,7 @@ import { InventoryPage } from "./components/Pages/Inventory/InventoryPage";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { DashboardPage } from './components/Pages/Dashboard/Dashboard';
 import LoginPage from "./components/Pages/Login/LoginPage";
-import { TrackingPage } from "./components/Pages/Tracking/TrackingPage";
+import { TrackingPage } from "./components/Pages/TrackingVendorOrders/TrackingPage";
 import {
   BrowserRouter as Router,
   Routes,

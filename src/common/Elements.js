@@ -30,3 +30,94 @@ export function Cube({ inx, big, small }) {
     </div>
   );
 }
+export function YesNoDialog({ messageToShow, onClose, onSubmit }) {
+  return (
+    <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center">
+      <div className="flex flex-col p-6 rounded-lg bg-white-lightest">
+        <div className="relative">
+          <button
+            onClick={onClose}
+            className="top-0 right-0 float-right w-10 h-10 p-0 m-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-700"
+          >
+            X
+          </button>
+        </div>
+        <div className="text-center mb-6">{messageToShow}</div>
+        <div className="flex justify-center">
+          <button
+            onClick={onSubmit}
+            className="w-28 h-12 mr-4 font-bold text-white bg-red-500 hover:bg-red-700"
+          >
+            Yes
+          </button>
+          <button
+            onClick={onClose}
+            className="w-28 h-12 font-bold text-white bg-green-500 hover:bg-green-700"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+export class PopupWithInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: "",
+    };
+  }
+
+  handleInputChange = (event) => {
+    this.setState({ inputValue: event.target.value });
+  };
+
+  handleSubmit = () => {
+    const { inputValue } = this.state;
+    this.props.onSubmit(inputValue);
+    this.props.onClose();
+  };
+
+  render() {
+    const { inputValue } = this.state;
+    const { onClose } = this.props;
+
+    return (
+      <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center">
+        <div className="flex flex-col p-6 rounded-lg bg-white-lightest">
+          <div className="relative">
+            <button
+              onClick={onClose}
+              className="top-0 right-0 float-right w-10 h-10 p-0 m-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-700"
+            >
+              X
+            </button>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="inputField" className="mr-2">
+              {this.props.messageToShow}
+            </label>
+            <input
+              type="text"
+              id="inputField"
+              value={inputValue}
+              onChange={this.handleInputChange}
+              className="px-4 py-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter input"
+            />
+          </div>
+          <button
+            onClick={this.handleSubmit}
+            className="w-full py-2 mt-4 font-bold text-white bg-green-500 hover:bg-green-700"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    );
+  }
+}

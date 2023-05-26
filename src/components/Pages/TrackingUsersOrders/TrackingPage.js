@@ -3,7 +3,7 @@ import { VendorStatisticsCubes } from "./VendorStatisticsCubes";
 import VendorOrderStatistics from "./VendorOrderStatistics";
 import { Card } from "../../../common/Elements";
 import { GetAllOrders } from "../../../backend/DataFetching/VendorOrdersHandler";
-import VendorOrderTable from "../Tracking/VendorOrderTable";
+import VendorOrderTable from "./VendorOrderTable";
 
 export function TrackingPage() {
   const [orders, setOrders] = React.useState([]);
