@@ -1,7 +1,7 @@
 
 import axios from "axios";
 
-class SingleItem {
+export class SingleItem {
   constructor(
     ItemImage,
     ItemId,
@@ -48,8 +48,9 @@ export function InsertNewItem(item, thenFunction) {
   /// The function request to insert new item into DB, and gets a function to execute later
   return axios
       .post(`http://localhost:3001/items/add/`, item)
-      .then(() => {
+      .then((res) => {
         thenFunction();
+        return res.data;
       })
       .catch((error) => {
         console.error(error);

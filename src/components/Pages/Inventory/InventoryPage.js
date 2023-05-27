@@ -22,7 +22,10 @@ export function InventoryPage() {
   }, [items]);
 
   function handleTableChange(updatedOrders) {
+    console.log(updatedOrders)
     if (updatedOrders == null || updatedOrders === undefined) return;
+    console.log("updatedOrders")
+
     setItems(items.concat(updatedOrders));
   }
 

@@ -46,13 +46,13 @@ export function YesNoDialog({ messageToShow, onClose, onSubmit }) {
         <div className="flex justify-center">
           <button
             onClick={onSubmit}
-            className="w-28 h-12 mr-4 font-bold text-white bg-red-500 hover:bg-red-700"
+            className="w-28 h-12 mr-4 font-bold text-white bg-green-500 hover:bg-green-700"
           >
             Yes
           </button>
           <button
             onClick={onClose}
-            className="w-28 h-12 font-bold text-white bg-green-500 hover:bg-green-700"
+            className="w-28 h-12 font-bold text-white bg-red-500 hover:bg-red-700"
           >
             No
           </button>

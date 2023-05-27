@@ -1,14 +1,47 @@
 import React from "react";
+import { useState } from "react";
 import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
-import { DeleteOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
-export default function Table({items, onChange}) {
-  const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
+import { YesNoDialog, PopupWithInput } from "../../../common/Elements";
+import { CreateNewVendorOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
+import { SingleItem } from "../../../backend/DataFetching/ItemsHandler";
 
+
+export default function Table({ items, onChange }) {
+  const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [showInputDialog, setShowInputDialog] = useState(false);
+  let tempItem = null;
+
+  // "pipe" to another popup to create the order.
+  const onSubmitConfirmation = () => {
+    setShowConfirmationDialog(false);
+    setShowInputDialog(true);
+  };
+
+  const handlePopupSubmit = (quantity) => {
+
+    console.log(quantity);
+
+    setShowInputDialog(false);
+
+    // TODO: validate quantity
+
+    // create new order
+    CreateNewVendorOrder(tempItem.ItemName, quantity, tempItem.Price);
+  };
+
+  function onChangePipe(addedItem) {
+    console.log("onChangePipe:\n" + addedItem);
+    if (addedItem === undefined) return;
+    tempItem = addedItem;
+    onChange(addedItem);
+  }
 
   function addItemPopupHandle() {
-    DeleteOrder(25, ()=>{return;})
     setIsAddItemClicked(!isAddItemClicked);
+    if(isAddItemClicked)
+      setShowConfirmationDialog(true);  // call the next popup
   }
 
   function generateTableRows() {
@@ -20,7 +53,24 @@ export default function Table({items, onChange}) {
   return (
     <>
       {isAddItemClicked && (
-        <AddItemPopup onClose={addItemPopupHandle} requestUpdate={onChange}></AddItemPopup>
+        <AddItemPopup
+          onClose={addItemPopupHandle}
+          requestUpdate={onChangePipe}
+        ></AddItemPopup>
+      )}
+      {showConfirmationDialog && (
+        <YesNoDialog
+          messageToShow={`Do you want to create a new order?`}    // if we can have the item.... for ${tempItem.ItemName}?`}
+          onClose={() => setShowConfirmationDialog(false)}
+          onSubmit={onSubmitConfirmation}
+        />
+      )}
+      {showInputDialog && (
+        <PopupWithInput
+          messageToShow={`Please enter quantity to order: `}
+          onClose={() => setShowInputDialog(false)}
+          onSubmit={handlePopupSubmit}
+        />
       )}
       <div className="flex-1 p-3 overflow-hidden">
         <div className="flex flex-col items-center ">

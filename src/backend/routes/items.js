@@ -33,7 +33,9 @@ router.route("/add").post((req, res) => {
 
       return newItem.save();
     })
-    .then(() => res.json("Item added!"))
+    .then((savedItem) => { 
+      res.json(savedItem);   // send the saved item object as the response
+    })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
