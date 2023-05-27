@@ -3,7 +3,7 @@ import { BsQuestionCircle } from "react-icons/bs";
 import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
 import { useState } from "react";
 
-export default function AddItemPopup({ onClose, requestUpdate }) {
+export default function AddItemPopup({ onClose, requestUpdate, delegateItem }) {
   var image, name, description, price, currentQuantity, minimumQuantity;
 
   function InsertProcess() {
@@ -13,6 +13,7 @@ export default function AddItemPopup({ onClose, requestUpdate }) {
     price = document.getElementById("price").value;
     currentQuantity = document.getElementById("currentQuantity").value;
     minimumQuantity = document.getElementById("minimumQuantity").value;
+
     if (
       !validateAllInputs(
         image,
@@ -37,7 +38,7 @@ export default function AddItemPopup({ onClose, requestUpdate }) {
       },
       thenFunc
     );
-    console.log(item);
+    delegateItem(item);
     return item;
   }
 

@@ -4,14 +4,13 @@ import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
 import { YesNoDialog, PopupWithInput } from "../../../common/Elements";
 import { CreateNewVendorOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
-import { SingleItem } from "../../../backend/DataFetching/ItemsHandler";
-
+import { set } from "mongoose";
 
 export default function Table({ items, onChange }) {
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [showInputDialog, setShowInputDialog] = useState(false);
-  let tempItem = null;
+  const [tempItem, setTempItem] = useState(null); // [item, setItem
 
   // "pipe" to another popup to create the order.
   const onSubmitConfirmation = () => {
@@ -26,15 +25,15 @@ export default function Table({ items, onChange }) {
     setShowInputDialog(false);
 
     // TODO: validate quantity
-
+    console.log(tempItem)
     // create new order
     CreateNewVendorOrder(tempItem.ItemName, quantity, tempItem.Price);
   };
 
   function onChangePipe(addedItem) {
     console.log("onChangePipe:\n" + addedItem);
-    if (addedItem === undefined) return;
-    tempItem = addedItem;
+    if (addedItem === null) return;
+    setTempItem(addedItem);
     onChange(addedItem);
   }
 
@@ -56,6 +55,7 @@ export default function Table({ items, onChange }) {
         <AddItemPopup
           onClose={addItemPopupHandle}
           requestUpdate={onChangePipe}
+          delegateItem={setTempItem}
         ></AddItemPopup>
       )}
       {showConfirmationDialog && (
