@@ -1,4 +1,6 @@
 import editImg from "../../../assets/icons/edit.png";
+import cancelImg from "../../../assets/icons/cancel.png";
+import saveImg from "../../../assets/icons/save.png";
 import { BsFillImageFill } from "react-icons/bs";
 import { UpdateItem } from "../../../backend/DataFetching/ItemsHandler";
 import { useEffect, useState } from "react";
@@ -127,8 +129,12 @@ export default function TableRow({ index, item }) {
       <td className="flex items-center justify-center py-2 border">
         {isEditing ? (
           <>
-            <button onClick={handleSaveButtonClick}>Save</button>
-            <button onClick={handleCancelButtonClick}>Cancel</button>
+            <button onClick={handleSaveButtonClick}>
+              <img className="w-10 h-10" src={saveImg} alt="save" />
+            </button>
+            <button onClick={handleCancelButtonClick}>
+              <img className="w-10 h-10" src={cancelImg} alt="cancel" />
+            </button>
           </>
         ) : (
           <button onClick={handleEditButtonClick}>
