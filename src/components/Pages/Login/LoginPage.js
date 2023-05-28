@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { SuccessLabel, ErrorLabel } from "../../../common/LittleLabels";
 import LoginForm from "./LoginForm";
-import { Card } from "../../../common/Elements";
 import logo from "../../../assets/images/logo.png";
 
 export default function LoginPage() {

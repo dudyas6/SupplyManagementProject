@@ -1,6 +1,5 @@
 import React from "react";
 import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
-import { useEffect, useRef } from "react";
 
 export default function VendorOrderStatistics({ orders }) {
   const [totOrders, setOrders] = React.useState(0);

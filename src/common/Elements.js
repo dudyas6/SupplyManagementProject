@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 export function Card({ title, children }) {
   return (
@@ -13,7 +13,6 @@ export function Card({ title, children }) {
 
 const colors = ["bg-blue-500", "bg-green-500", "bg-yellow-500", "bg-red-500"];
 const bgColors = ["bg-blue-600", "bg-green-600", "bg-yellow-600", "bg-red-600"];
-let i = 0;
 
 export function Cube({ inx, big, small }) {
   const colorIndex = inx % colors.length;

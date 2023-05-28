@@ -1,7 +1,6 @@
 import React from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
-import { useState } from "react";
 
 export default function AddItemPopup({ onClose, requestUpdate, delegateItem }) {
   var image, name, description, price, currentQuantity, minimumQuantity;
