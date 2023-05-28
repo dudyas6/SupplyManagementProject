@@ -47,13 +47,13 @@ export function GenerateNewOrder() {
     formattedDate,
     randomQuantity,
     enumValues[randomIndex],
-    calcTotPrice,
+    calcTotPrice
   );
 
   const thenFunction = () => {
     console.log(order);
   };
-  
+
   return axios
     .post(`http://localhost:3001/orders/vendor/add/`, order)
     .then((res) => {
@@ -66,8 +66,7 @@ export function GenerateNewOrder() {
     });
 }
 
-export function CreateNewVendorOrder( itemName, quantityToOrder, itemPrice){
-
+export function CreateNewVendorOrder(itemName, quantityToOrder, itemPrice) {
   const currentDate = new Date();
 
   const year = currentDate.getFullYear();
@@ -76,14 +75,14 @@ export function CreateNewVendorOrder( itemName, quantityToOrder, itemPrice){
 
   const formattedDate = `${year}-${month}-${day}`;
 
-// create SingleOrder object with item ID and Name
+  // create SingleOrder object with item ID and Name
   const order = new SingleOrder(
     -1,
     itemName,
     formattedDate,
     quantityToOrder,
     StatusEnum.PENDING,
-    quantityToOrder*itemPrice,
+    quantityToOrder * itemPrice
   );
 
   const thenFunction = () => {
@@ -100,7 +99,6 @@ export function CreateNewVendorOrder( itemName, quantityToOrder, itemPrice){
       console.error(error);
       return null;
     });
-
 }
 
 export function GetAllOrders() {
@@ -131,6 +129,19 @@ export function DeleteOrder(orderId, thenFunc) {
     .delete(`http://localhost:3001/orders/vendor/delete/${orderId}`)
     .then((res) => {
       thenFunc();
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+export function AutoChangeAllVendorOrdersStatus() {
+  return axios
+    .get(`http://localhost:3001/orders/vendor/update-orders/`)
+    .then((res) => {
+      console.log("KKKKKKK")
+
       return res.data;
     })
     .catch((err) => {

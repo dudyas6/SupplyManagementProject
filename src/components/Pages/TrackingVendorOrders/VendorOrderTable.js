@@ -1,6 +1,6 @@
 import React from "react";
 import VendorOrderRow from "./VendorOrderRow";
-import { GenerateNewOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
+import { GenerateNewOrder, AutoChangeAllVendorOrdersStatus } from "../../../backend/DataFetching/VendorOrdersHandler";
 
 export default function VendorOrderTable({ orders, onChange }) {
   //const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
@@ -14,11 +14,15 @@ export default function VendorOrderTable({ orders, onChange }) {
     onChange(order);
   }
 
+  async function UpdateOrdersStatus(){
+    const msg = await AutoChangeAllVendorOrdersStatus();
+    console.log(msg);
+  }
   function generateTableRows(ordersToRender) {
     if (
       ordersToRender == null ||
       ordersToRender === [undefined] ||
-      !Array.isArray(ordersToRender) 
+      !Array.isArray(ordersToRender)
     ) {
       return null;
     }
@@ -69,6 +73,12 @@ export default function VendorOrderTable({ orders, onChange }) {
               className="float-right px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
             >
               + Add Order
+            </button>
+            <button
+              onClick={UpdateOrdersStatus}
+              className="float-right px-4 py-2 font-bold text-white bg-violet-400 rounded-full hover:bg-violet-700"
+            >
+              Auto-update Orders
             </button>
           </div>
           <div className="flex flex-col flex-1 w-full mx-2">
