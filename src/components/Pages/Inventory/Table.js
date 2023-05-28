@@ -4,7 +4,6 @@ import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
 import { YesNoDialog, PopupWithInput } from "../../../common/Elements";
 import { CreateNewVendorOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
-import { set } from "mongoose";
 
 export default function Table({ items, onChange }) {
   const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
@@ -19,13 +18,12 @@ export default function Table({ items, onChange }) {
   };
 
   const handlePopupSubmit = (quantity) => {
-
     console.log(quantity);
 
     setShowInputDialog(false);
 
     // TODO: validate quantity
-    console.log(tempItem)
+    console.log(tempItem);
     // create new order
     CreateNewVendorOrder(tempItem.ItemName, quantity, tempItem.Price);
   };
@@ -39,8 +37,7 @@ export default function Table({ items, onChange }) {
 
   function addItemPopupHandle() {
     setIsAddItemClicked(!isAddItemClicked);
-    if(isAddItemClicked)
-      setShowConfirmationDialog(true);  // call the next popup
+    if (isAddItemClicked) setShowConfirmationDialog(true); // call the next popup
   }
 
   function generateTableRows() {
@@ -60,7 +57,7 @@ export default function Table({ items, onChange }) {
       )}
       {showConfirmationDialog && (
         <YesNoDialog
-          messageToShow={`Do you want to create a new order?`}    // if we can have the item.... for ${tempItem.ItemName}?`}
+          messageToShow={`Do you want to create a new order?`} // if we can have the item.... for ${tempItem.ItemName}?`}
           onClose={() => setShowConfirmationDialog(false)}
           onSubmit={onSubmitConfirmation}
         />

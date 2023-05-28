@@ -45,7 +45,6 @@ export function GetAllItems() {
 }
 
 export function InsertNewItem(item, thenFunction) {
-  /// The function request to insert new item into DB, and gets a function to execute later
   return axios
       .post(`http://localhost:3001/items/add/`, item)
       .then((res) => {
@@ -66,4 +65,15 @@ export function UpdateItem(itemId, item) {
     .catch(error => {
       console.log(error);
     });
+}
+
+export function DeleteItem(itemId) {
+  axios
+  .delete(`http://localhost:3001/items/delete/${itemId}`) 
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
 }

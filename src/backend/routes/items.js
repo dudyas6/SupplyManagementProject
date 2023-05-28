@@ -33,8 +33,8 @@ router.route("/add").post((req, res) => {
 
       return newItem.save();
     })
-    .then((savedItem) => { 
-      res.json(savedItem);   // send the saved item object as the response
+    .then((savedItem) => {
+      res.json(savedItem); // send the saved item object as the response
     })
     .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -44,6 +44,14 @@ router.route("/update/:id").put((req, res) => {
   const updatedItem = req.body;
   items
     .findOneAndUpdate({ ItemId: ItemId }, updatedItem, { new: true })
+    .then((item) => res.json(item))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+router.route("/delete/:id").delete((req, res) => {
+  const ItemId = req.params.id;
+  items
+    .findOneAndDelete({ ItemId: ItemId })
     .then((item) => res.json(item))
     .catch((err) => res.status(400).json("Error: " + err));
 });
