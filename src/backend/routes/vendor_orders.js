@@ -33,7 +33,6 @@ async function FindAndUpdateItem(itemName, quantity, price = null) {
   // Find item by its name and update increment its quantity.
   // if not found - create the new item in warehouse
   try {
-    console.log(quantity);
     const updatedItems = await items.findOneAndUpdate(
       { ItemName: itemName },
       { $inc: { CurrentQuantity: quantity } },
@@ -74,8 +73,8 @@ async function AddItem(itemToAdd) {
 
 async function AddCompletedOrdersToWarehouse() {
   /* The function searchs for orders whice their status is "Completed".
-  *  For each order, add the item to warehouse
-  */
+   *  For each order, add the item to warehouse
+   */
   try {
     const orders = await vendor_order.find({ Status: "Completed" });
     for (const order of orders) {
@@ -124,25 +123,32 @@ function AddOrderToDB(req, res) {
     .catch((err) => res.status(400).json("Error: " + err));
 }
 
+function GetCompletedOrdersNotAdded(req, res) {
+  vendor_order
+  .find({ Status: "Completed", IsAddedToWarehouse: false })
+  .then((orders) => res.json(orders))
+  .catch((err) => res.status(400).json("Error: " + err));
+
+
+}
 /* --------------------------
    --------- ROUTES ---------
    -------------------------- */
 
-router.route("/get").get((req, res) => {
-  GetAllOrders(req, res);
-});
+router.route("/get").get((req, res) => GetAllOrders(req, res));
 
-router.route("/update-orders").get((req, res) => {
-  UpdateOrders(req, res);
-});
+router.route("/add").post((req, res) => AddOrderToDB(req, res));
 
-router.route("/completed-orders-change").get((req, res) => {
-  AddCompletedOrdersToWarehouse(req, res);
-});
+router.route("/update-orders").get((req, res) => UpdateOrders(req, res));
 
-router.route("/add").post((req, res) => {
-  AddOrderToDB(req, res);
-});
+router
+  .route("/completed-orders-change")
+  .get((req, res) => AddCompletedOrdersToWarehouse(req, res));
+
+router
+  .route("/get-completed-orders")
+  .get((req, res) => GetCompletedOrdersNotAdded(req, res));
+
 
 router.route("/delete").delete((req, res) => {
   const { OrderId } = req.body;
