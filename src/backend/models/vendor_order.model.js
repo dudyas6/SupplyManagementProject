@@ -9,6 +9,7 @@ const vendor_orders = new Schema({
   Quantity: Number,
   Status: String,
   TotalPrice: Number,
+  IsAddedToWarehouse: Boolean,
 });
 
 

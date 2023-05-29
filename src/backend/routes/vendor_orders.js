@@ -1,14 +1,14 @@
 const router = require("express").Router();
 const vendor_order = require("../models/vendor_order.model.js");
+const items = require("../models/item.model.js");
 
-router.route("/get").get((req, res) => {
+function GetAllOrders(req, res) {
   vendor_order
     .find()
     .then((order) => res.json(order))
     .catch((err) => res.status(400).json("Error: " + err));
-});
-
-router.route("/update-orders").get((req, res) => {
+}
+function UpdateOrders(req, res) {
   vendor_order
     .find({ Status: { $ne: "Completed" } }) // status not equal to "Completed"
     .then((orders) => {
@@ -27,9 +27,76 @@ router.route("/update-orders").get((req, res) => {
         .catch((err) => res.json("Error updating orders: " + err));
     })
     .catch((err) => res.json("Error fetching orders: " + err));
-});
+}
 
-router.route("/add").post((req, res) => {
+async function FindAndUpdateItem(itemName, quantity, price = null) {
+  // Find item by its name and update increment its quantity.
+  // if not found - create the new item in warehouse
+  try {
+    const updatedItems = await items.findOneAndUpdate(
+      { ItemName: itemName },
+      { $inc: { CurrentQuantity: quantity } },
+      { new: true }
+    );
+
+    if (!updatedItems) {
+      const newItem = new items({
+        ItemId: -1,
+        ItemImage: "none",
+        ItemName: itemName,
+        Description: "new item - please insert description",
+        Price: price == null ? -1 : price,
+        CurrentQuantity: quantity,
+        MinimumQuantity: 0,
+      });
+
+      await AddItem(newItem);
+    }
+  } catch (err) {
+    console.log("Error: " + err);
+  }
+}
+
+async function AddItem(itemToAdd) {
+  // Add item to warehouse
+  try {
+    const lastItem = await items.findOne({}, {}, { sort: { ItemId: -1 } });
+
+    itemToAdd.ItemId = lastItem ? lastItem.ItemId + 1 : 1;
+    const savedItem = await itemToAdd.save();
+    console.log("SAVED: " + savedItem);
+    return savedItem;
+  } catch (err) {
+    return "Error: " + err;
+  }
+}
+
+async function AddCompletedOrdersToWarehouse() {
+  /* The function searchs for orders whice their status is "Completed".
+   *  For each order, add the item to warehouse
+   */
+  try {
+    const orders = await vendor_order.find({ Status: "Completed" });
+    for (const order of orders) {
+      if (!order.IsAddedToWarehouse) {
+        order.IsAddedToWarehouse = true; // change status
+        await order.save();
+
+        await FindAndUpdateItem(
+          order.ItemName,
+          order.Quantity,
+          (order.TotalPrice / order.Quantity).toFixed(2)
+        );
+      }
+    }
+
+    console.log("Completed orders added to warehouse successfully");
+  } catch (err) {
+    console.log("Error updating orders: " + err);
+  }
+}
+
+function AddOrderToDB(req, res) {
   vendor_order
     .findOne({}, { OrderId: 1 }, { sort: { OrderId: -1 } }) // Find the last item by sorting in descending order of OrderId
     .then((lastItem) => {
@@ -39,6 +106,7 @@ router.route("/add").post((req, res) => {
       const Quantity = req.body.Quantity;
       const Status = req.body.Status;
       const TotalPrice = req.body.TotalPrice;
+      const IsAddedToWarehouse = false;
 
       const newItem = new vendor_order({
         OrderId,
@@ -47,22 +115,43 @@ router.route("/add").post((req, res) => {
         Quantity,
         Status,
         TotalPrice,
+        IsAddedToWarehouse,
       });
-
-      return newItem.save();
-    })
-    .then((savedOrder) => {
+      const savedOrder = newItem.save();
       res.json(savedOrder); // send the saved order object as the response
     })
     .catch((err) => res.status(400).json("Error: " + err));
-});
+}
+
+function GetCompletedOrdersNotAdded(req, res) {
+  vendor_order
+  .find({ Status: "Completed", IsAddedToWarehouse: false })
+  .then((orders) => res.json(orders))
+  .catch((err) => res.status(400).json("Error: " + err));
+
+
+}
+/* --------------------------
+   --------- ROUTES ---------
+   -------------------------- */
+
+router.route("/get").get((req, res) => GetAllOrders(req, res));
+
+router.route("/add").post((req, res) => AddOrderToDB(req, res));
+
+router.route("/update-orders").get((req, res) => UpdateOrders(req, res));
+
+router
+  .route("/completed-orders-change")
+  .get((req, res) => AddCompletedOrdersToWarehouse(req, res));
+
+router
+  .route("/get-completed-orders")
+  .get((req, res) => GetCompletedOrdersNotAdded(req, res));
+
 
 router.route("/delete").delete((req, res) => {
-  console.log(req.body);
   const { OrderId } = req.body;
-
-  // Perform the deletion operation using your preferred method (e.g., MongoDB, Mongoose, etc.)
-  // Replace the following code with your actual deletion logic
   vendor_order
     .findOneAndDelete({ OrderId: OrderId })
     .then((deletedOrder) => {
