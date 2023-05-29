@@ -1,25 +1,6 @@
 const router = require("express").Router();
 const items = require("../models/item.model.js");
 
-export function FindAndUpdateItem(itemName, quantity) {
-  // The function search for the item and update its quantity on DB.
-  var isItemFound = false;
-  items
-    .find({ ItemName: itemName })
-    .then((items) => {
-      items.forEach((item) => {
-        // the name should be unique but for now...
-        item.Quantity += quantity;
-        item.save();
-        isItemFound = true;
-      });
-    })
-    .catch((err) => console.log("Error: " + err));
-  if (!isItemFound) {
-    // should create new item since item is not found
-  }
-}
-
 router.route("/get").get((req, res) => {
   items
     .find()

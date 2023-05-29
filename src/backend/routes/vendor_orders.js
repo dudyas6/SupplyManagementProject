@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const vendor_order = require("../models/vendor_order.model.js");
+const items = require("../models/item.model.js");
 
 function GetAllOrders(req, res) {
   vendor_order
@@ -28,32 +29,66 @@ function UpdateOrders(req, res) {
     .catch((err) => res.json("Error fetching orders: " + err));
 }
 
-function AddCompletedOrdersToWarehouse(req, res) {
-  vendor_order
-    .find({ Status: "Completed" }) // status equal to "Completed"
-    .then((orders) => {
-      orders.forEach((order) => {
-        // for each completed order - add the quantity on warehouse
-        if (order.IsAddedToWarehouse === false) {
-          // TODO: add to warehouse
-          FindAndUpdateItem(order.ItemName, order.Quantity)
-          // change status
-          order.IsAddedToWarehouse = true;
-        }
+async function FindAndUpdateItem(itemName, quantity, price = null) {
+  try {
+    console.log(quantity);
+    const updatedItems = await items.findOneAndUpdate(
+      { ItemName: itemName },
+      { $inc: { CurrentQuantity: quantity } },
+      { new: true }
+    );
+
+    if (!updatedItems) {
+      const newItem = new items({
+        ItemId: -1,
+        ItemImage: "none",
+        ItemName: itemName,
+        Description: "new item - please insert description",
+        Price: price == null ? -1 : price,
+        CurrentQuantity: quantity,
+        MinimumQuantity: 0,
       });
 
-      // save the updated orders
-      Promise.all(orders.map((order) => order.save()))
-        .then(() =>
-          res.json("Completed orderes added to warehouse successfully")
-        )
-        .catch((err) => res.json("Error updating orders: " + err));
-    });
+      await AddItem(newItem);
+    }
+  } catch (err) {
+    console.log("Error: " + err);
+  }
 }
 
+async function AddItem(itemToAdd) {
+  try {
+    const lastItem = await items.findOne({}, {}, { sort: { ItemId: -1 } });
 
-function FindAndUpdateItem(ItemName, Quantity){
-  // The function search for the item and update its quantity on DB.
+    itemToAdd.ItemId = lastItem ? lastItem.ItemId + 1 : 1;
+    const savedItem = await itemToAdd.save();
+    console.log("SAVED: " + savedItem);
+    return savedItem;
+  } catch (err) {
+    return "Error: " + err;
+  }
+}
+
+async function AddCompletedOrdersToWarehouse() {
+  try {
+    const orders = await vendor_order.find({ Status: "Completed" });
+    for (const order of orders) {
+      if (!order.IsAddedToWarehouse) {
+        order.IsAddedToWarehouse = true; // change status
+        await order.save();
+
+        await FindAndUpdateItem(
+          order.ItemName,
+          order.Quantity,
+          (order.TotalPrice / order.Quantity).toFixed(2)
+        );
+      }
+    }
+
+    console.log("Completed orders added to warehouse successfully");
+  } catch (err) {
+    console.log("Error updating orders: " + err);
+  }
 }
 
 function AddOrderToDB(req, res) {
@@ -83,7 +118,6 @@ function AddOrderToDB(req, res) {
     .catch((err) => res.status(400).json("Error: " + err));
 }
 
-
 /* --------------------------
    --------- ROUTES ---------
    -------------------------- */
@@ -101,7 +135,8 @@ router.route("/completed-orders-change").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
-  AddOrderToDB(req, res);
+  // AddOrderToDB(req, res);
+  AddCompletedOrdersToWarehouse(req, res);
 });
 
 router.route("/delete").delete((req, res) => {
