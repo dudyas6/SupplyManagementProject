@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { TableCell } from "../../../common/Elements";
 
-export default function TableRow({ index, item }) {
+export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
   const [imageExists, setImageExists] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState({
@@ -56,10 +56,12 @@ export default function TableRow({ index, item }) {
     DeleteItem(itemId);
   };
 
-  const handleAddButtonClick = () => {
-
+  const handlePlusButtonClick = () => {
+    newOrderPopup(true);
+    delegateItem(item);
+    setIsEditing(false);
   };
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedText((prevState) => ({
@@ -104,7 +106,10 @@ export default function TableRow({ index, item }) {
         </div>
       </td>
       <td className="py-2 text-center border">
-        <div className="flex items-center justify-center"  style={{ width: '120px' }}>
+        <div
+          className="flex items-center justify-center"
+          style={{ width: "120px" }}
+        >
           {TableCell(
             "Price",
             editedText.Price,

@@ -42,7 +42,7 @@ export default function Table({ items, onChange }) {
 
   function generateTableRows() {
     return items.map((item, index) => (
-      <TableRow key={item.ItemId} index={index} item={item}></TableRow>
+      <TableRow key={item.ItemId} index={index} item={item} newOrderPopup={setShowConfirmationDialog} delegateItem={setTempItem}></TableRow>
     ));
   }
 
