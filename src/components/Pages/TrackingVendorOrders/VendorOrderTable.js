@@ -48,7 +48,7 @@ export default function VendorOrderTable({ orders, onChange }) {
       return [];
     }
 
-    console.log("Orders before sorting:", orders);
+    // console.log("Orders before sorting:", orders);
 
     return [...orders].sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {

@@ -7,6 +7,7 @@ import VendorOrderTable from "./VendorOrderTable";
 
 export function TrackingPage() {
   const [orders, setOrders] = React.useState([]);
+
   async function fetchData() {
     try {
       const response = await GetAllOrders();
@@ -17,20 +18,17 @@ export function TrackingPage() {
   }
 
   React.useEffect(() => {
-    fetchData();
-    // const intervalId = setInterval(fetchData, 1000*5); // eveery 5 seconds
-
-    // // Clean up the interval when the component unmounts
-    // return () => clearInterval(intervalId);
+    fetchData();   
   }, []);
 
   // I did here something like delegate
   async function handleTableChange(updatedOrders) {
     if (updatedOrders == null || updatedOrders === undefined) {
-      fetchData();
+      await fetchData();
       return;
     }
     setOrders(orders.concat(updatedOrders));
+    console.log(updatedOrders);
   }
 
   return (

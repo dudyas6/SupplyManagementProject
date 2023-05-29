@@ -97,9 +97,9 @@ async function AddCompletedOrdersToWarehouse() {
 }
 
 function AddOrderToDB(req, res) {
-  vendor_order
+  return vendor_order
     .findOne({}, { OrderId: 1 }, { sort: { OrderId: -1 } }) // Find the last item by sorting in descending order of OrderId
-    .then((lastItem) => {
+    .then(async (lastItem) => {
       const OrderId = (lastItem ? lastItem.OrderId : 0) + 1;
       const ItemName = req.body.ItemName;
       const PurchaseDate = req.body.PurchaseDate;
@@ -117,7 +117,7 @@ function AddOrderToDB(req, res) {
         TotalPrice,
         IsAddedToWarehouse,
       });
-      const savedOrder = newItem.save();
+      const savedOrder = await newItem.save();
       res.json(savedOrder); // send the saved order object as the response
     })
     .catch((err) => res.status(400).json("Error: " + err));
