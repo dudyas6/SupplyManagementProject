@@ -85,24 +85,26 @@ export default function Table({ items, onChange }) {
                 Haifa Store Inventory
               </div>
               <div className="p-3">
-                <table className="w-full rounded table-responsive">
-                  <thead className="text-white bg-grey-dark text-norma">
-                    <tr>
-                      <th className="px-4 py-2 border w-1/8 ">Image</th>
-                      <th className="w-1/6 px-4 py-2 border">Name</th>
-                      <th className="w-1/2 px-4 py-2 border">Description</th>
-                      <th className="px-6 py-2 border w-1/8">Price</th>
-                      <th className="px-4 py-2 text-center border w-1/8">
-                        Current Quantity
-                      </th>
-                      <th className="px-4 py-2 text-center border w-1/8">
-                        Minimum Quantity
-                      </th>
-                      <th className="px-4 py-2 border w-1/8">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>{generateTableRows()}</tbody>
-                </table>
+                <div className="table-responsive">
+                  <table className="w-full rounded">
+                    <thead>
+                      <tr className="text-white bg-grey-dark text-normal">
+                        <th className="px-2 border">Image</th>
+                        <th className="px-2 border">Name</th>
+                        <th className="px-4 border">Description</th>
+                        <th className="px-4 text-center border">Price</th>
+                        <th className="px-4 text-center border">
+                          Current Quantity
+                        </th>
+                        <th className="px-4 text-center border">
+                          Minimum Quantity
+                        </th>
+                        <th className="px-4 text-center border">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>{generateTableRows()}</tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

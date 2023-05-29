@@ -2,8 +2,12 @@ import editImg from "../../../assets/icons/edit2.png";
 import deleteImg from "../../../assets/icons/delete.png";
 import cancelImg from "../../../assets/icons/cancel.png";
 import saveImg from "../../../assets/icons/save.png";
+import plusImg from "../../../assets/icons/plus.png";
 import { BsFillImageFill } from "react-icons/bs";
-import { DeleteItem, UpdateItem } from "../../../backend/DataFetching/ItemsHandler";
+import {
+  DeleteItem,
+  UpdateItem,
+} from "../../../backend/DataFetching/ItemsHandler";
 import { useEffect, useState } from "react";
 import { TableCell } from "../../../common/Elements";
 
@@ -52,6 +56,10 @@ export default function TableRow({ index, item }) {
     DeleteItem(itemId);
   };
 
+  const handleAddButtonClick = () => {
+
+  };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedText((prevState) => ({
@@ -62,83 +70,89 @@ export default function TableRow({ index, item }) {
 
   return (
     <tr className={rowColor}>
-      <td className="flex items-center justify-center py-2 border">
-        {imageExists ? (
-          <img src={item.ItemImage} alt="product" className="w-10 h-10" />
-        ) : (
-          <BsFillImageFill size={20} className="w-10 h-10" />
-        )}
-      </td>
       <td className="py-2 border">
-        {TableCell(
-          "ItemName",
-          editedText.ItemName,
-          handleInputChange,
-          item.ItemName,
-          "large",
-          isEditing
-        )}
+        <div className="flex items-center justify-center">
+          {imageExists ? (
+            <img src={item.ItemImage} alt="product" className="w-10 h-10" />
+          ) : (
+            <BsFillImageFill size={20} className="w-10 h-10" />
+          )}
+        </div>
+      </td>
+      <td className={`py-2 border w-1/6`}>
+        <div className="w-auto">
+          {TableCell(
+            "ItemName",
+            editedText.ItemName,
+            handleInputChange,
+            item.ItemName,
+            "large",
+            isEditing
+          )}
+        </div>
       </td>
       <td className="w-1/2 py-2 border">
-        {TableCell(
-          "Description",
-          editedText.Description,
-          handleInputChange,
-          item.Description,
-          "large",
-          isEditing
-        )}
+        <div className="">
+          {TableCell(
+            "Description",
+            editedText.Description,
+            handleInputChange,
+            item.Description,
+            "large",
+            isEditing
+          )}
+        </div>
       </td>
       <td className="py-2 text-center border">
-        {TableCell(
-          "Price",
-          editedText.Price,
-          handleInputChange,
-          item.Price,
-          "small",
-          isEditing
-        )}
+        <div className="flex items-center justify-center"  style={{ width: '120px' }}>
+          {TableCell(
+            "Price",
+            editedText.Price,
+            handleInputChange,
+            item.Price,
+            "small",
+            isEditing
+          )}
+        </div>
+      </td>
+      <td className="py-2 text-center border">{item.CurrentQuantity}</td>
+      <td className="py-2 text-center border">
+        <div className="flex items-center justify-center">
+          {TableCell(
+            "MinimumQuantity",
+            editedText.MinimumQuantity,
+            handleInputChange,
+            item.MinimumQuantity,
+            "small",
+            isEditing
+          )}
+        </div>
       </td>
       <td className="py-2 text-center border">
-        {TableCell(
-          "CurrentQuantity",
-          editedText.CurrentQuantity,
-          handleInputChange,
-          item.CurrentQuantity,
-          "small",
-          isEditing
-        )}
-      </td>
-      <td className="py-2 text-center border">
-        {TableCell(
-          "MinimumQuantity",
-          editedText.MinimumQuantity,
-          handleInputChange,
-          item.MinimumQuantity,
-          "small",
-          isEditing
-        )}
-      </td>
-      <td className="flex items-center justify-center py-2 border">
-        {isEditing ? (
-          <>
-            <button onClick={handleSaveButtonClick}>
-              <img className="w-10 h-10" src={saveImg} alt="save" />
-            </button>
-            <button onClick={handleCancelButtonClick}>
-              <img className="w-10 h-10" src={cancelImg} alt="cancel" />
-            </button>
-          </>
-        ) : (
-          <>
-            <button onClick={handleEditButtonClick}>
-              <img className="w-10 h-10" src={editImg} alt="edit" />
-            </button>
-            <button onClick={handleDeleteButtonClick}>
-              <img className="w-10 h-10" src={deleteImg} alt="delete" />
-            </button>
-          </>
-        )}
+        <div className="flex items-center justify-center">
+          {isEditing ? (
+            <div className="flex">
+              <button className="mr-2" onClick={handlePlusButtonClick}>
+                <img className="w-6 h-6" src={plusImg} alt="plus" />
+              </button>
+              <button className="mr-2" onClick={handleSaveButtonClick}>
+                <img className="w-6 h-6" src={saveImg} alt="save" />
+              </button>
+              <button onClick={handleCancelButtonClick}>
+                <img className="w-6 h-6" src={cancelImg} alt="cancel" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex">
+              <button className="mr-2" onClick={handleEditButtonClick}>
+                <img className="w-6 h-6" src={editImg} alt="edit" />
+              </button>
+              <button onClick={handleDeleteButtonClick}>
+                <img className="w-6 h-6" src={deleteImg} alt="delete" />
+              </button>
+            </div>
+          )}
+        </div>
       </td>
     </tr>
   );
