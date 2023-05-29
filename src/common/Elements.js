@@ -139,18 +139,8 @@ export class PopupWithInput extends React.Component {
   }
 }
 
-export function TableCell(
-  nameText,
-  valueText,
-  onChangeFunction,
-  itemProperty,
-  sizeProperty,
-  isEditing
-) {
-  const size =
-    sizeProperty === "small"
-      ? "w-full text-center bg-gray-600 text-white"
-      : "w-full bg-gray-600 text-white";
+export function TableCell(nameText,valueText,onChangeFunction,itemProperty,sizeProperty,isEditing) {
+  const size = sizeProperty === "small" ? "w-full text-center bg-gray-600 text-white" : "w-full bg-gray-600 text-white";
   return (
     <>
       {isEditing ? (
