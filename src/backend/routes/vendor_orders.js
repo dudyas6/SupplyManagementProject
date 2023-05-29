@@ -30,6 +30,8 @@ function UpdateOrders(req, res) {
 }
 
 async function FindAndUpdateItem(itemName, quantity, price = null) {
+  // Find item by its name and update increment its quantity.
+  // if not found - create the new item in warehouse
   try {
     console.log(quantity);
     const updatedItems = await items.findOneAndUpdate(
@@ -57,6 +59,7 @@ async function FindAndUpdateItem(itemName, quantity, price = null) {
 }
 
 async function AddItem(itemToAdd) {
+  // Add item to warehouse
   try {
     const lastItem = await items.findOne({}, {}, { sort: { ItemId: -1 } });
 
@@ -70,6 +73,9 @@ async function AddItem(itemToAdd) {
 }
 
 async function AddCompletedOrdersToWarehouse() {
+  /* The function searchs for orders whice their status is "Completed".
+  *  For each order, add the item to warehouse
+  */
   try {
     const orders = await vendor_order.find({ Status: "Completed" });
     for (const order of orders) {
@@ -135,8 +141,7 @@ router.route("/completed-orders-change").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
-  // AddOrderToDB(req, res);
-  AddCompletedOrdersToWarehouse(req, res);
+  AddOrderToDB(req, res);
 });
 
 router.route("/delete").delete((req, res) => {
