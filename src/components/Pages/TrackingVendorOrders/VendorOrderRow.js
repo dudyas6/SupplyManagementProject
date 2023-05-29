@@ -11,7 +11,6 @@ export default function VendorOrderRow({ order }) {
       ? "bg-green-100"
       : "bg-orange-100";
   const handleDeleteButtonClick = () => {
-    console.log(order.OrderId)
     DeleteOrder(order.OrderId);
   };
   return (
