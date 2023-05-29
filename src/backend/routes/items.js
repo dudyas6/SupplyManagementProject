@@ -1,6 +1,25 @@
 const router = require("express").Router();
 const items = require("../models/item.model.js");
 
+export function FindAndUpdateItem(itemName, quantity) {
+  // The function search for the item and update its quantity on DB.
+  var isItemFound = false;
+  items
+    .find({ ItemName: itemName })
+    .then((items) => {
+      items.forEach((item) => {
+        // the name should be unique but for now...
+        item.Quantity += quantity;
+        item.save();
+        isItemFound = true;
+      });
+    })
+    .catch((err) => console.log("Error: " + err));
+  if (!isItemFound) {
+    // should create new item since item is not found
+  }
+}
+
 router.route("/get").get((req, res) => {
   items
     .find()
@@ -8,35 +27,41 @@ router.route("/get").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/add").post((req, res) => {
-  items
+function AddItem(itemToAdd) {
+  return items
     .findOne({}, {}, { sort: { ItemId: -1 } }) // Find the last item by sorting in descending order of ItemId
     .then((lastItem) => {
-      const lastItemId = lastItem ? lastItem.ItemId : 0;
-      const ItemImage = req.body.ItemImage;
-      const ItemName = req.body.ItemName;
-      const Description = req.body.Description;
-      const Price = req.body.Price;
-      const CurrentQuantity = req.body.CurrentQuantity;
-      const MinimumQuantity = req.body.MinimumQuantity;
-      const newItemId = lastItemId + 1;
-
-      const newItem = new items({
-        ItemId: newItemId,
-        ItemImage,
-        ItemName,
-        Description,
-        Price,
-        CurrentQuantity,
-        MinimumQuantity,
-      });
-
-      return newItem.save();
+      itemToAdd.ItemId = lastItem.ItemId + 1;
+      const savedItem = itemToAdd.save();
+      return savedItem;
     })
-    .then((savedItem) => {
-      res.json(savedItem); // send the saved item object as the response
-    })
-    .catch((err) => res.status(400).json("Error: " + err));
+
+    .catch((err) => {
+      return "Error: " + err;
+    });
+}
+
+router.route("/add").post((req, res) => {
+  const ItemImage = req.body.ItemImage;
+  const ItemName = req.body.ItemName;
+  const Description = req.body.Description;
+  const Price = req.body.Price;
+  const CurrentQuantity = req.body.CurrentQuantity;
+  const MinimumQuantity = req.body.MinimumQuantity;
+
+  const newItem = new items({
+    ItemId: -1,
+    ItemImage,
+    ItemName,
+    Description,
+    Price,
+    CurrentQuantity,
+    MinimumQuantity,
+  });
+
+  const result = AddItem(newItem);
+  res.json(result);
+
 });
 
 router.route("/update/:id").put((req, res) => {
