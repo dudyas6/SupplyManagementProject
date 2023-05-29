@@ -29,6 +29,29 @@ router.route("/update-orders").get((req, res) => {
     .catch((err) => res.json("Error fetching orders: " + err));
 });
 
+router.route("/completed-orders-change").get((req, res) => {
+  vendor_order
+    .find({ Status: "Completed" }) // status equal to "Completed"
+    .then((orders) => {
+      orders.forEach((order) => {
+        // for each completed order - add the quantity on warehouse
+        if (order.IsAddedToWarehouse === false) {
+          // TODO: add to warehouse
+          
+          // change status
+          order.IsAddedToWarehouse = true;
+        }
+      });
+
+      // save the updated orders
+      Promise.all(orders.map((order) => order.save()))
+        .then(() =>
+          res.json("Completed orderes added to warehouse successfully")
+        )
+        .catch((err) => res.json("Error updating orders: " + err));
+    });
+});
+
 router.route("/add").post((req, res) => {
   vendor_order
     .findOne({}, { OrderId: 1 }, { sort: { OrderId: -1 } }) // Find the last item by sorting in descending order of OrderId
@@ -39,6 +62,7 @@ router.route("/add").post((req, res) => {
       const Quantity = req.body.Quantity;
       const Status = req.body.Status;
       const TotalPrice = req.body.TotalPrice;
+      const IsAddedToWarehouse = false;
 
       const newItem = new vendor_order({
         OrderId,
@@ -47,8 +71,9 @@ router.route("/add").post((req, res) => {
         Quantity,
         Status,
         TotalPrice,
+        IsAddedToWarehouse,
       });
-
+      console.log(newItem);
       return newItem.save();
     })
     .then((savedOrder) => {

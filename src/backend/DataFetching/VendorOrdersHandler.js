@@ -1,12 +1,13 @@
 import axios from "axios";
 class SingleOrder {
-  constructor(OrderId, ItemName, PurchaseDate, Quantity, Status, TotalPrice) {
+  constructor(OrderId, ItemName, PurchaseDate, Quantity, Status, TotalPrice, IsAddedToWarehouse) {
     this.OrderId = OrderId;
     this.ItemName = ItemName;
     this.PurchaseDate = PurchaseDate;
     this.Quantity = Quantity;
     this.Status = Status;
     this.TotalPrice = TotalPrice;
+    this.IsAddedToWarehouse = IsAddedToWarehouse;
   }
 }
 export const StatusEnum = {
@@ -82,7 +83,8 @@ export function CreateNewVendorOrder(itemName, quantityToOrder, itemPrice) {
     formattedDate,
     quantityToOrder,
     StatusEnum.PENDING,
-    quantityToOrder * itemPrice
+    quantityToOrder * itemPrice,
+    false
   );
 
   const thenFunction = () => {
@@ -112,7 +114,8 @@ export function GetAllOrders() {
           order.PurchaseDate,
           order.Quantity,
           order.Status,
-          order.TotalPrice
+          order.TotalPrice,
+          order.IsAddedToWarehouse
         );
         return item;
       });
