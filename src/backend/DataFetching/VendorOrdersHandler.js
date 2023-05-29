@@ -1,6 +1,14 @@
 import axios from "axios";
 class SingleOrder {
-  constructor(OrderId, ItemName, PurchaseDate, Quantity, Status, TotalPrice, IsAddedToWarehouse) {
+  constructor(
+    OrderId,
+    ItemName,
+    PurchaseDate,
+    Quantity,
+    Status,
+    TotalPrice,
+    IsAddedToWarehouse
+  ) {
     this.OrderId = OrderId;
     this.ItemName = ItemName;
     this.PurchaseDate = PurchaseDate;
@@ -143,8 +151,30 @@ export function AutoChangeAllVendorOrdersStatus() {
   return axios
     .get(`http://localhost:3001/orders/vendor/update-orders/`)
     .then((res) => {
-      console.log("KKKKKKK")
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
+export function GetCompletedAndNotAddedOrders() {
+  // Get all completed orders which not added to warehouse yet. 
+  return axios
+    .get(`http://localhost:3001/orders/vendor/get-completed-orders/`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+export function AddCompletedOrdersToWarehouse(){
+  // Activate the addition to warehouse for all orders which status == completed 
+  return axios
+    .get(`http://localhost:3001/orders/vendor/completed-orders-change/`)
+    .then((res) => {
       return res.data;
     })
     .catch((err) => {

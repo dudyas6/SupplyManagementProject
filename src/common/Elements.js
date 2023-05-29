@@ -29,6 +29,26 @@ export function Cube({ inx, big, small }) {
     </div>
   );
 }
+
+export function WideCubeWithClick({ inx, big, small, additionText, onClick }) {
+  const colorIndex = inx % colors.length;
+  const bgColorIndex = inx % bgColors.length;
+  const splittedColor = bgColors[bgColorIndex].split("-");
+  const borderColorName = splittedColor[1] + "-" + splittedColor[2];
+  return (
+    <div
+      onClick={onClick} 
+      className={`border-l-8 border-${borderColorName} md:w-1/4 m-4 ${colors[colorIndex]} rounded-md shadow-md hover:${bgColors[bgColorIndex]} cursor-pointer`}
+    >
+      <div className="flex flex-col items-center justify-center h-full">
+        <span className="text-3xl font-bold text-white">{big}</span>
+        <span className="text-base text-gray-200">{small}</span>
+        <span className="text-base text-gray-200">{additionText}</span>
+      </div>
+    </div>
+  );
+}
+
 export function YesNoDialog({ messageToShow, onClose, onSubmit }) {
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center">
@@ -60,8 +80,6 @@ export function YesNoDialog({ messageToShow, onClose, onSubmit }) {
     </div>
   );
 }
-
-
 
 export class PopupWithInput extends React.Component {
   constructor(props) {
@@ -121,8 +139,18 @@ export class PopupWithInput extends React.Component {
   }
 }
 
-export function TableCell(nameText,valueText,onChangeFunction,itemProperty,sizeProperty, isEditing) {
-  const size = sizeProperty === "small" ? "w-full text-center bg-gray-600 text-white" : "w-full bg-gray-600 text-white";
+export function TableCell(
+  nameText,
+  valueText,
+  onChangeFunction,
+  itemProperty,
+  sizeProperty,
+  isEditing
+) {
+  const size =
+    sizeProperty === "small"
+      ? "w-full text-center bg-gray-600 text-white"
+      : "w-full bg-gray-600 text-white";
   return (
     <>
       {isEditing ? (

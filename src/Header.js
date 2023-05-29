@@ -10,7 +10,7 @@ function Header({currentUser, OnClick}) {
               <img className="inline-block w-8 h-8" src={logo} alt="Logo" /> 
           </div>
           <div className="flex flex-row items-center p-1">
-              <a href="https://github.com/tailwindadmin/admin" className="hidden p-2 mr-2 text-white no-underline md:block lg:block">Project Github</a>
+              <a href="https://github.com/dudyas6/supplymanagementproject" className="hidden p-2 mr-2 text-white no-underline md:block lg:block">Github Project</a>
               <img className="inline-block w-8 h-8 rounded-full" src="" alt="" /> 
               <a href="/" className="hidden p-2 text-white no-underline md:block lg:block">{currentUser.username}</a> 
               <div id="ProfileDropDown" className="absolute hidden mt-12 mr-1 bg-white rounded shadow-md pin-t pin-r">
