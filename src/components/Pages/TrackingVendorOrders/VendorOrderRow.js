@@ -1,6 +1,8 @@
 import React from "react";
 import editImg from "../../../assets/icons/edit.png";
+import deleteImg from "../../../assets/icons/delete.png";
 
+import { DeleteOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
 export default function VendorOrderRow({ order }) {
   const rowColor =
     order.Status === "Pending"
@@ -8,7 +10,10 @@ export default function VendorOrderRow({ order }) {
       : order.Status === "Completed"
       ? "bg-green-100"
       : "bg-orange-100";
-
+  const handleDeleteButtonClick = () => {
+    console.log(order.OrderId)
+    DeleteOrder(order.OrderId);
+  };
   return (
     <tr className={rowColor}>
       <td className="w-1/12 py-2 border">{order.OrderId}</td>
@@ -20,6 +25,9 @@ export default function VendorOrderRow({ order }) {
       <td className="flex items-center justify-center py-2 border">
         <button>
           <img className="w-10 h-10" src={editImg} alt="edit" />
+        </button>
+        <button onClick={handleDeleteButtonClick}>
+          <img className="w-10 h-10" src={deleteImg} alt="delete" />
         </button>
       </td>
     </tr>

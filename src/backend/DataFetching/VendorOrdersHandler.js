@@ -135,12 +135,11 @@ export function GetAllOrders() {
 }
 
 // The function delete an order by ID
-export function DeleteOrder(orderId, thenFunc) {
+export function DeleteOrder(orderId) {
   return axios
     .delete(`http://localhost:3001/orders/vendor/delete/${orderId}`)
     .then((res) => {
-      thenFunc();
-      return res.data;
+      console.log(res.data);
     })
     .catch((err) => {
       console.log(err);

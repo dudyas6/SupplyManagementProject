@@ -150,20 +150,11 @@ router
   .get((req, res) => GetCompletedOrdersNotAdded(req, res));
 
 
-router.route("/delete").delete((req, res) => {
-  const { OrderId } = req.body;
+router.route("/delete/:id").delete((req, res) => {
+  const OrderId = req.params.id;
   vendor_order
     .findOneAndDelete({ OrderId: OrderId })
-    .then((deletedOrder) => {
-      if (!deletedOrder) {
-        return res.status(404).json({ error: "Order not found" });
-      }
-      res.json({ message: "Order deleted successfully" });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: "Internal server error" });
-    });
+    .then((order) => res.json(order))
+    .catch((err) => res.status(400).json("Error: " + err));
 });
-
 module.exports = router;
