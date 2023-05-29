@@ -1,6 +1,9 @@
 import React from "react";
 import VendorOrderRow from "./VendorOrderRow";
-import { GenerateNewOrder, AutoChangeAllVendorOrdersStatus } from "../../../backend/DataFetching/VendorOrdersHandler";
+import {
+  GenerateNewOrder,
+  AutoChangeAllVendorOrdersStatus,
+} from "../../../backend/DataFetching/VendorOrdersHandler";
 
 export default function VendorOrderTable({ orders, onChange }) {
   //const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
@@ -14,20 +17,20 @@ export default function VendorOrderTable({ orders, onChange }) {
     onChange(order);
   }
 
-  async function UpdateOrdersStatus(){
-    const msg = await AutoChangeAllVendorOrdersStatus();
-    console.log(msg);
+  async function UpdateOrdersStatus() {
+    await AutoChangeAllVendorOrdersStatus();
+    onChange(null);
   }
   function generateTableRows(ordersToRender) {
     if (
       ordersToRender == null ||
       ordersToRender === [undefined] ||
       !Array.isArray(ordersToRender)
-    ) {
+    )
       return null;
-    }
-    return ordersToRender.map((order, index) => (
-      <VendorOrderRow key={order.OrderId} order={order} />
+
+    return ordersToRender.map((order) => (
+      <VendorOrderRow key={order._id} order={order} onChange={onChange} />
     ));
   }
 

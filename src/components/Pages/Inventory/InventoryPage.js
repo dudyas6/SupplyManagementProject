@@ -14,7 +14,7 @@ export function InventoryPage() {
         const response = await GetAllItems();
         setItems(response);
       } catch (error) {
-        // Handle error, e.g., show an error message or log it
+        console.log(error);
       }
     }
 
@@ -22,10 +22,7 @@ export function InventoryPage() {
   }, [items]);
 
   function handleTableChange(updatedOrders) {
-    console.log(updatedOrders)
     if (updatedOrders == null || updatedOrders === undefined) return;
-    console.log("updatedOrders")
-
     setItems(items.concat(updatedOrders));
   }
 
