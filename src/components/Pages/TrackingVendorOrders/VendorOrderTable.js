@@ -1,5 +1,6 @@
 import React from "react";
 import VendorOrderRow from "./VendorOrderRow";
+import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import {
   GenerateNewOrder,
   AutoChangeAllVendorOrdersStatus,
@@ -28,6 +29,13 @@ export default function VendorOrderTable({ orders, onChange }) {
   async function UpdateOrdersStatus() {
     await AutoChangeAllVendorOrdersStatus();
     onChange(null);
+  }
+
+  function GenerateStatusOptions() {
+    return StatusEnum.map((status) => {
+      console.log(status);
+      return <option value={status}>{status}</option>;
+    });
   }
 
   function generateTableRows(ordersToRender) {
@@ -143,7 +151,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                 <table className="w-full rounded table-responsive">
                   <thead>
                     <tr>
-                      <th className="w-1/12 px-2 py-2 border cursor-pointer">
+                      <th className="w-1/12 px-2 py-2 border cursor-pointer" onClick={() => sortTable("OrderId")}>
                         Order ID
                         {sortConfig.key === "OrderId" &&
                         sortConfig.direction === "asc" ? (
@@ -152,7 +160,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                           <span>▼</span>
                         )}
                       </th>
-                      <th className="w-1/6 px-4 py-2 border cursor-pointer">
+                      <th className="w-1/6 px-4 py-2 border cursor-pointer" onClick={() => sortTable("ItemName")}>
                         Item Name
                         {sortConfig.key === "ItemName" &&
                         sortConfig.direction === "asc" ? (
@@ -161,7 +169,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                           <span>▼</span>
                         )}
                       </th>
-                      <th className="w-1/5 px-4 py-2 border cursor-pointer">
+                      <th className="w-1/5 px-4 py-2 border cursor-pointer" onClick={() => sortTable("PurchaseDate")}>
                         Purchase date
                         {sortConfig.key === "PurchaseDate" &&
                         sortConfig.direction === "asc" ? (
@@ -169,9 +177,9 @@ export default function VendorOrderTable({ orders, onChange }) {
                         ) : (
                           <span>▼</span>
                         )}
-                        
                       </th>
-                      <th className="w-1/6 px-6 py-2 border cursor-pointer">
+                      <th className="w-1/6 px-6 py-2 border cursor-pointer" onClick={() => sortTable("Quantity")}
+                      >
                         Quantity
                         {sortConfig.key === "Quantity" &&
                         sortConfig.direction === "asc" ? (
@@ -189,16 +197,31 @@ export default function VendorOrderTable({ orders, onChange }) {
                           Filter
                         </button>
                       </th>
-                      <th className="w-1/4 px-6 py-2 border cursor-pointer">
+                      <th className="w-1/4 px-6 py-2 border cursor-pointer" onClick={() => sortTable("Status")}
+                      >
                         Status
+                        
                         {sortConfig.key === "Status" &&
                         sortConfig.direction === "asc" ? (
                           <span>▲</span>
                         ) : (
                           <span>▼</span>
                         )}
+                        <div>
+                          <select
+                            className="form-control"
+                            aria-label="Floating label select example"
+                           
+                          >
+                            <option value="choose" disabled selected="selected">
+                              -- Select status --
+                            </option>
+                            {GenerateStatusOptions}
+                          </select>
+                        </div>
                       </th>
-                      <th className="w-1/4 px-6 py-2 border cursor-pointer">
+                      <th className="w-1/4 px-6 py-2 border cursor-pointer" onClick={() => sortTable("TotalPrice")}
+                      >
                         Total Price
                         {sortConfig.key === "TotalPrice" &&
                         sortConfig.direction === "asc" ? (
