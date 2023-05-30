@@ -32,10 +32,11 @@ export default function VendorOrderTable({ orders, onChange }) {
   }
 
   function GenerateStatusOptions() {
-    return StatusEnum.map((status) => {
+    return Object.keys(StatusEnum).map((status) => {
       console.log(status);
       return <option value={status}>{status}</option>;
     });
+
   }
 
   function generateTableRows(ordersToRender) {
@@ -210,13 +211,11 @@ export default function VendorOrderTable({ orders, onChange }) {
                         <div>
                           <select
                             className="form-control"
-                            aria-label="Floating label select example"
-                           
-                          >
+                            aria-label="Floating label select example">
                             <option value="choose" disabled selected="selected">
                               -- Select status --
                             </option>
-                            {GenerateStatusOptions}
+                            {GenerateStatusOptions()}
                           </select>
                         </div>
                       </th>
