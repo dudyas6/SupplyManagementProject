@@ -6,15 +6,22 @@ import {
 } from "../../../backend/DataFetching/VendorOrdersHandler";
 
 export default function VendorOrderTable({ orders, onChange }) {
-  //const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
+  const [isCreatingOrder, setIsCreatingOrder] = React.useState(false); // prevent override order
+
   const [sortConfig, setSortConfig] = React.useState({
     key: "",
     direction: "",
   });
 
   async function CreateNewOrder() {
+    // the function create a new order
+    // if a current order is in process - return (prevent override the row)
+
+    if (isCreatingOrder) return;
+    setIsCreatingOrder(true);
     const order = await GenerateNewOrder();
     onChange(order);
+    setIsCreatingOrder(false);
   }
 
   async function UpdateOrdersStatus() {
@@ -30,7 +37,7 @@ export default function VendorOrderTable({ orders, onChange }) {
       return null;
 
     return ordersToRender.map((order) => (
-      <VendorOrderRow key={order._id} order={order} onChange={onChange} />
+      <VendorOrderRow key={order.OrderId} order={order} onChange={onChange} />
     ));
   }
 

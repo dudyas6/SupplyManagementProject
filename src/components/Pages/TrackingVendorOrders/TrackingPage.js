@@ -18,17 +18,13 @@ export function TrackingPage() {
   }
 
   React.useEffect(() => {
-    fetchData();   
+    fetchData();
   }, []);
 
   // I did here something like delegate
   async function handleTableChange(updatedOrders) {
-    if (updatedOrders == null || updatedOrders === undefined) {
-      await fetchData();
-      return;
-    }
-    setOrders(orders.concat(updatedOrders));
-    console.log(updatedOrders);
+    if (updatedOrders == null || updatedOrders === undefined) await fetchData();
+    else setOrders(orders.concat(updatedOrders));
   }
 
   return (
