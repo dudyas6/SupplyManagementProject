@@ -100,7 +100,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                   <thead>
                     <tr>
                       <th
-                        className="w-1/12 px-2 py-2 border "
+                        className="w-1/12 px-2 py-2 border  cursor-pointer"
                         onClick={() => sortTable("OrderId")}
                       >
                         Order ID{" "}
@@ -110,7 +110,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                           : "▼"}
                       </th>
                       <th
-                        className="w-1/6 px-4 py-2 border"
+                        className="w-1/6 px-4 py-2 border  cursor-pointer"
                         onClick={() => sortTable("ItemName")}
                       >
                         Item Name{" "}
@@ -120,7 +120,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                           : "▼"}
                       </th>
                       <th
-                        className="w-1/5 px-4 py-2 border"
+                        className="w-1/5 px-4 py-2 border  cursor-pointer"
                         onClick={() => sortTable("PurchaseDate")}
                       >
                         Purchase date{" "}
@@ -130,7 +130,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                           : "▼"}
                       </th>
                       <th
-                        className="w-1/6 px-6 py-2 border"
+                        className="w-1/6 px-6 py-2 border  cursor-pointer"
                         onClick={() => sortTable("Quantity")}
                       >
                         Quantity{" "}
@@ -139,18 +139,18 @@ export default function VendorOrderTable({ orders, onChange }) {
                           ? "▲"
                           : "▼"}
                       </th>
-                      <th
-                        className="w-1/4 px-6 py-2 border"
+                      <th 
+                        className="w-1/4 px-6 py-2 border cursor-pointer"
                         onClick={() => sortTable("Status")}
                       >
                         Status{" "}
                         {sortConfig.key === "Status" &&
-                        sortConfig.direction === "asc"
+                        sortConfig.direction === "asc" 
                           ? "▲"
                           : "▼"}
                       </th>
                       <th
-                        className="w-1/4 px-6 py-2 border"
+                        className="w-1/4 px-6 py-2 border  cursor-pointer"
                         onClick={() => sortTable("TotalPrice")}
                       >
                         Total Price{" "}
@@ -159,7 +159,7 @@ export default function VendorOrderTable({ orders, onChange }) {
                           ? "▲"
                           : "▼"}
                       </th>{" "}
-                      <th className="w-1/4 px-6 py-2 border">Actions</th>{" "}
+                      <th className="w-1/4 px-6 py-2 border ">Actions</th>{" "}
                       {/* Pending, shipping, recieve ? */}
                     </tr>
                   </thead>
