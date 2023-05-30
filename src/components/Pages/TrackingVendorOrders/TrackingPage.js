@@ -24,9 +24,11 @@ export function TrackingPage() {
   // I did here something like delegate
   async function handleTableChange(updatedOrders) {
     if (updatedOrders == null || updatedOrders === undefined) await fetchData();
-    else setOrders(orders.concat(updatedOrders));
+    else 
+      if (updatedOrders.length > 1) setOrders(updatedOrders);
+      else setOrders(orders.concat(updatedOrders));
   }
-
+  
   return (
     <>
       {/* STATISTICS */}

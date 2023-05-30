@@ -20,13 +20,13 @@ export default function VendorOrderTable({ orders, onChange }) {
     if (isCreatingOrder) return;
     setIsCreatingOrder(true);
     const order = await GenerateNewOrder();
-    onChange(order);
+    onChange(order);  // will add just this order
     setIsCreatingOrder(false);
   }
 
   async function UpdateOrdersStatus() {
     await AutoChangeAllVendorOrdersStatus();
-    onChange(null);
+    onChange(null);  // will refresh all orders
   }
   function generateTableRows(ordersToRender) {
     if (
@@ -49,29 +49,28 @@ export default function VendorOrderTable({ orders, onChange }) {
     setSortConfig({ key, direction });
   };
 
-  const sortedOrders = React.useMemo(() => {
-    if (!orders || !Array.isArray(orders)) {
-      console.log("Orders is not an array:", orders);
-      return [];
-    }
-
-    // console.log("Orders before sorting:", orders);
-
-    return [...orders].sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === "asc" ? -1 : 1;
-      }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === "asc" ? 1 : -1;
-      }
-      return 0;
-    });
-  }, [orders, sortConfig]);
-
   React.useEffect(() => {
-    console.log(sortedOrders);
-    generateTableRows(sortedOrders);
-  }, [sortedOrders]);
+    
+      if (!orders || !Array.isArray(orders)) {
+        console.log("Orders is not an array:", orders);
+        return [];
+      }
+
+      // the sort act
+      const newOrders = [...orders].sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? 1 : -1;
+        }
+        return 0;
+      });
+  
+      onChange(newOrders)  // will refresh all orders according to this
+      // generateTableRows(newOrders);
+
+  }, [sortConfig]);
 
   return (
     <>
