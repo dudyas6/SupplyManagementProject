@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
@@ -6,7 +6,8 @@ import { YesNoDialog, PopupWithInput } from "../../../common/Elements";
 import { CreateNewVendorOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
 
 export default function Table({ items, onChange }) {
-  const [isAddItemClicked, setIsAddItemClicked] = React.useState(false);
+  const [isAddItemClicked, setIsAddItemClicked] = useState(false);
+  const [isAddItemConfirmed, setIsAddItemConfirmed] = useState(false); 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [showInputDialog, setShowInputDialog] = useState(false);
   const [tempItem, setTempItem] = useState(null); // [item, setItem
@@ -37,9 +38,15 @@ export default function Table({ items, onChange }) {
 
   function addItemPopupHandle() {
     setIsAddItemClicked(!isAddItemClicked);
-    if (isAddItemClicked) setShowConfirmationDialog(true); // call the next popup
   }
 
+  useEffect(() => {
+    if (isAddItemConfirmed) {
+      setShowConfirmationDialog(true);
+      setIsAddItemConfirmed(false);
+    }
+  }, [isAddItemConfirmed]);
+  
   function generateTableRows() {
     return items.map((item, index) => (
       <TableRow key={item.ItemId} index={index} item={item} newOrderPopup={setShowConfirmationDialog} delegateItem={setTempItem}></TableRow>
@@ -51,6 +58,7 @@ export default function Table({ items, onChange }) {
       {isAddItemClicked && (
         <AddItemPopup
           onClose={addItemPopupHandle}
+          onAccept={setIsAddItemConfirmed}
           requestUpdate={onChangePipe}
           delegateItem={setTempItem}
         ></AddItemPopup>

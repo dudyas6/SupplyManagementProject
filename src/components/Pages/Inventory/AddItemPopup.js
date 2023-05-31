@@ -2,7 +2,12 @@ import React from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
 
-export default function AddItemPopup({ onClose, requestUpdate, delegateItem }) {
+export default function AddItemPopup({
+  onAccept,
+  onClose,
+  requestUpdate,
+  delegateItem,
+}) {
   var image, name, description, price, currentQuantity, minimumQuantity;
 
   function InsertProcess() {
@@ -51,6 +56,7 @@ export default function AddItemPopup({ onClose, requestUpdate, delegateItem }) {
     let msg = "Item inserted to database successfully";
     setMsgBox("success", msg);
     setTimeout(() => {
+      onAccept(true);
       onClose();
     }, 2000);
   }
