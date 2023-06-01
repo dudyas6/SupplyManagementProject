@@ -5,9 +5,9 @@ import AddItemPopup from "./AddItemPopup";
 import { YesNoDialog, PopupWithInput } from "../../../common/Elements";
 import { CreateNewVendorOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
 
-export default function Table({ items, onChange }) {
+export default function Table({ items, orders, onChange }) {
   const [isAddItemClicked, setIsAddItemClicked] = useState(false);
-  const [isAddItemConfirmed, setIsAddItemConfirmed] = useState(false); 
+  const [isAddItemConfirmed, setIsAddItemConfirmed] = useState(false);
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [showInputDialog, setShowInputDialog] = useState(false);
   const [tempItem, setTempItem] = useState(null); // [item, setItem
@@ -46,10 +46,17 @@ export default function Table({ items, onChange }) {
       setIsAddItemConfirmed(false);
     }
   }, [isAddItemConfirmed]);
-  
+
   function generateTableRows() {
     return items.map((item, index) => (
-      <TableRow key={item.ItemId} index={index} item={item} newOrderPopup={setShowConfirmationDialog} delegateItem={setTempItem}></TableRow>
+      <TableRow
+        key={item.ItemId}
+        index={index}
+        item={item}
+        order={orders.filter((order) => order.ItemName === item.ItemName)}
+        newOrderPopup={setShowConfirmationDialog}
+        delegateItem={setTempItem}
+      ></TableRow>
     ));
   }
 
@@ -106,6 +113,9 @@ export default function Table({ items, onChange }) {
                         </th>
                         <th className="px-4 text-center border">
                           Minimum Quantity
+                        </th>
+                        <th className="px-4 text-center border">
+                          Pending Order
                         </th>
                         <th className="px-4 text-center border">Actions</th>
                       </tr>

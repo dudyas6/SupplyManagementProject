@@ -2,17 +2,21 @@ import React from "react";
 import Table from "./Table";
 import InventoryStatisticsCubes from "./InventoryStatisticsCubes";
 import { Card } from "../../../common/Elements";
-import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
+import { GetAllItems} from "../../../backend/DataFetching/ItemsHandler";
+import { GetAllOrders } from "../../../backend/DataFetching/VendorOrdersHandler";
 
 export function InventoryPage() {
   // The main of Inventory page
   const [items, setItems] = React.useState([]);
+  const [orders, setOrders] = React.useState([]);
 
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const response = await GetAllItems();
-        setItems(response);
+        const ItemsResponse = await GetAllItems();
+        setItems(ItemsResponse);
+        const ordersRespone = await GetAllOrders();
+        setOrders(ordersRespone);
       } catch (error) {
         console.log(error);
       }
@@ -33,7 +37,7 @@ export function InventoryPage() {
       </Card>
 
       <Card title="All inventory items">
-        <Table items={items} onChange={handleTableChange} />
+        <Table items={items} orders={orders} onChange={handleTableChange} />
       </Card>
     </>
   );

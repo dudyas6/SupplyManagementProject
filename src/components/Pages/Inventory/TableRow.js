@@ -3,6 +3,7 @@ import deleteImg from "../../../assets/icons/delete.png";
 import cancelImg from "../../../assets/icons/cancel.png";
 import saveImg from "../../../assets/icons/save.png";
 import plusImg from "../../../assets/icons/plus.png";
+import checkImg from "../../../assets/icons/check.png";
 import { BsFillImageFill } from "react-icons/bs";
 import {
   DeleteItem,
@@ -11,9 +12,10 @@ import {
 import { useEffect, useState } from "react";
 import { TableCell } from "../../../common/Elements";
 
-export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
+export default function TableRow({ index, item, newOrderPopup, delegateItem, itemOrders}) {
   const [imageExists, setImageExists] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [initialText, setInitialText] = useState();
   const [editedText, setEditedText] = useState({
     ItemImage: item.ItemImage,
     ItemName: item.ItemName,
@@ -22,10 +24,11 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
     CurrentQuantity: item.CurrentQuantity,
     MinimumQuantity: item.MinimumQuantity,
   });
-  const [initialText, setInitialText] = useState();
   const rowColor = index % 2 === 0 ? "bg-gray-200" : "bg-white";
   const isUnderMinimum = item.CurrentQuantity < item.MinimumQuantity;
   const itemId = item.ItemId;
+  let requiresAttention =
+    item.CurrentQuantity > item.MinimumQuantity * 4 ? true : false;
 
   useEffect(() => {
     const img = new Image();
@@ -41,6 +44,7 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
   const handleEditButtonClick = () => {
     setIsEditing(true);
     setInitialText(editedText);
+    console.log(itemOrders);
   };
 
   const handleSaveButtonClick = () => {
@@ -72,7 +76,15 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
   };
 
   return (
-    <tr className={isUnderMinimum ? `bg-red-200 hover:${rowColor}` : rowColor}>
+    <tr
+      className={
+        isUnderMinimum
+          ? `bg-red-200 hover:${rowColor}`
+          : requiresAttention
+          ? `bg-yellow-500 hover:${rowColor}`
+          : rowColor
+      }
+    >
       <td className="py-2 border">
         <div className="flex items-center justify-center">
           {imageExists ? (
@@ -131,6 +143,15 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
             item.MinimumQuantity,
             "small",
             isEditing
+          )}
+        </div>
+      </td>
+      <td>
+        <div className="flex items-center justify-center">
+          {true ? (
+            <img className="w-6 h-6" src={checkImg} alt="check" />
+          ) : (
+            <p></p>
           )}
         </div>
       </td>

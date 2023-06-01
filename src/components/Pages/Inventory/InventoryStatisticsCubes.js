@@ -5,15 +5,17 @@ export default function InventoryStatisticsCubes({ items }) {
   let totalItems = 0;
   let totalUnderMinimum = 0;
   let totalRequiresAttention = 0;
+  let requiresAttention = false;
 
   function calculateStatistics() {
     items.forEach((item) => {
+      requiresAttention = item.CurrentQuantity > item.MinimumQuantity * 4 ? true : false;
       totalRevenue += item.Price * item.CurrentQuantity;
       totalItems += item.CurrentQuantity;
       if (item.CurrentQuantity < item.MinimumQuantity) {
         totalUnderMinimum++;
       }
-      if (item.CurrentQuantity === 0) {
+      if (requiresAttention === true) {
         totalRequiresAttention++;
       }
     });
@@ -25,7 +27,7 @@ export default function InventoryStatisticsCubes({ items }) {
     <div className="flex flex-wrap justify-center">
       <div className="w-40 h-40 m-4 bg-blue-500 rounded-md shadow-md hover:bg-blue-600">
         <div className="flex flex-col items-center justify-center h-full">
-          <span className="text-3xl font-bold text-white">{totalItems}</span>
+          <span  className="text-3xl font-bold text-white">{totalItems}</span>
           <span className="text-base text-gray-200">Total Stock</span>
         </div>
       </div>
