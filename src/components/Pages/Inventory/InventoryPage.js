@@ -10,20 +10,35 @@ export function InventoryPage() {
   const [items, setItems] = React.useState([]);
   const [orders, setOrders] = React.useState([]);
 
-  React.useEffect(() => {
-    async function fetchData() {
-      try {
-        const ItemsResponse = await GetAllItems();
-        setItems(ItemsResponse);
-        const ordersRespone = await GetAllOrders();
-        setOrders(ordersRespone);
-      } catch (error) {
-        console.log(error);
-      }
+  async function fetchData() {
+    try {
+      const ItemsResponse = await GetAllItems();
+      setItems(ItemsResponse);
+      const ordersRespone = await GetAllOrders();
+      setOrders(ordersRespone);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
+  React.useEffect(() => {
     fetchData();
-  }, [items]);
+  }, []);
+
+  // React.useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const ItemsResponse = await GetAllItems();
+  //       setItems(ItemsResponse);
+  //       const ordersRespone = await GetAllOrders();
+  //       setOrders(ordersRespone);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+
+  //   fetchData();
+  // }, []);
 
   function handleTableChange(updatedOrders) {
     if (updatedOrders == null || updatedOrders === undefined) return;
