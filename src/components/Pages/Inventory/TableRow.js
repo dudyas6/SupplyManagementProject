@@ -24,6 +24,7 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
   });
   const [initialText, setInitialText] = useState();
   const rowColor = index % 2 === 0 ? "bg-gray-200" : "bg-white";
+  const isUnderMinimum = item.CurrentQuantity < item.MinimumQuantity;
   const itemId = item.ItemId;
 
   useEffect(() => {
@@ -71,7 +72,7 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem }) {
   };
 
   return (
-    <tr className={rowColor}>
+    <tr className={isUnderMinimum ? `bg-red-200 hover:${rowColor}` : rowColor}>
       <td className="py-2 border">
         <div className="flex items-center justify-center">
           {imageExists ? (

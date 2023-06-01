@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "./Table";
-import { StatisticsCubes } from "../Dashboard/AllPageComponents";
+import InventoryStatisticsCubes from "./InventoryStatisticsCubes";
 import { Card } from "../../../common/Elements";
 import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
 
@@ -29,8 +29,7 @@ export function InventoryPage() {
   return (
     <>
       <Card title="Relevant issues">
-        <StatisticsCubes items={items} />{" "}
-        {/* Change this later to relevant issues !!! */}
+        <InventoryStatisticsCubes items={items} />
       </Card>
 
       <Card title="All inventory items">
