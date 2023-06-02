@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { TableCell } from "../../../common/Elements";
 
-export default function TableRow({ index, item, newOrderPopup, delegateItem, itemOrders}) {
+export default function TableRow({ index, item, newOrderPopup, delegateItem, onChange}) {
   const [imageExists, setImageExists] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [initialText, setInitialText] = useState();
@@ -44,11 +44,11 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem, ite
   const handleEditButtonClick = () => {
     setIsEditing(true);
     setInitialText(editedText);
-    console.log(itemOrders);
   };
 
   const handleSaveButtonClick = () => {
     UpdateItem(itemId, editedText);
+    onChange(null);
     setIsEditing(false);
   };
 
@@ -59,6 +59,7 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem, ite
 
   const handleDeleteButtonClick = () => {
     DeleteItem(itemId);
+    onChange(null);
   };
 
   const handlePlusButtonClick = () => {

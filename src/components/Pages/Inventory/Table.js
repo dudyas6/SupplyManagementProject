@@ -30,9 +30,7 @@ export default function Table({ items, orders, onChange }) {
   };
 
   function onChangePipe(addedItem) {
-    console.log("onChangePipe:\n" + addedItem);
-    if (addedItem === null) return;
-    setTempItem(addedItem);
+    // setTempItem(addedItem);
     onChange(addedItem);
   }
 
@@ -56,6 +54,7 @@ export default function Table({ items, orders, onChange }) {
         order={orders.filter((order) => order.ItemName === item.ItemName)}
         newOrderPopup={setShowConfirmationDialog}
         delegateItem={setTempItem}
+        onChange={onChangePipe}
       ></TableRow>
     ));
   }
@@ -66,8 +65,7 @@ export default function Table({ items, orders, onChange }) {
         <AddItemPopup
           onClose={addItemPopupHandle}
           onAccept={setIsAddItemConfirmed}
-          requestUpdate={onChangePipe}
-          delegateItem={setTempItem}
+          onChange={onChangePipe}
         ></AddItemPopup>
       )}
       {showConfirmationDialog && (

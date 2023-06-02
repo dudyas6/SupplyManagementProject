@@ -56,11 +56,12 @@ export function InsertNewItem(item, thenFunction) {
       });
 }
 
-export function UpdateItem(itemId, item) {
-  axios
+export async function UpdateItem(itemId, item) {
+  await axios
     .put(`http://localhost:3001/items/update/${itemId}`, item) 
-    .then(response => {
-      console.log(response.data);
+    .then(res => {
+      console.log(res.data)
+      console.log("Success");
     })
     .catch(error => {
       console.log(error);
@@ -70,8 +71,8 @@ export function UpdateItem(itemId, item) {
 export function DeleteItem(itemId) {
   axios
   .delete(`http://localhost:3001/items/delete/${itemId}`) 
-  .then(response => {
-    console.log(response.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(error => {
     console.log(error);

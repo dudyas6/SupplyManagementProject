@@ -5,7 +5,7 @@ import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
 export default function AddItemPopup({
   onAccept,
   onClose,
-  requestUpdate,
+  onChange,
   delegateItem,
 }) {
   var image, name, description, price, currentQuantity, minimumQuantity;
@@ -42,14 +42,12 @@ export default function AddItemPopup({
       },
       thenFunc
     );
-    delegateItem(item);
     return item;
   }
 
   async function InsertWrap() {
     const item = await InsertProcess();
-    console.log("InsertWrap:\n" + item);
-    requestUpdate(item);
+    onChange(item);
   }
 
   function thenFunc() {
