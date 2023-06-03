@@ -26,11 +26,12 @@ export function InventoryPage() {
     fetchData();
   }, []);
 
-  async function handleTableChange(updatedOrders) {
-    if (updatedOrders === null || updatedOrders === undefined) {
+  async function handleChangeItems(updatedItems) {
+    console.log(updatedItems);
+    if (updatedItems === null || updatedItems === undefined) {
       await fetchData();
-    } else if (updatedOrders.length > 1) setItems(updatedOrders);
-    else setItems(items.concat(updatedOrders));
+    } else if (updatedItems.length > 1) setItems(updatedItems);
+    else setItems(items.concat(updatedItems));
   }
 
   return (
@@ -40,8 +41,8 @@ export function InventoryPage() {
       </Card>
 
       <Card title="Warehouse Inventory">
-        {/* <Table items={items} orders={orders} onChange={handleTableChange} /> */}
-        <CardsSection items={items} />
+        {/* <Table items={items} orders={orders} onChange={handleChangeItems} /> */}
+        <CardsSection items={items} handleChangeItems={handleChangeItems}/>
       </Card>
     </>
   );

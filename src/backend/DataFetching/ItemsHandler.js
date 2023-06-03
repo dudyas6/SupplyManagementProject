@@ -60,8 +60,7 @@ export async function UpdateItem(itemId, item) {
   return axios
     .put(`http://localhost:3001/items/update/${itemId}`, item) 
     .then( res => {
-      console.log(res.data)
-      console.log("Success");
+      return res.data;
     })
     .catch(error => {
       console.log(error);

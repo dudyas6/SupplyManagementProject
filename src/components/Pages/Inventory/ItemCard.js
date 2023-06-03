@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-
-// This component represents a single item
-const ItemCard = ({ item }) => {
+import { ErrorLabel, SuccessLabel } from "../../../common/LittleLabels";
+import { UpdateItem } from "../../../backend/DataFetching/ItemsHandler";
+const ItemCard = ({ item, handleChangeItems }) => {
   const {
     ItemId,
     ItemImage,
@@ -12,13 +12,73 @@ const ItemCard = ({ item }) => {
     MinimumQuantity,
   } = item;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedItem, setEditedItem] = useState(item);
+  const [errorText, setErrorText] = useState("");
+  const [successMsg, setSuccessText] = useState("");
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  function onEdit() {}
-  function onDelete() {}
+  const onEdit = () => {
+    toggleDropdown();
+    setIsEditing(true);
+  };
+
+  const onDelete = () => {
+    toggleDropdown();
+    // Handle delete functionality
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedItem((prevItem) => ({
+      ...prevItem,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = async () => {
+    // Handle save functionality
+    const isNumber = /^[0-9]+$/;
+    const isFloat = /^[0-9]*\.?[0-9]+$/;
+    var error = "";
+
+    if (!editedItem.ItemName.trim().length > 0)
+      error += "\n> Item name cannot be empty";
+    if (!editedItem.Description.trim().length > 0)
+      error += "\n> Item Description cannot be empty";
+    if (!isNumber.test(editedItem.MinimumQuantity))
+      error += "\n> Minimum quantity is not a number";
+    if (!isFloat.test(editedItem.Price)) error += "\n> Price must be float";
+
+    if (error === "") {
+      // good scenario
+      var msg = "";
+
+      const savedItem = await UpdateItem(editedItem.ItemId, editedItem);
+
+      // find diffs
+      if (item.ItemName !== editedItem.ItemName)
+        msg += "\n> Item name has changed";
+      if (item.Description !== editedItem.Description)
+        msg += "\n> Description  has changed";
+      if (item.MinimumQuantity !== editedItem.MinimumQuantity)
+        msg += "\n> Minimum quantity has changed";
+      if (item.Price !== editedItem.Price) msg += "\n> Price has changed";
+      setSuccessText(msg);
+      setTimeout(() => {
+        setSuccessText("");
+      }, 3000);
+      handleChangeItems(savedItem);
+    } else {
+      // show error
+      setErrorText(error);
+    }
+
+    setIsEditing(false);
+  };
 
   return (
     <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-100">
@@ -67,15 +127,36 @@ const ItemCard = ({ item }) => {
         )}
       </div>
       <img
-        className="p-8 rounded-t-lg  w-52 h-52 object-contain"
+        className="p-8 rounded-t-lg w-52 h-52 object-contain"
         src={ItemImage}
         alt="product"
       />
       <div className="px-5 pb-5">
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          {ItemName}
+          {isEditing ? (
+            <input
+              type="text"
+              name="ItemName"
+              value={editedItem.ItemName}
+              onChange={handleChange}
+              className="block w-full px-2 py-1 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+            />
+          ) : (
+            ItemName
+          )}
         </h5>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">{Description}</p>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">
+          {isEditing ? (
+            <textarea
+              name="Description"
+              value={editedItem.Description}
+              onChange={handleChange}
+              className="block w-full px-2 py-1 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+            />
+          ) : (
+            Description
+          )}
+        </p>
         <div className="flex items-center mt-2.5 mb-5">
           <span className="bg-emerald-100 text-emerald-800 text-md font-semibold px-2.5 py-0.5 rounded dark:bg-emerald-200 dark:text-emerald-800">
             Current quantity: {CurrentQuantity}
@@ -83,21 +164,69 @@ const ItemCard = ({ item }) => {
         </div>
         <div className="flex items-center mt-2.5 mb-5">
           <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
-            Minimum quantity: {MinimumQuantity}
+            Minimum quantity:{" "}
+            {isEditing ? (
+              <input
+                type="text"
+                name="MinimumQuantity"
+                value={editedItem.MinimumQuantity}
+                onChange={handleChange}
+                className="inline-block w-20 px-2 py-1 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            ) : (
+              MinimumQuantity
+            )}
           </span>
         </div>
 
         <div className="flex items-center justify-between">
           <span className="text-3xl font-bold text-gray-900 dark:text-white">
-            ${Price}
+            $
+            {isEditing ? (
+              <input
+                type="text"
+                name="Price"
+                value={editedItem.Price}
+                onChange={handleChange}
+                className="inline-block w-20 px-2 py-1 border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            ) : (
+              Price
+            )}
           </span>
-          <a
-            href="#"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Create order
-          </a>
+          {isEditing ? (
+            <button
+              type="button"
+              onClick={handleSave}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:bg-blue-800"
+            >
+              Save
+            </button>
+          ) : (
+            <a
+              href="#"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Create order
+            </a>
+          )}
         </div>
+        {errorText !== "" && (
+          <div className="mt-10">
+            <ErrorLabel
+              innerText={errorText}
+              onClose={() => setErrorText("")}
+            />
+          </div>
+        )}
+        {successMsg !== "" && (
+          <div className="mt-10">
+            <SuccessLabel
+              innerText={successMsg}
+              onClose={() => setSuccessText("")}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
