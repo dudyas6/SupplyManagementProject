@@ -15,8 +15,8 @@ export function InventoryPage() {
     try {
       const ItemsResponse = await GetAllItems();
       setItems(ItemsResponse);
-      const ordersRespone = await GetAllOrders();
-      setOrders(ordersRespone);
+      // const ordersRespone = await GetAllOrders();
+      // setOrders(ordersRespone);
     } catch (error) {
       console.log(error);
     }
@@ -30,6 +30,7 @@ export function InventoryPage() {
     console.log(updatedItems);
     if (updatedItems === null || updatedItems === undefined) {
       await fetchData();
+      return;
     } else if (updatedItems.length > 1) setItems(updatedItems);
     else setItems(items.concat(updatedItems));
   }

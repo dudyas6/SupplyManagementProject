@@ -71,7 +71,7 @@ const ItemCard = ({ item, handleChangeItems }) => {
       setTimeout(() => {
         setSuccessText("");
       }, 3000);
-      handleChangeItems(savedItem);
+      handleChangeItems(null);
     } else {
       // show error
       setErrorText(error);
