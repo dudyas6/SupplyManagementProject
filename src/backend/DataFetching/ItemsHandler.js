@@ -57,9 +57,9 @@ export function InsertNewItem(item, thenFunction) {
 }
 
 export async function UpdateItem(itemId, item) {
-  await axios
+  return axios
     .put(`http://localhost:3001/items/update/${itemId}`, item) 
-    .then(res => {
+    .then( res => {
       console.log(res.data)
       console.log("Success");
     })
