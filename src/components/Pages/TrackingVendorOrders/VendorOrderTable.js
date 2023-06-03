@@ -45,10 +45,6 @@ export default function VendorOrderTable({ orders, onChange }) {
       );
     });
 
-    // -------------- CHECK SOMETHING
-
-    // -------------- END CHECK SOMETHING
-
     setFilteredOrders(filteredOrders); // change the orders so the page will render again with new info
   };
 
