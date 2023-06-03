@@ -72,8 +72,8 @@ function FilterForm({ orders, onFilter, onClear }) {
   }
 
   useEffect(() => {
-
     const getMaxQuantity = () => {
+      if (orders === undefined) return;
       const maxQuantity = orders.reduce(
         (max, order) => (order.Quantity > max ? order.Quantity : max),
         0
@@ -82,6 +82,8 @@ function FilterForm({ orders, onFilter, onClear }) {
     };
 
     const getMaxTotalPrice = () => {
+      if (orders === undefined) return;
+
       const maxTotalPrice = orders.reduce(
         (max, order) => (order.TotalPrice > max ? order.TotalPrice : max),
         0

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-// This component represents a single item 
+// This component represents a single item
 const ItemCard = ({ item }) => {
-    
   const {
     ItemId,
     ItemImage,
@@ -16,10 +15,13 @@ const ItemCard = ({ item }) => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-    console.log(isDropdownOpen);
   };
+
+  function onEdit() {}
+  function onDelete() {}
+
   return (
-    <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-100">
       <div className="relative inline-block text-left justify-end px-4 pt-4 float-right">
         <button
           id="dropdownButton"
@@ -45,40 +47,42 @@ const ItemCard = ({ item }) => {
           >
             <ul className="py-2" aria-labelledby="dropdownButton">
               <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                <button
+                  className="block font-semibold  w-full  px-4 py-2 text-sm text-gray-700 hover:bg-green-100 dark:hover:bg-green-600 dark:text-green-200 dark:hover:text-white"
+                  onClick={onEdit}
                 >
                   Edit
-                </a>
+                </button>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                <button
+                  className="block font-semibold w-full px-4 py-2 text-sm text-red-600 hover:bg-red-100 dark:hover:bg-green-600 dark:text-green-200 dark:hover:text-white"
+                  onClick={onDelete}
                 >
                   Delete
-                </a>
+                </button>
               </li>
             </ul>
           </div>
         )}
       </div>
-      <img className="p-8 rounded-t-lg  w-52 h-52 object-contain" src={ItemImage} alt="product" />
+      <img
+        className="p-8 rounded-t-lg  w-52 h-52 object-contain"
+        src={ItemImage}
+        alt="product"
+      />
       <div className="px-5 pb-5">
-        <a href="#">
-          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            {ItemName}
-          </h5>
-        </a>
+        <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          {ItemName}
+        </h5>
         <p className="mt-2 text-gray-600 dark:text-gray-400">{Description}</p>
         <div className="flex items-center mt-2.5 mb-5">
-          <span className="bg-emerald-100 text-emerald-800 text-md font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-emerald-200 dark:text-emerald-800 ml-3">
+          <span className="bg-emerald-100 text-emerald-800 text-md font-semibold px-2.5 py-0.5 rounded dark:bg-emerald-200 dark:text-emerald-800">
             Current quantity: {CurrentQuantity}
           </span>
         </div>
         <div className="flex items-center mt-2.5 mb-5">
-          <span className="bg-blue-100 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
+          <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
             Minimum quantity: {MinimumQuantity}
           </span>
         </div>

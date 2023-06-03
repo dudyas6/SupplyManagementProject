@@ -4,13 +4,15 @@ import FilterComponent from "../../../common/FilterComponent";
 import { Card } from "../../../common/Elements";
 export default function CardsSection({ items, orders, onChange }) {
   function GenerateCards() {
-    return items.map((item) => <ItemCard item={item} />);
+    return items.map((item) => <ItemCard key={item.ItemId} item={item} />);
   }
-  function onFilter() {}
+  function onFilter(filters) {
+    console.log(filters)
+  }
   return (
     <>
       <Card>
-        <FilterComponent orders={undefined} onFilter={onFilter} />
+        <FilterComponent orders={items} onFilter={onFilter} />
       </Card>
       <div className="flex flex-wrap justify-center mt-20 gap-10">
         {GenerateCards()}
