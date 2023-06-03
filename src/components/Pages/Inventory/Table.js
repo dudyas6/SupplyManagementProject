@@ -4,6 +4,7 @@ import TableRow from "./TableRow";
 import AddItemPopup from "./AddItemPopup";
 import { YesNoDialog, PopupWithInput } from "../../../common/Elements";
 import { CreateNewVendorOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
+import ItemCard from "./ItemCard";
 
 export default function Table({ items, orders, onChange }) {
   const [isAddItemClicked, setIsAddItemClicked] = useState(false);

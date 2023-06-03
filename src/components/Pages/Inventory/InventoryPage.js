@@ -4,6 +4,7 @@ import InventoryStatisticsCubes from "./InventoryStatisticsCubes";
 import { Card } from "../../../common/Elements";
 import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
 import { GetAllOrders } from "../../../backend/DataFetching/VendorOrdersHandler";
+import CardsSection from "./CardsSection";
 
 export function InventoryPage() {
   // The main of Inventory page
@@ -39,7 +40,8 @@ export function InventoryPage() {
       </Card>
 
       <Card title="Warehouse Inventory">
-        <Table items={items} orders={orders} onChange={handleTableChange} />
+        {/* <Table items={items} orders={orders} onChange={handleTableChange} /> */}
+        <CardsSection items={items} />
       </Card>
     </>
   );

@@ -12,7 +12,13 @@ import {
 import { useEffect, useState } from "react";
 import { TableCell } from "../../../common/Elements";
 
-export default function TableRow({ index, item, newOrderPopup, delegateItem, onChange}) {
+export default function TableRow({
+  index,
+  item,
+  newOrderPopup,
+  delegateItem,
+  onChange,
+}) {
   const [imageExists, setImageExists] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [initialText, setInitialText] = useState();
@@ -134,7 +140,14 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem, onC
           )}
         </div>
       </td>
-      <td className="py-2 text-center border">{item.CurrentQuantity}</td>
+      <td className="py-2 text-center items-center border">
+        {item.CurrentQuantity}
+        {isEditing && (
+          <button className="ml-2" onClick={handlePlusButtonClick}>
+            <img className="w-5 h-5" src={plusImg} alt="plus" />
+          </button>
+        )}
+      </td>
       <td className="py-2 text-center border">
         <div className="flex items-center justify-center">
           {TableCell(
@@ -160,9 +173,6 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem, onC
         <div className="flex items-center justify-center">
           {isEditing ? (
             <div className="flex">
-              <button className="mr-2" onClick={handlePlusButtonClick}>
-                <img className="w-6 h-6" src={plusImg} alt="plus" />
-              </button>
               <button className="mr-2" onClick={handleSaveButtonClick}>
                 <img className="w-6 h-6" src={saveImg} alt="save" />
               </button>
