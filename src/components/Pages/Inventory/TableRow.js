@@ -46,8 +46,8 @@ export default function TableRow({ index, item, newOrderPopup, delegateItem, onC
     setInitialText(editedText);
   };
 
-  const handleSaveButtonClick = () => {
-    UpdateItem(itemId, editedText);
+  const handleSaveButtonClick = async () => {
+    await UpdateItem(itemId, editedText);
     onChange(null);
     setIsEditing(false);
   };
