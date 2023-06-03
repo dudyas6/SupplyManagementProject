@@ -12,7 +12,6 @@ function FilterForm({ orders, onFilter, onClear }) {
   const [quantityRange, setQuantityRange] = useState([0, maxQuantity]);
   const [status, setStatus] = useState("");
   const [totalPriceRange, setTotalPriceRange] = useState([0, maxTotalPrice]);
-
   // Un comment to activate a button
   //   const handleFilter = (e) => {
   //     e.preventDefault();
@@ -66,26 +65,29 @@ function FilterForm({ orders, onFilter, onClear }) {
     });
   }
 
-  //   function getMaxQuantity(){
-  //     // Logic to get the maximum quantity from orders array
+    function getMaxQuantity(){
+      // Logic to get the maximum quantity from orders array
+      const maxQuantity = orders.reduce(
+        (max, order) => (order.Quantity > max ? order.Quantity : max),
+        0
+      );
+      return maxQuantity;
+    };
 
-  //     const maxQuantity = orders.reduce(
-  //       (max, order) => (order.quantity > max ? order.quantity : max),
-  //       0
-  //     );
-  //     console.log(maxQuantity)
 
-  //     return maxQuantity;
-  //   };
+    function getMaxTotalPrice(){
+      // Logic to get the maximum total price from orders array
+      const maxTotalPrice = orders.reduce(
+        (max, order) => (order.TotalPrice > max ? order.TotalPrice : max),
+        0
+      );
+      return maxTotalPrice;
+    };
 
-  //   function getMaxTotalPrice(){
-  //     // Logic to get the maximum total price from orders array
-  //     const maxTotalPrice = orders.reduce(
-  //       (max, order) => (order.totalPrice > max ? order.totalPrice : max),
-  //       0
-  //     );
-  //     return maxTotalPrice;
-  //   };
+    
+    console.log(getMaxQuantity());
+    
+    console.log(getMaxTotalPrice());
 
   return (
     <form
