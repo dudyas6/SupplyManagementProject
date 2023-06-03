@@ -2,7 +2,7 @@ import React from "react";
 import { Cube, WideCubeWithClick } from "../../../common/Elements";
 import { GetCompletedAndNotAddedOrders, AddCompletedOrdersToWarehouse } from "../../../backend/DataFetching/VendorOrdersHandler";
 // generate cubes
-export const VendorStatisticsCubes = ({ orders }) => {
+export const VendorStatisticsCubes = ({ orders, onChange }) => {
   const [totOrders, setOrders] = React.useState(0);
   const [totCost, setCost] = React.useState(0.0);
   const [totQuantity, setQuantity] = React.useState(0);
@@ -38,6 +38,11 @@ export const VendorStatisticsCubes = ({ orders }) => {
     setPending(totalPending);
   }, [orders]);
 
+  async function onChangePipe(){
+    await AddCompletedOrdersToWarehouse();
+    onChange(null);
+  }
+
   var i = 0;
   return (
     <>
@@ -58,7 +63,7 @@ export const VendorStatisticsCubes = ({ orders }) => {
             big={completedOrdersNotAdded.length}
             small="Pending warehouse addition for completed orders"
             additionText="Click to update"
-            onClick={AddCompletedOrdersToWarehouse}
+            onClick={onChangePipe}
           />
         )}
       </div>

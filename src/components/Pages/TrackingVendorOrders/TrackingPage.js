@@ -34,7 +34,7 @@ export function TrackingPage() {
       {/* STATISTICS */}
 
       <Card title="Relevant issues">
-        <VendorStatisticsCubes orders={orders} />{" "}
+        <VendorStatisticsCubes orders={orders} onChange={handleTableChange} />{" "}
         <VendorOrderStatistics orders={orders} />
       </Card>
 

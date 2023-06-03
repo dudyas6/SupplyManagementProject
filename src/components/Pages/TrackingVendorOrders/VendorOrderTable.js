@@ -1,19 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import VendorOrderRow from "./VendorOrderRow";
-import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
+
 import {
   GenerateNewOrder,
   AutoChangeAllVendorOrdersStatus,
 } from "../../../backend/DataFetching/VendorOrdersHandler";
+import FilterComponent from "../../../common/FilterComponent";
+import { Card } from "../../../common/Elements";
+
 export default function VendorOrderTable({ orders, onChange }) {
-  const [isCreatingOrder, setIsCreatingOrder] = React.useState(false);
-  const [sortConfig, setSortConfig] = React.useState({
+  const [isCreatingOrder, setIsCreatingOrder] = useState(false);
+  const [sortConfig, setSortConfig] = useState({
     key: "",
     direction: "",
   });
-  const [filterText, setFilterText] = React.useState("");
-  const [filteredOrders, setFilteredOrders] = React.useState([]);
-  const [filterConfig, setFilterConfig] = React.useState({});
+  const [filteredOrders, setFilteredOrders] = useState([]);
+
+  const handleFilter = (filters) => {
+    // When filter component change something
+
+    if (filters === null) {
+      setFilteredOrders(orders); // clear filters
+      return;
+    }
+    const filteredOrders = orders.filter((order) => {
+      // The actual filter
+      var orderYearMonth = (order.PurchaseDate).split('-')[0] + '-' + order.PurchaseDate.split('-')[1]  // remove the "day" attribute for better comparison
+
+      return (
+        (filters.itemName ? order.ItemName.includes(filters.itemName) : true) &&
+        (filters.purchaseDateStart && filters.purchaseDateEnd
+          ? orderYearMonth >= filters.purchaseDateStart &&
+            orderYearMonth <= filters.purchaseDateEnd
+          : true) &&
+        (filters.quantityRange[0] && filters.quantityRange[1]
+          ? order.Quantity >= filters.quantityRange[0] &&
+            order.Quantity <= filters.quantityRange[1]
+          : true) &&
+        (filters.status ? order.Status.includes(filters.status) : true) &&
+        (filters.totalPriceRange[0] && filters.totalPriceRange[1]
+          ? order.TotalPrice >= filters.totalPriceRange[0] &&
+            order.TotalPrice <= filters.totalPriceRange[1]
+          : true)
+      );
+    });
+
+    // -------------- CHECK SOMETHING
+
+    // -------------- END CHECK SOMETHING
+
+    setFilteredOrders(filteredOrders); // change the orders so the page will render again with new info
+  };
 
   async function CreateNewOrder() {
     // Function to create a new order
@@ -31,15 +68,7 @@ export default function VendorOrderTable({ orders, onChange }) {
     onChange(null);
   }
 
-  function GenerateStatusOptions() {
-    return Object.keys(StatusEnum).map((status) => {
-      console.log(status);
-      return <option value={status}>{status}</option>;
-    });
-
-  }
-
-  function generateTableRows(ordersToRender) {
+  function GenerateTableRows(ordersToRender) {
     if (
       ordersToRender == null ||
       ordersToRender === [undefined] ||
@@ -47,35 +76,7 @@ export default function VendorOrderTable({ orders, onChange }) {
     ) {
       return null;
     }
-    // apply multiple filters
-
-    const filteredOrders = ordersToRender.filter((order) => {
-      console.log(
-        "1: " + filterConfig.OrderId,
-        "2: " + filterConfig.ItemName,
-        "quan: " + filterConfig.Quantity
-      );
-      return (
-        (filterConfig.OrderId
-          ? order.OrderId === filterConfig.OrderId
-          : true) &&
-        (filterConfig.ItemName
-          ? order.ItemName.includes(filterConfig.ItemName)
-          : true) &&
-        (filterConfig.PurchaseDate
-          ? order.PurchaseDate.includes(filterConfig.PurchaseDate)
-          : true) &&
-        (filterConfig.Quantity
-          ? order.Quantity === filterConfig.Quantity
-          : true) &&
-        (filterConfig.Status
-          ? order.Status.includes(filterConfig.Status)
-          : true) &&
-        (filterConfig.TotalPrice
-          ? order.TotalPrice.includes(filterConfig.TotalPrice)
-          : true)
-      );
-    });
+    // filteredOrders = orders after sort (if applied) and after filter (if applied)
 
     return filteredOrders.map((order) => (
       <VendorOrderRow key={order.OrderId} order={order} onChange={onChange} />
@@ -88,14 +89,6 @@ export default function VendorOrderTable({ orders, onChange }) {
       direction = "desc";
     }
     setSortConfig({ key, direction });
-  };
-
-  const filterOrders = (text) => {
-    const filtered = orders.filter((order) =>
-      order.ItemName.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilterText(text);
-    setFilteredOrders(filtered);
   };
 
   React.useEffect(() => {
@@ -115,15 +108,8 @@ export default function VendorOrderTable({ orders, onChange }) {
       return 0;
     });
 
-    // Filter the sorted orders if there's a filter text
-    const filtered = filterText
-      ? sortedOrders.filter((order) =>
-          order.ItemName.toLowerCase().includes(filterText.toLowerCase())
-        )
-      : sortedOrders;
-
-    setFilteredOrders(filtered);
-  }, [orders, sortConfig, filterText]);
+    setFilteredOrders(sortedOrders);
+  }, [orders, sortConfig]);
 
   return (
     <>
@@ -132,13 +118,13 @@ export default function VendorOrderTable({ orders, onChange }) {
           <div className="w-full mt-4 mb-2">
             <button
               onClick={CreateNewOrder}
-              className="float-right px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
+              className="float-right m-5 px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
             >
               + Add Order
             </button>
             <button
               onClick={UpdateOrdersStatus}
-              className="float-right px-4 py-2 font-bold text-white bg-violet-400 rounded-full hover:bg-violet-700"
+              className="float-right m-5 px-4 py-2 font-bold text-white bg-violet-400 rounded-full hover:bg-violet-700"
             >
               Auto-update Orders
             </button>
@@ -148,11 +134,17 @@ export default function VendorOrderTable({ orders, onChange }) {
               <div className="px-2 py-3 bg-gray-200 border-b border-gray-200 border-solid">
                 Orders from vendor
               </div>
+              <Card>
+                <FilterComponent orders={orders} onFilter={handleFilter} />
+              </Card>
               <div className="p-3">
                 <table className="w-full rounded table-responsive">
                   <thead>
                     <tr>
-                      <th className="w-1/12 px-2 py-2 border cursor-pointer" onClick={() => sortTable("OrderId")}>
+                      <th
+                        className="w-1/12 px-2 py-2 border cursor-pointer"
+                        onClick={() => sortTable("OrderId")}
+                      >
                         Order ID
                         {sortConfig.key === "OrderId" &&
                         sortConfig.direction === "asc" ? (
@@ -161,7 +153,10 @@ export default function VendorOrderTable({ orders, onChange }) {
                           <span>▼</span>
                         )}
                       </th>
-                      <th className="w-1/6 px-4 py-2 border cursor-pointer" onClick={() => sortTable("ItemName")}>
+                      <th
+                        className="w-1/6 px-4 py-2 border cursor-pointer"
+                        onClick={() => sortTable("ItemName")}
+                      >
                         Item Name
                         {sortConfig.key === "ItemName" &&
                         sortConfig.direction === "asc" ? (
@@ -170,7 +165,10 @@ export default function VendorOrderTable({ orders, onChange }) {
                           <span>▼</span>
                         )}
                       </th>
-                      <th className="w-1/5 px-4 py-2 border cursor-pointer" onClick={() => sortTable("PurchaseDate")}>
+                      <th
+                        className="w-1/5 px-4 py-2 border cursor-pointer"
+                        onClick={() => sortTable("PurchaseDate")}
+                      >
                         Purchase date
                         {sortConfig.key === "PurchaseDate" &&
                         sortConfig.direction === "asc" ? (
@@ -179,7 +177,9 @@ export default function VendorOrderTable({ orders, onChange }) {
                           <span>▼</span>
                         )}
                       </th>
-                      <th className="w-1/6 px-6 py-2 border cursor-pointer" onClick={() => sortTable("Quantity")}
+                      <th
+                        className="w-1/6 px-6 py-2 border cursor-pointer"
+                        onClick={() => sortTable("Quantity")}
                       >
                         Quantity
                         {sortConfig.key === "Quantity" &&
@@ -188,38 +188,22 @@ export default function VendorOrderTable({ orders, onChange }) {
                         ) : (
                           <span>▼</span>
                         )}
-                        <br />
-                        <button
-                          onClick={() =>
-                            setFilterConfig({ ...filterConfig, Quantity: 4 })
-                          }
-                          className="text-xs underline"
-                        >
-                          Filter
-                        </button>
                       </th>
-                      <th className="w-1/4 px-6 py-2 border cursor-pointer" onClick={() => sortTable("Status")}
+                      <th
+                        className="w-1/4 px-6 py-2 border cursor-pointer"
+                        onClick={() => sortTable("Status")}
                       >
                         Status
-                        
                         {sortConfig.key === "Status" &&
                         sortConfig.direction === "asc" ? (
                           <span>▲</span>
                         ) : (
                           <span>▼</span>
                         )}
-                        <div>
-                          <select
-                            className="form-control"
-                            aria-label="Floating label select example">
-                            <option value="choose" disabled selected="selected">
-                              -- Select status --
-                            </option>
-                            {GenerateStatusOptions()}
-                          </select>
-                        </div>
                       </th>
-                      <th className="w-1/4 px-6 py-2 border cursor-pointer" onClick={() => sortTable("TotalPrice")}
+                      <th
+                        className="w-1/4 px-6 py-2 border cursor-pointer"
+                        onClick={() => sortTable("TotalPrice")}
                       >
                         Total Price
                         {sortConfig.key === "TotalPrice" &&
@@ -231,70 +215,8 @@ export default function VendorOrderTable({ orders, onChange }) {
                       </th>
                       <th className="w-1/4 px-6 py-2 border">Actions</th>
                     </tr>
-                    <tr>
-                      <th className="w-1/12 px-2 py-2 border">
-                        <input
-                          type="text"
-                          value={filterText}
-                          onChange={(e) => filterOrders(e.target.value)}
-                          className="w-full px-2 py-1 rounded"
-                          placeholder="Filter"
-                        />
-                      </th>
-                      <th className="w-1/6 px-4 py-2 border">
-                        {/* Add filter input here */}
-                        <input
-                          type="text"
-                          value={filterText}
-                          onChange={(e) => filterOrders(e.target.value)}
-                          className="w-full px-2 py-1 rounded"
-                          placeholder="Filter"
-                        />
-                      </th>
-                      <th className="w-1/5 px-4 py-2 border">
-                        {/* Add filter input here */}
-                        <input
-                          type="text"
-                          value={filterText}
-                          onChange={(e) => filterOrders(e.target.value)}
-                          className="w-full px-2 py-1 rounded"
-                          placeholder="Filter"
-                        />
-                      </th>
-                      <th className="w-1/6 px-6 py-2 border">
-                        {/* Add filter input here */}
-                        <input
-                          type="text"
-                          value={filterText}
-                          onChange={(e) => filterOrders(e.target.value)}
-                          className="w-full px-2 py-1 rounded"
-                          placeholder="Filter"
-                        />
-                      </th>
-                      <th className="w-1/4 px-6 py-2 border">
-                        {/* Add filter input here */}
-                        <input
-                          type="text"
-                          value={filterText}
-                          onChange={(e) => filterOrders(e.target.value)}
-                          className="w-full px-2 py-1 rounded"
-                          placeholder="Filter"
-                        />
-                      </th>
-                      <th className="w-1/4 px-6 py-2 border">
-                        {/* Add filter input here */}
-                        <input
-                          type="text"
-                          value={filterText}
-                          onChange={(e) => filterOrders(e.target.value)}
-                          className="w-full px-2 py-1 rounded"
-                          placeholder="Filter"
-                        />
-                      </th>
-                      <th className="w-1/4 px-6 py-2 border"></th>
-                    </tr>
                   </thead>
-                  <tbody>{generateTableRows(filteredOrders)}</tbody>
+                  <tbody>{GenerateTableRows(filteredOrders)}</tbody>
                 </table>
               </div>
             </div>
