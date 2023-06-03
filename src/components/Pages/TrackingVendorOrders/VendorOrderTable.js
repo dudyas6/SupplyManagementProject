@@ -33,12 +33,12 @@ export default function VendorOrderTable({ orders, onChange }) {
           ? orderYearMonth >= filters.purchaseDateStart &&
             orderYearMonth <= filters.purchaseDateEnd
           : true) &&
-        (filters.quantityRange[0] && filters.quantityRange[1]
+        (filters.quantityRange[1]
           ? order.Quantity >= filters.quantityRange[0] &&
             order.Quantity <= filters.quantityRange[1]
           : true) &&
         (filters.status ? order.Status.includes(filters.status) : true) &&
-        (filters.totalPriceRange[0] && filters.totalPriceRange[1]
+        (filters.totalPriceRange[1]
           ? order.TotalPrice >= filters.totalPriceRange[0] &&
             order.TotalPrice <= filters.totalPriceRange[1]
           : true)

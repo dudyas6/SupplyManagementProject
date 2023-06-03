@@ -4,8 +4,8 @@ import { StatusEnum } from "../backend/DataFetching/VendorOrdersHandler";
 import { set } from "mongoose";
 
 function FilterForm({ orders, onFilter, onClear }) {
-  var maxTotalPrice = 10000, //getMaxTotalPrice(),
-    maxQuantity = 500; //getMaxQuantity();
+  // var maxTotalPrice = 10000, //getMaxTotalPrice(),
+  //   maxQuantity = 500; //getMaxQuantity();
 
   const [itemName, setItemName] = useState("");
   const [purchaseDateStart, setPurchaseDateStart] = useState("");
@@ -13,6 +13,8 @@ function FilterForm({ orders, onFilter, onClear }) {
   const [quantityRange, setQuantityRange] = useState([0, 1]);
   const [status, setStatus] = useState("");
   const [totalPriceRange, setTotalPriceRange] = useState([0, 1]);
+  const [maxQuantity, setMaxQuantity] = useState(1);
+  const [maxTotalPrice, setMaxTotalPrice] = useState(1);
 
   // Un comment to activate a button
   //   const handleFilter = (e) => {
@@ -62,33 +64,36 @@ function FilterForm({ orders, onFilter, onClear }) {
     // return all enum statuses as options (for dropbox filter)
     return Object.keys(StatusEnum).map((statusKey) => {
       return (
-        <option key={Math.random()} value={StatusEnum[statusKey]}>{StatusEnum[statusKey]}</option>
+        <option key={Math.random()} value={StatusEnum[statusKey]}>
+          {StatusEnum[statusKey]}
+        </option>
       );
     });
   }
 
-  function getMaxQuantity() {
-    // Logic to get the maximum quantity from orders array
-
-    const maxQuantity = orders.reduce(
-      (max, order) => (order.Quantity > max ? order.Quantity : max),
-      0
-    );
-    return maxQuantity;
-  }
-
-  function getMaxTotalPrice() {
-    // Logic to get the maximum total price from orders array
-    const maxTotalPrice = orders.reduce(
-      (max, order) => (order.TotalPrice > max ? order.TotalPrice : max),
-      0
-    );
-    return maxTotalPrice;
-  }
-
   useEffect(() => {
+
+    const getMaxQuantity = () => {
+      const maxQuantity = orders.reduce(
+        (max, order) => (order.Quantity > max ? order.Quantity : max),
+        0
+      );
+      return maxQuantity;
+    };
+
+    const getMaxTotalPrice = () => {
+      const maxTotalPrice = orders.reduce(
+        (max, order) => (order.TotalPrice > max ? order.TotalPrice : max),
+        0
+      );
+      return maxTotalPrice;
+    };
+
     const maxQuantity = getMaxQuantity();
     const maxTotalPrice = getMaxTotalPrice();
+
+    setMaxQuantity(maxQuantity);
+    setMaxTotalPrice(maxTotalPrice);
     setQuantityRange([0, maxQuantity]);
     setTotalPriceRange([0, maxTotalPrice]);
   }, [orders]);
@@ -132,7 +137,7 @@ function FilterForm({ orders, onFilter, onClear }) {
             values={quantityRange}
             step={1}
             min={0}
-            max={quantityRange[1]}
+            max={maxQuantity}
             onChange={(values) => setQuantityRange(values)}
             renderTrack={({ props, children }) => (
               <div
@@ -182,7 +187,7 @@ function FilterForm({ orders, onFilter, onClear }) {
             values={totalPriceRange}
             step={0.1}
             min={0}
-            max={totalPriceRange[1]}
+            max={maxTotalPrice}
             onChange={(values) => setTotalPriceRange(values)}
             renderTrack={({ props, children }) => (
               <div
