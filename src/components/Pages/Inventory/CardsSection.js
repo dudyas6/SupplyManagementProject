@@ -20,20 +20,28 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
     console.log("Im in onFilter!!!");
   }
 
+  function addItemPopupHandle() {
+    setShowPopup(!showPopup);
+  }
+
   return (
     <>
-        <div className="w-full mt-4 mb-2 inline-block">
-          <button
-            onClick={() => setShowPopup(true)}
-            className="float-right w-52 h-24 px-4 py-2 font-bold text-white bg-green-500 rounded-3xl hover:bg-green-700"
-          >
-            + Create Item
-          </button>
-        </div>
+      <div className="w-full mt-4 mb-2 inline-block">
+        <button
+          onClick={() => setShowPopup(true)}
+          className="float-right w-52 h-24 px-4 py-2 font-bold text-white bg-green-500 rounded-3xl hover:bg-green-700"
+        >
+          + Create Item
+        </button>
+      </div>
       <Card>
         <FilterComponent data={items} onFilter={onFilter} />
       </Card>
-      {showPopup && <AddItemPopup />}
+      {showPopup && (
+        <AddItemPopup
+          onClose={addItemPopupHandle}
+        />
+      )}
       <div className="flex flex-wrap justify-center mt-20 gap-10">
         {GenerateCards()}
       </div>
