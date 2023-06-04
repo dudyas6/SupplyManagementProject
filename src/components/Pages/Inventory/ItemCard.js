@@ -82,7 +82,7 @@ const ItemCard = ({ item, handleChangeItems }) => {
 
   return (
     <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-100">
-      <div className="relative inline-block text-left justify-end px-4 pt-4 float-right">
+      <div className=" inline-block text-left justify-end px-4 pt-4 float-right">
         <button
           id="dropdownButton"
           type="button"
@@ -101,28 +101,30 @@ const ItemCard = ({ item, handleChangeItems }) => {
           </svg>
         </button>
         {isDropdownOpen && (
-          <div
-            id="dropdown"
-            className="z-10 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute right-0 mt-2"
-          >
-            <ul className="py-2" aria-labelledby="dropdownButton">
-              <li>
-                <button
-                  className="block font-semibold  w-full  px-4 py-2 text-sm text-gray-700 hover:bg-green-100 dark:hover:bg-green-600 dark:text-green-200 dark:hover:text-white"
-                  onClick={onEdit}
-                >
-                  Edit
-                </button>
-              </li>
-              <li>
-                <button
-                  className="block font-semibold w-full px-4 py-2 text-sm text-red-600 hover:bg-red-100 dark:hover:bg-green-600 dark:text-green-200 dark:hover:text-white"
-                  onClick={onDelete}
-                >
-                  Delete
-                </button>
-              </li>
-            </ul>
+          <div className="relative ">
+            <div
+              id="dropdown"
+              className="z-10 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute right-0 mt-2"
+            >
+              <ul className="py-2" aria-labelledby="dropdownButton">
+                <li>
+                  <button
+                    className="block font-semibold  w-full  px-4 py-2 text-sm text-gray-700 hover:bg-green-100 dark:hover:bg-green-600 dark:text-green-200 dark:hover:text-white"
+                    onClick={onEdit}
+                  >
+                    Edit
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="block font-semibold w-full px-4 py-2 text-sm text-red-600 hover:bg-red-100 dark:hover:bg-green-600 dark:text-green-200 dark:hover:text-white"
+                    onClick={onDelete}
+                  >
+                    Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         )}
       </div>
@@ -203,12 +205,12 @@ const ItemCard = ({ item, handleChangeItems }) => {
               Save
             </button>
           ) : (
-            <a
-              href="#"
+            <button
+              type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Create order
-            </a>
+            </button>
           )}
         </div>
         {errorText !== "" && (

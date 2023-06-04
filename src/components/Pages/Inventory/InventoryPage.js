@@ -5,11 +5,12 @@ import { Card } from "../../../common/Elements";
 import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
 import { GetAllOrders } from "../../../backend/DataFetching/VendorOrdersHandler";
 import CardsSection from "./CardsSection";
+import AddItemPopup from "./AddItemPopup";
 
 export function InventoryPage() {
   // The main of Inventory page
   const [items, setItems] = React.useState([]);
-  const [orders, setOrders] = React.useState([]);
+  // const [orders, setOrders] = React.useState([]);
 
   async function fetchData() {
     try {
@@ -43,7 +44,9 @@ export function InventoryPage() {
 
       <Card title="Warehouse Inventory">
         {/* <Table items={items} orders={orders} onChange={handleChangeItems} /> */}
-        <CardsSection items={items} handleChangeItems={handleChangeItems}/>
+       
+
+        <CardsSection items={items} handleChangeItems={handleChangeItems} />
       </Card>
     </>
   );

@@ -10,6 +10,10 @@ export default function AddItemPopup({
 }) {
   var image, name, description, price, currentQuantity, minimumQuantity;
 
+  const handleOverlayClick = (e) => {
+    e.stopPropagation();
+  };
+  
   function InsertProcess() {
     image = document.getElementById("image").value;
     name = document.getElementById("name").value;
