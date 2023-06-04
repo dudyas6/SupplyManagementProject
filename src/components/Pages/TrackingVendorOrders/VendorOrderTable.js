@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import VendorOrderRow from "./VendorOrderRow";
-
 import {
   GenerateNewOrder,
   AutoChangeAllVendorOrdersStatus,
 } from "../../../backend/DataFetching/VendorOrdersHandler";
 import FilterComponent from "../../../common/FilterComponent";
+import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
+import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
+
 
 export default function VendorOrderTable({ orders, onChange }) {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
@@ -25,7 +27,10 @@ export default function VendorOrderTable({ orders, onChange }) {
     }
     const filteredOrders = orders.filter((order) => {
       // The actual filter
-      var orderYearMonth = (order.PurchaseDate).split('-')[0] + '-' + order.PurchaseDate.split('-')[1]  // remove the "day" attribute for better comparison
+      var orderYearMonth =
+        order.PurchaseDate.split("-")[0] +
+        "-" +
+        order.PurchaseDate.split("-")[1]; // remove the "day" attribute for better comparison
 
       return (
         (filters.itemName ? order.ItemName.includes(filters.itemName) : true) &&
@@ -107,6 +112,43 @@ export default function VendorOrderTable({ orders, onChange }) {
     setFilteredOrders(sortedOrders);
   }, [orders, sortConfig]);
 
+  //-------------------------- FILTER -----------------------------
+  const getMaxQuantity = () => {
+    if (orders === undefined) return;
+    const maxQuantity = orders.reduce(
+      (max, order) => (order.Quantity > max ? order.Quantity : max),
+      0
+    );
+    return maxQuantity;
+  };
+
+  const getMaxTotalPrice = () => {
+    if (orders === undefined) return;
+
+    const maxTotalPrice = orders.reduce(
+      (max, order) => (order.TotalPrice > max ? order.TotalPrice : max),
+      0
+    );
+    return maxTotalPrice;
+  };
+
+  function getAllOrdersNames() {
+    const uniqueNames = new Set();
+    orders.forEach((order) => {
+      uniqueNames.add(order.ItemName);
+    });
+    return Array.from(uniqueNames);
+  }
+
+
+
+  const filterConfig = {
+    ItemName: { type: "Dropdown", options: getAllOrdersNames() },
+    PurchaseDate: "Date",
+    Quantity: { type: "Range", min: 0, max: getMaxQuantity() },
+    Status: { type: "Dropdown", options: Object.values(StatusEnum) },
+    TotalPrice: { type: "Range", min: 0, max: getMaxTotalPrice() },
+  };
   return (
     <>
       <div className="flex-1 p-3 overflow-hidden">
@@ -131,7 +173,12 @@ export default function VendorOrderTable({ orders, onChange }) {
                 Orders from vendor
               </div>
               <Card>
-                <FilterComponent orders={orders} onFilter={handleFilter} />
+                {/* <FilterComponent orders={orders} onFilter={handleFilter} /> */}
+                <FilterForm
+                  data={orders}
+                  onFilter={handleFilter}
+                  filterConfig={filterConfig}
+                />
               </Card>
               <div className="p-3">
                 <table className="w-full rounded table-responsive">
