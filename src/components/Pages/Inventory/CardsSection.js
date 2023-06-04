@@ -3,10 +3,10 @@ import ItemCard from "./ItemCard";
 import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
 import AddItemPopup from "./AddItemPopup";
-export default function CardsSection({ items, handleChangeItems }) {
+export default function CardsSection({ items, orders, handleChangeItems }) {
   const [showPopup, setShowPopup] = React.useState(false);
   const [filteredOrders, setFilteredOrders] = useState([]);
-
+  const [buttonClicked, setButtonClicked] = useState(false);
   function GenerateCards() {
     const itemsToIterate = filteredOrders ? filteredOrders : items;
     return itemsToIterate.map((item) => (
@@ -17,7 +17,11 @@ export default function CardsSection({ items, handleChangeItems }) {
       />
     ));
   }
-
+  function FilterByOrderInProgress(){
+    const itemsToWorkWith = filteredOrders ? filteredOrders : items;
+    // TODO:
+    // Handle this....
+  }
   const handleFilter = (filters) => {
     // when filter component change something
 
@@ -95,6 +99,21 @@ export default function CardsSection({ items, handleChangeItems }) {
           onFilter={handleFilter}
           filterConfig={filterConfig}
         />
+        <div className="flex flex-wrap justify-center mt-10">
+          <button
+            onClick={() => {
+              setButtonClicked(!buttonClicked);
+              FilterByOrderInProgress();
+            }}
+            className={`${
+              buttonClicked
+                ? "hover:bg-yellow-100 bg-yellow-400"
+                : "bg-yellow-100 hover:bg-yellow-400"
+            } text-yellow-800 text-md font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-400 border border-yellow-400`}
+          >
+            Show items with active order
+          </button>
+        </div>
       </Card>
       {showPopup && <AddItemPopup />}
       <div className="flex flex-wrap justify-center mt-20 gap-10">
