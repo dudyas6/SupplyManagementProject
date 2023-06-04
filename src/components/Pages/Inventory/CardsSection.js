@@ -17,7 +17,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
   }
 
   function onFilter(filters) {
-    console.log(filters);
+    console.log("Im in onFilter!!!");
   }
 
   return (
@@ -31,7 +31,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
           </button>
         </div>
       <Card>
-        <FilterComponent orders={items} onFilter={onFilter} />
+        <FilterComponent data={items} onFilter={onFilter} />
       </Card>
       {showPopup && <AddItemPopup />}
       <div className="flex flex-wrap justify-center mt-20 gap-10">

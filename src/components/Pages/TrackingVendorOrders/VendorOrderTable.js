@@ -9,7 +9,6 @@ import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
 import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 
-
 export default function VendorOrderTable({ orders, onChange }) {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [sortConfig, setSortConfig] = useState({
@@ -20,36 +19,43 @@ export default function VendorOrderTable({ orders, onChange }) {
 
   const handleFilter = (filters) => {
     // When filter component change something
-
+    console.log(filters);
     if (filters === null) {
       setFilteredOrders(orders); // clear filters
       return;
     }
+
+    const filterItemName = filters["ItemName"];
+    const filterPurchaseDate = filters["PurchaseDate"];
+    const filterQuantityRange = filters["Quantity"];
+    const filterStatus = filters["Status"];
+    const filterTotalPrice = filters["TotalPrice"];
+
     const filteredOrders = orders.filter((order) => {
       // The actual filter
       var orderYearMonth =
         order.PurchaseDate.split("-")[0] +
         "-" +
         order.PurchaseDate.split("-")[1]; // remove the "day" attribute for better comparison
-
       return (
-        (filters.itemName ? order.ItemName.includes(filters.itemName) : true) &&
-        (filters.purchaseDateStart && filters.purchaseDateEnd
-          ? orderYearMonth >= filters.purchaseDateStart &&
-            orderYearMonth <= filters.purchaseDateEnd
+        (filterItemName ? order.ItemName.includes(filterItemName) : true) &&
+        (filterPurchaseDate &&
+        filterPurchaseDate["start"] &&
+        filterPurchaseDate["end"]
+          ? orderYearMonth >= filterPurchaseDate["start"] &&
+            orderYearMonth <= filterPurchaseDate["end"]
           : true) &&
-        (filters.quantityRange[1]
-          ? order.Quantity >= filters.quantityRange[0] &&
-            order.Quantity <= filters.quantityRange[1]
+        (filterQuantityRange
+          ? order.Quantity >= filterQuantityRange["start"] &&
+            order.Quantity <= filterQuantityRange["end"]
           : true) &&
-        (filters.status ? order.Status.includes(filters.status) : true) &&
-        (filters.totalPriceRange[1]
-          ? order.TotalPrice >= filters.totalPriceRange[0] &&
-            order.TotalPrice <= filters.totalPriceRange[1]
+        (filterStatus ? order.Status.includes(filterStatus) : true) &&
+        (filterTotalPrice
+          ? order.TotalPrice >= filterTotalPrice["start"] &&
+            order.TotalPrice <= filterTotalPrice["end"]
           : true)
       );
     });
-
     setFilteredOrders(filteredOrders); // change the orders so the page will render again with new info
   };
 
@@ -139,8 +145,6 @@ export default function VendorOrderTable({ orders, onChange }) {
     });
     return Array.from(uniqueNames);
   }
-
-
 
   const filterConfig = {
     ItemName: { type: "Dropdown", options: getAllOrdersNames() },
