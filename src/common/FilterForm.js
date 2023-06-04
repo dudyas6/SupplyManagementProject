@@ -8,17 +8,16 @@ function FilterForm({ data, onFilter, filterConfig }) {
 
   useEffect(() => {
     // Apply filters when they change
-    //   onFilter(filters);
     onFilter(filters);
   }, [filters]);
 
   useEffect(() => {
     // Reset filters when data changes
-    // setFilters({});
+    setFilters({});
   }, [data]);
 
   const handleClear = () => {
-    // setFilters({});
+    setFilters({});
     onFilter(null);
   };
 
@@ -104,7 +103,9 @@ function FilterForm({ data, onFilter, filterConfig }) {
                   <div className="w-12 text-center">{value}</div>
                 )}
               />
-              <div className="w-12 text-center">{Math.ceil(sanitizedRangeValue[1])}</div>
+              <div className="w-12 text-center">
+                {Math.ceil(sanitizedRangeValue[1])}
+              </div>
             </div>
           </div>
         );
@@ -143,24 +144,26 @@ function FilterForm({ data, onFilter, filterConfig }) {
             <input
               type="month"
               value={purchaseDateStart}
-              onChange={(e) =>
-                handleFilterChange(filterName, {
-                  start: e.target.value,
-                  end: purchaseDateEnd,
-                })
-              }
+              onChange={(e) => {
+                handleFilterChange(filterName, [
+                  e.target.value,
+                  purchaseDateEnd,
+                ]);
+                setPurchaseDateStart(e.target.value);
+              }}
               className="p-2 border border-gray-300 rounded"
             />
             <span className="mx-2">to</span>
             <input
               type="month"
               value={purchaseDateEnd}
-              onChange={(e) =>
-                handleFilterChange(filterName, {
-                  start: purchaseDateStart,
-                  end: e.target.value,
-                })
-              }
+              onChange={(e) => {
+                handleFilterChange(filterName, [
+                  purchaseDateStart,
+                  e.target.value,
+                ]);
+                setPurchaseDateEnd(e.target.value);
+              }}
               className="p-2 border border-gray-300 rounded"
             />
           </div>
@@ -176,13 +179,14 @@ function FilterForm({ data, onFilter, filterConfig }) {
       {Object.entries(filterConfig).map(([filterName, filterType]) =>
         renderFilter(filterName, filterType, filterConfig[filterName])
       )}
-      <div className="flex justify-end mt-4 md:mt-0">
+      <div className="flex justify-center md:justify-start">
+
         <button
           type="button"
           onClick={handleClear}
-          className="px-4 py-2 text-white bg-red-500 rounded"
+          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded ml-4"
         >
-          Clear Filters
+          Clear All
         </button>
       </div>
     </form>

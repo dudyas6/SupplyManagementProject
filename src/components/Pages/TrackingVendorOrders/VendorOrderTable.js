@@ -18,8 +18,8 @@ export default function VendorOrderTable({ orders, onChange }) {
   const [filteredOrders, setFilteredOrders] = useState([]);
 
   const handleFilter = (filters) => {
-    // When filter component change something
-    console.log(filters);
+    // when filter component change something
+
     if (filters === null) {
       setFilteredOrders(orders); // clear filters
       return;
@@ -30,7 +30,8 @@ export default function VendorOrderTable({ orders, onChange }) {
     const filterQuantityRange = filters["Quantity"];
     const filterStatus = filters["Status"];
     const filterTotalPrice = filters["TotalPrice"];
-
+    console.log(filterPurchaseDate);
+    
     const filteredOrders = orders.filter((order) => {
       // The actual filter
       var orderYearMonth =
