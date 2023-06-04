@@ -31,7 +31,7 @@ export default function VendorOrderTable({ orders, onChange }) {
     const filterStatus = filters["Status"];
     const filterTotalPrice = filters["TotalPrice"];
     console.log(filterPurchaseDate);
-    
+
     const filteredOrders = orders.filter((order) => {
       // The actual filter
       var orderYearMonth =
@@ -57,7 +57,10 @@ export default function VendorOrderTable({ orders, onChange }) {
           : true)
       );
     });
-    setFilteredOrders(filteredOrders); // change the orders so the page will render again with new info
+    
+    setFilteredOrders(sortedOrders(filteredOrders)); 
+
+
   };
 
   async function CreateNewOrder() {
@@ -99,22 +102,27 @@ export default function VendorOrderTable({ orders, onChange }) {
     setSortConfig({ key, direction });
   };
 
+  const sortedOrders = (ordersToSort) => [...ordersToSort].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === "asc" ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === "asc" ? 1 : -1;
+    }
+    return 0;
+  }); 
+  
   React.useEffect(() => {
     if (!orders || !Array.isArray(orders)) {
       console.log("Orders is not an array:", orders);
       return;
     }
 
+    // i want to sort the filtered orders if not empty
+    const ordersToSort = filteredOrders ? filteredOrders : orders;
+
     // Sort the orders
-    const sortedOrders = [...orders].sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === "asc" ? -1 : 1;
-      }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === "asc" ? 1 : -1;
-      }
-      return 0;
-    });
+    sortedOrders(ordersToSort)
 
     setFilteredOrders(sortedOrders);
   }, [orders, sortConfig]);
