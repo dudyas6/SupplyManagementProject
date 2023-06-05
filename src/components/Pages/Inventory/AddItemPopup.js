@@ -1,110 +1,83 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BsQuestionCircle } from "react-icons/bs";
 import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
+import { ErrorLabel } from "../../../common/LittleLabels";
+import { BiErrorCircle, BiCheckCircle, BiBlock, BiAlarm } from "react-icons/bi";
 
-export default function AddItemPopup({}) {
-  var name, description, price, currentQuantity, minimumQuantity;
+export default function AddItemPopup() {
   const [image, setImage] = React.useState("");
+  const [imageValid, setImageValid] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [nameValid, setNameValid] = React.useState(false);
+  const [description, setDescription] = React.useState("");
+  const [price, setPrice] = React.useState(0);
+  const [minimumQuantity, setMinimumQuantity] = React.useState(0);
 
-  const handleOverlayClick = (e) => {
-    e.stopPropagation();
-  };
+  useEffect(() => {
+    const img = new Image();
+    let invalid_img_url =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIYNXKzO7XHDK_mlo4aCPhsrLG61t-L_IezADgIeKu7Wb7ih9jblI73x92fANb6238jHU&usqp=CAU";
+    img.src = image;
+    img.onload = () => {
+      setImageValid(true);
+    };
+    img.onerror = () => {
+      setImageValid(false);
+      setImage(invalid_img_url);
+    };
+  }, [image]);
 
-  function InsertProcess() {
-    name = document.getElementById("name").value;
-    description = document.getElementById("description").value;
-    price = document.getElementById("price").value;
-    currentQuantity = document.getElementById("currentQuantity").value;
-    minimumQuantity = document.getElementById("minimumQuantity").value;
+  // const handleOverlayClick = (e) => {
+  //   e.stopPropagation();
+  // };
 
-    if (
-      !validateAllInputs(
-        image,
-        name,
-        description,
-        price,
-        currentQuantity,
-        minimumQuantity
-      )
-    )
-      return;
+  // function InsertProcess() {
+  //   if (true)
+  //     return;
 
-    const item = InsertNewItem(
-      {
-        ItemImage: image,
-        ItemName: name,
-        Description: description,
-        Price: price,
-        CurrentQuantity: currentQuantity,
-        MinimumQuantity: minimumQuantity,
-      },
-      thenFunc
-    );
-    return item;
-  }
+  //   const item = InsertNewItem(
+  //     {
+  //       ItemImage: image,
+  //       ItemName: name,
+  //       Description: description,
+  //       Price: price,
+  //       CurrentQuantity: 0,
+  //       MinimumQuantity: minimumQuantity,
+  //     },
+  //     thenFunc
+  //   );
+  //   return item;
+  // }
 
-  async function InsertWrap() {
-    const item = await InsertProcess();
-    // onChange(item);
-  }
+  // async function InsertWrap() {
+  //   const item = await InsertProcess();
+  //   // onChange(item);
+  // }
 
-  function thenFunc() {
-    let msg = "Item inserted to database successfully";
-    setMsgBox("success", msg);
-    setTimeout(() => {
-      // onAccept(true);
-      // onClose();
-    }, 2000);
-  }
+  // function thenFunc() {
+  //   let msg = "Item inserted to database successfully";
+  //   setMsgBox("success", msg);
+  //   setTimeout(() => {
+  //     // onAccept(true);
+  //     // onClose();
+  //   }, 2000);
+  // }
 
-  function validateAllInputs(
-    image,
-    name,
-    description,
-    price,
-    currentQuantity,
-    minimumQuantity
-  ) {
-    let isValid = true;
-    let errorMsg = "";
-    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+  // function setMsgBox(msgType, msg) {
+  //   const errorBox = document.getElementById("error-box");
+  //   if (msgType === "error") {
+  //     errorBox.style.color = "red";
+  //     errorBox.innerHTML = msg;
+  //   } else {
+  //     errorBox.style.color = "green";
+  //     errorBox.innerHTML = msg;
+  //   }
+  //   return;
+  // }
 
-    const allFields = [
-      image,
-      name,
-      description,
-      price,
-      currentQuantity,
-      minimumQuantity,
-    ];
-
-    allFields.forEach((field) => {
-      if (field.trim() === "" || field === null) {
-        errorMsg = "Please fill all fields<br />";
-        isValid = false;
-      }
-    });
-
-    if (!urlRegex.test(image)) {
-      errorMsg += "Please enter a valid image URL";
-      isValid = false;
-    }
-
-    setMsgBox("error", errorMsg);
-    return isValid;
-  }
-
-  function setMsgBox(msgType, msg) {
-    const errorBox = document.getElementById("error-box");
-    if (msgType === "error") {
-      errorBox.style.color = "red";
-      errorBox.innerHTML = msg;
-    } else {
-      errorBox.style.color = "green";
-      errorBox.innerHTML = msg;
-    }
-    return;
-  }
+  useEffect(() => {
+    // ADD VALIDATIONS
+  }, [name, description, price, minimumQuantity, image]);
   return (
     <div>
       <div className="fixed top-0 bottom-0 left-0 right-0 bg-black opacity-60 z-20"></div>
@@ -114,23 +87,44 @@ export default function AddItemPopup({}) {
             <form id="form_id" className="w-full">
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-light mb-1">
+                  <label className="ml-8 block uppercase tracking-wide text-gray-700 text-xs font-light mb-1">
                     Product Name
                   </label>
-                  <input
-                    className="appearance-none block w-full  text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline focus:bg-white-700"
-                    type="text"
-                    placeholder="Please Enter Product Name"
-                  />
+                  <div className="flex flex-row items-center justify-center">
+                    {nameValid ? (
+                      <BiCheckCircle className="h-8 w-8 text-green-500 mb-3" />
+                    ) : (
+                      <BiErrorCircle
+                        title={"Product name shouldn't be empty"}
+                        className="h-8 w-8 text-red-500 mb-3"
+                      />
+                    )}
+                    <input
+                      className="appearance-none block w-full  text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline focus:bg-white-700"
+                      type="text"
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Please Enter Product Name"
+                    />
+                  </div>
                   <div className="w-full">
-                    <label className="block uppercase tracking-wide text-grey-darker text-xs font-light mb-1">
+                    <label className="ml-8 block uppercase tracking-wide text-grey-darker text-xs font-light mb-1">
                       Product Description
                     </label>
-                    <textarea
-                      className="appearance-none block w-full text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline focus:bg-white-700 min-h-[8rem]"
-                      type="text"
-                      placeholder="Enter Product Description"
-                    />
+                    <div className="flex flex-row">
+                      {nameValid ? (
+                        <BiCheckCircle className="h-8 w-8 text-green-500 mb-3" />
+                      ) : (
+                        <BiErrorCircle
+                          title={"Description shouldn't be empty"}
+                          className="h-8 w-8 text-red-500 mb-3"
+                        />
+                      )}
+                      <textarea
+                        className="appearance-none block w-full text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline focus:bg-white-700 min-h-[8rem]"
+                        type="text"
+                        placeholder="Enter Product Description"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -140,17 +134,12 @@ export default function AddItemPopup({}) {
                       htmlFor="image"
                       className="text-gray-700 flex items-center justify-center"
                     >
-                      {image ? (
-                        <img
-                          src={image}
-                          alt="Invalid"
-                          className="w-full h-40 object-contain rounded-lg image-preview overflow-hidden"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-20 w-20 border-2 border-gray-300 rounded-lg">
-                          <BsQuestionCircle className="h-8 w-8 text-gray-500" />
-                        </div>
-                      )}
+                      {/*eslint-disable-next-line jsx-a11y/alt-text*/}
+                      <img
+                        src={image}
+                        className="w-full h-40 object-contain rounded-lg image-preview overflow-hidden"
+                      />
+
                       <span className="ml-2"></span>
                     </label>
                     <input
@@ -163,18 +152,7 @@ export default function AddItemPopup({}) {
                 </div>
               </div>
 
-              <div className="flex flex-wrap -mx-3 mb-2">
-                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                  <label className="block uppercase tracking-wide text-grey-darker text-xs font-light mb-1">
-                    Starting Quantity
-                  </label>
-                  <input
-                    className="appearance-none block w-full bg-grey-200 text-grey-darker bg-gray-200 border rounded py-3 px-4 leading-tight"
-                    type="number"
-                    value={0}
-                    disabled={true}
-                  />
-                </div>
+              <div className="flex flex-row -mx-3 mb-2">
                 <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                   <label className="block uppercase tracking-wide text-grey-darker text-xs font-light mb-1">
                     Minimum Quantity
@@ -200,12 +178,12 @@ export default function AddItemPopup({}) {
               </div>
 
               {/* Buttons Section */}
-              <div className="mt-5 space-x-2">
-                <button className="bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
+              <div className="mt-5 space-x-2 flex flex-row ">
+                <button className="max-h-14 bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
                   Submit
                 </button>
-                <button className="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
-                  close
+                <button className="max-h-14 bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
+                  Close
                 </button>
               </div>
             </form>
