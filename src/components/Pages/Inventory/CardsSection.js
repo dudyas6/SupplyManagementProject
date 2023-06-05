@@ -3,12 +3,14 @@ import ItemCard from "./ItemCard";
 import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
 import AddItemPopup from "./AddItemPopup";
+import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
+
 export default function CardsSection({ items, orders, handleChangeItems }) {
   const [showPopup, setShowPopup] = React.useState(false);
-  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);
   function GenerateCards() {
-    const itemsToIterate = filteredOrders ? filteredOrders : items;
+    const itemsToIterate = filteredItems ? filteredItems : items;
     return itemsToIterate.map((item) => (
       <ItemCard
         key={item.ItemId}
@@ -17,16 +19,39 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
       />
     ));
   }
-  function FilterByOrderInProgress(){
-    const itemsToWorkWith = filteredOrders ? filteredOrders : items;
-    // TODO:
-    // Handle this....
+
+  function FilterByOrderInProgress() {
+    if (buttonClicked) {
+      // remove filter
+      setFilteredItems(items);
+      return;
+    }
+   
+    const itemsToWorkWith = filteredItems ? filteredItems : items;
+    const itemsAfterFilter = [];
+
+    for (const item of itemsToWorkWith) {
+      const itemOrders = orders.filter((order) => {
+        return (
+          order.ItemName === item.ItemName &&
+          (order.Status !== StatusEnum.COMPLETED ||
+            (order.Status === StatusEnum.COMPLETED &&
+              !order.IsAddedToWareHouse))
+        );
+      });
+
+      if (itemOrders.length > 0) {
+        itemsAfterFilter.push(item);
+      }
+    }
+    if (itemsAfterFilter.length > 0) setFilteredItems(itemsAfterFilter);
   }
+
   const handleFilter = (filters) => {
     // when filter component change something
 
     if (filters === null) {
-      setFilteredOrders(items); // clear filters
+      setFilteredItems(items); // clear filters
       return;
     }
 
@@ -34,7 +59,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
     const filterQuantityRange = filters["CurrentQuantity"];
     const filterPrice = filters["Price"];
 
-    const filteredOrders = items.filter((item) => {
+    const itemsAfterFilter = items.filter((item) => {
       // The actual filter
 
       return (
@@ -50,7 +75,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
       );
     });
 
-    setFilteredOrders(filteredOrders);
+    setFilteredItems(itemsAfterFilter);
   };
 
   const getMaxCurrentQuantity = () => {
@@ -119,11 +144,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
           </button>
         </div>
       </Card>
-      {showPopup && (
-        <AddItemPopup
-          onClose={addItemPopupHandle}
-        />
-      )}
+      {showPopup && <AddItemPopup onClose={addItemPopupHandle} />}
       <div className="flex flex-wrap justify-center mt-20 gap-10">
         {GenerateCards()}
       </div>

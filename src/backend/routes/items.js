@@ -46,6 +46,13 @@ router.route("/get").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/getRandomItem").get((req, res) => {
+  items
+    .find()
+    .then((item) => res.json(item))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 router.route("/add").post((req, res) => {
   AddItemToDB(req, res);
 });

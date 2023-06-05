@@ -15,13 +15,13 @@ export default function VendorOrderTable({ orders, onChange }) {
     key: "",
     direction: "",
   });
-  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [filteredOrders, setFilteredItems] = useState([]);
 
   const handleFilter = (filters) => {
     // when filter component change something
 
     if (filters === null) {
-      setFilteredOrders(orders); // clear filters
+      setFilteredItems(orders); // clear filters
       return;
     }
 
@@ -58,7 +58,7 @@ export default function VendorOrderTable({ orders, onChange }) {
       );
     });
     
-    setFilteredOrders(sortedOrders(filteredOrders)); 
+    setFilteredItems(sortedOrders(filteredOrders)); 
 
 
   };
@@ -124,7 +124,7 @@ export default function VendorOrderTable({ orders, onChange }) {
     // Sort the orders
     sortedOrders(ordersToSort)
 
-    setFilteredOrders(sortedOrders);
+    setFilteredItems(sortedOrders);
   }, [orders, sortConfig]);
 
   //-------------------------- FILTER -----------------------------

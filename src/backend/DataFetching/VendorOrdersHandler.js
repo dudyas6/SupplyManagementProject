@@ -1,4 +1,6 @@
 import axios from "axios";
+import { GetRandomItem } from "./ItemsHandler";
+
 class SingleOrder {
   constructor(
     OrderId,
@@ -25,7 +27,7 @@ export const StatusEnum = {
 };
 
 /// Create random order from vendor - can be deleted later
-export function GenerateNewOrder() {
+export async function GenerateNewOrder() {
   /// Generate random order into DB
   // apply today as PurchaseDate
 
@@ -38,7 +40,9 @@ export function GenerateNewOrder() {
   const formattedDate = `${year}-${month}-${day}`;
 
   // Get random item
-
+  var randomItem = await GetRandomItem();
+  if (randomItem === null || randomItem === undefined)
+    randomItem = "Random order";
   // Get Random quantity...
   const max = 100.0;
   const min = 2.2;
@@ -52,7 +56,7 @@ export function GenerateNewOrder() {
   // create SingleOrder object with item ID and Name
   const order = new SingleOrder(
     -1,
-    "Random Order",
+    randomItem.ItemName,
     formattedDate,
     randomQuantity,
     enumValues[randomIndex],
@@ -158,7 +162,7 @@ export function AutoChangeAllVendorOrdersStatus() {
 }
 
 export function GetCompletedAndNotAddedOrders() {
-  // Get all completed orders which not added to warehouse yet. 
+  // Get all completed orders which not added to warehouse yet.
   return axios
     .get(`http://localhost:3001/orders/vendor/get-completed-orders/`)
     .then((res) => {
@@ -169,8 +173,8 @@ export function GetCompletedAndNotAddedOrders() {
     });
 }
 
-export function AddCompletedOrdersToWarehouse(){
-  // Activate the addition to warehouse for all orders which status == completed 
+export function AddCompletedOrdersToWarehouse() {
+  // Activate the addition to warehouse for all orders which status == completed
   return axios
     .get(`http://localhost:3001/orders/vendor/completed-orders-change/`)
     .then((res) => {

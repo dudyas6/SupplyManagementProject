@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { ErrorLabel, SuccessLabel } from "../../../common/LittleLabels";
-import { UpdateItem } from "../../../backend/DataFetching/ItemsHandler";
+import {
+  DeleteItem,
+  UpdateItem,
+} from "../../../backend/DataFetching/ItemsHandler";
 const ItemCard = ({ item, handleChangeItems }) => {
   const {
     ItemId,
@@ -29,6 +32,8 @@ const ItemCard = ({ item, handleChangeItems }) => {
   const onDelete = () => {
     toggleDropdown();
     // Handle delete functionality
+    DeleteItem(item.ItemId);
+    handleChangeItems(null);
   };
 
   const handleChange = (e) => {

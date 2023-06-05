@@ -1,23 +1,21 @@
 import React from "react";
-import Table from "./Table";
 import InventoryStatisticsCubes from "./InventoryStatisticsCubes";
 import { Card } from "../../../common/Elements";
 import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
 import { GetAllOrders } from "../../../backend/DataFetching/VendorOrdersHandler";
 import CardsSection from "./CardsSection";
-import AddItemPopup from "./AddItemPopup";
 
 export function InventoryPage() {
   // The main of Inventory page
   const [items, setItems] = React.useState([]);
-  // const [orders, setOrders] = React.useState([]);
+  const [orders, setOrders] = React.useState([]);
 
   async function fetchData() {
     try {
       const ItemsResponse = await GetAllItems();
       setItems(ItemsResponse);
-      // const ordersRespone = await GetAllOrders();
-      // setOrders(ordersRespone);
+       const ordersRespone = await GetAllOrders();
+       setOrders(ordersRespone);
     } catch (error) {
       console.log(error);
     }
@@ -28,12 +26,11 @@ export function InventoryPage() {
   }, []);
 
   async function handleChangeItems(updatedItems) {
-    console.log(updatedItems);
     if (updatedItems === null || updatedItems === undefined) {
-      await fetchData();
+      await fetchData();  // for delete / update
       return;
-    } else if (updatedItems.length > 1) setItems(updatedItems);
-    else setItems(items.concat(updatedItems));
+    } else if (updatedItems.length > 1) setItems(updatedItems);  // for filtering change
+    else setItems(items.concat(updatedItems)); // for add
   }
 
   return (
@@ -42,11 +39,8 @@ export function InventoryPage() {
         <InventoryStatisticsCubes items={items} />
       </Card>
 
-      <Card title="Warehouse Inventory">
-        {/* <Table items={items} orders={orders} onChange={handleChangeItems} /> */}
-       
-
-        <CardsSection items={items} handleChangeItems={handleChangeItems} />
+      <Card title="Warehouse Inventory">       
+        <CardsSection items={items} orders={orders} handleChangeItems={handleChangeItems} />
       </Card>
     </>
   );
