@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
-import { BsQuestionCircle } from "react-icons/bs";
 import { InsertNewItem } from "../../../backend/DataFetching/ItemsHandler";
-import { ErrorLabel } from "../../../common/LittleLabels";
-import { BiErrorCircle, BiCheckCircle, BiBlock, BiAlarm } from "react-icons/bi";
+import { BiErrorCircle, BiCheckCircle } from "react-icons/bi";
 
-export default function AddItemPopup() {
+export default function AddItemPopup({ onClose, handleChangeItems }) {
   const [image, setImage] = React.useState("");
   const [imageValid, setImageValid] = React.useState(false);
   const [name, setName] = React.useState("");
   const [nameValid, setNameValid] = React.useState(false);
+  const [descriptionValid, setDescriptionValid] = React.useState(false);
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState(0);
   const [minimumQuantity, setMinimumQuantity] = React.useState(0);
@@ -27,56 +26,66 @@ export default function AddItemPopup() {
     };
   }, [image]);
 
-  // const handleOverlayClick = (e) => {
-  //   e.stopPropagation();
-  // };
+  function requestSubmit(e) {
+    e.preventDefault();
+    console.log(nameValid && descriptionValid);
+    if (!(nameValid && descriptionValid)) {
+      setMsgBox("error", "Please fill all the fields");
+      return;
+    }
+    InsertWrap();
+  }
 
-  // function InsertProcess() {
-  //   if (true)
-  //     return;
+  function InsertProcess() {
+    const item = InsertNewItem(
+      {
+        ItemImage: image,
+        ItemName: name,
+        Description: description,
+        Price: price,
+        CurrentQuantity: 0,
+        MinimumQuantity: minimumQuantity,
+      },
+      thenFunc
+    );
+    return item;
+  }
 
-  //   const item = InsertNewItem(
-  //     {
-  //       ItemImage: image,
-  //       ItemName: name,
-  //       Description: description,
-  //       Price: price,
-  //       CurrentQuantity: 0,
-  //       MinimumQuantity: minimumQuantity,
-  //     },
-  //     thenFunc
-  //   );
-  //   return item;
-  // }
+  async function InsertWrap() {
 
-  // async function InsertWrap() {
-  //   const item = await InsertProcess();
-  //   // onChange(item);
-  // }
+    const item = await InsertProcess();
+    handleChangeItems(item);
+  }
 
-  // function thenFunc() {
-  //   let msg = "Item inserted to database successfully";
-  //   setMsgBox("success", msg);
-  //   setTimeout(() => {
-  //     // onAccept(true);
-  //     // onClose();
-  //   }, 2000);
-  // }
+  function thenFunc() {
+    console.log("thenFunc");
+    let msg = "Item inserted to database successfully";
+    setMsgBox("success", msg);
+    setTimeout(() => {
+      onClose();
+    }, 2000);
+  }
 
-  // function setMsgBox(msgType, msg) {
-  //   const errorBox = document.getElementById("error-box");
-  //   if (msgType === "error") {
-  //     errorBox.style.color = "red";
-  //     errorBox.innerHTML = msg;
-  //   } else {
-  //     errorBox.style.color = "green";
-  //     errorBox.innerHTML = msg;
-  //   }
-  //   return;
-  // }
+  function setMsgBox(msgType, msg) {
+    const errorBox = document.getElementById("error-box");
+    if (msgType === "error") {
+      errorBox.style.color = "red";
+      errorBox.innerHTML = msg;
+      errorBox.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
+    } else {
+      errorBox.style.color = "green";
+      errorBox.innerHTML = msg;
+      errorBox.style.backgroundColor = "rgba(0, 255, 0, 0.2)";
+    }
+    return;
+  }
 
   useEffect(() => {
     // ADD VALIDATIONS
+    name.length > 0 ? setNameValid(true) : setNameValid(false);
+    description.length > 0
+      ? setDescriptionValid(true)
+      : setDescriptionValid(false);
   }, [name, description, price, minimumQuantity, image]);
   return (
     <div>
@@ -111,7 +120,7 @@ export default function AddItemPopup() {
                       Product Description
                     </label>
                     <div className="flex flex-row">
-                      {nameValid ? (
+                      {descriptionValid ? (
                         <BiCheckCircle className="h-8 w-8 text-green-500 mb-3" />
                       ) : (
                         <BiErrorCircle
@@ -122,6 +131,7 @@ export default function AddItemPopup() {
                       <textarea
                         className="appearance-none block w-full text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline focus:bg-white-700 min-h-[8rem]"
                         type="text"
+                        onChange={(e) => setDescription(e.target.value)}
                         placeholder="Enter Product Description"
                       />
                     </div>
@@ -160,6 +170,7 @@ export default function AddItemPopup() {
                   <input
                     className="appearance-none block w-full  text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline focus:bg-white-700"
                     type="number"
+                    onChange={(e) => setMinimumQuantity(e.target.value)}
                     min={0}
                     placeholder="0"
                   />
@@ -172,6 +183,7 @@ export default function AddItemPopup() {
                     className="appearance-none block w-full  text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline focus:bg-white-700"
                     type="number"
                     min={0}
+                    onChange={(e) => setPrice(e.target.value)}
                     placeholder="0"
                   />
                 </div>
@@ -179,12 +191,21 @@ export default function AddItemPopup() {
 
               {/* Buttons Section */}
               <div className="mt-5 space-x-2 flex flex-row ">
-                <button className="max-h-14 bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={requestSubmit}
+                  className="max-h-14 bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded"
+                >
                   Submit
                 </button>
-                <button className="max-h-14 bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={onClose}
+                  className="max-h-14 bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
+                >
                   Close
                 </button>
+                <div className="flex text-center self-center w-full">
+                  <span id="error-box" className="w-full"></span>
+                </div>
               </div>
             </form>
           </div>

@@ -107,6 +107,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
     CurrentQuantity: { type: "Range", min: 0, max: getMaxCurrentQuantity() },
     Price: { type: "Range", min: 0, max: getMaxPrice() },
   };
+
   function addItemPopupHandle() {
     setShowPopup(!showPopup);
   }
@@ -144,7 +145,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
           </button>
         </div>
       </Card>
-      {showPopup && <AddItemPopup onClose={addItemPopupHandle} />}
+      {showPopup && <AddItemPopup onClose={addItemPopupHandle} handleChangeItems={handleChangeItems} />}
       <div className="flex flex-wrap justify-center mt-20 gap-10">
         {GenerateCards()}
       </div>

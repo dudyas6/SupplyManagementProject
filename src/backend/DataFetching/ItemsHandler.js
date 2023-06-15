@@ -67,6 +67,7 @@ export function GetRandomItem() {
 }
 
 export function InsertNewItem(item, thenFunction) {
+  console.log(item);
   return axios
     .post(`http://localhost:3001/items/add/`, item)
     .then((res) => {
@@ -74,7 +75,7 @@ export function InsertNewItem(item, thenFunction) {
       return res.data;
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
     });
 }
 

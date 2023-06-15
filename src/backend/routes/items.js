@@ -5,6 +5,7 @@ function AddItemToDB(req, res) {
   return items
     .findOne({}, {}, { sort: { ItemId: -1 } }) // Find the last item by sorting in descending order of ItemId
     .then(async (lastItem) => {
+      console.log(lastItem);
       const ItemImage = req.body.ItemImage;
       const ItemName = req.body.ItemName;
       const Description = req.body.Description;
