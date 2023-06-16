@@ -29,10 +29,17 @@ const ItemCard = ({ item, handleChangeItems }) => {
     setIsEditing(true);
   };
 
-  const onDelete = () => {
+  const handleCreateOrder = () => {
+    // Handle create order functionality
+    // add popup of how many items to order
+    // add popup of are you sure
+    // add popup of success
+  };
+  
+  const onDelete = async () => {
     toggleDropdown();
-    // Handle delete functionality
-    DeleteItem(item.ItemId);
+    // Handle delete functionality - add popup of are you sure and delete all orders of it
+    await DeleteItem(item.ItemId);
     handleChangeItems(null);
   };
 
@@ -213,6 +220,7 @@ const ItemCard = ({ item, handleChangeItems }) => {
             <button
               type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={handleCreateOrder}
             >
               Create order
             </button>
