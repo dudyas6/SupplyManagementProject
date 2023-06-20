@@ -93,6 +93,7 @@ export default function AddItemPopup({ onClose, handleChangeItems }) {
       <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center z-30">
         <div className="flex flex-col p-4 rounded-lg bg-white-lightest">
           <div className="relative">
+            <div className="w-full text-center mb-3 font-bold">New Product</div>
             <form id="form_id" className="w-full">
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
