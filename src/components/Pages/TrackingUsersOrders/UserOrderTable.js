@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import VendorOrderRow from "./VendorOrderRow";
-import {
-  GenerateNewOrder,
-  AutoChangeAllVendorOrdersStatus,
-} from "../../../backend/DataFetching/VendorOrdersHandler";
+import VendorOrderRow from "../TrackingVendorOrders/VendorOrderRow";
+import { GenerateNewOrder } from "../../../backend/DataFetching/UsersOrdersHandler";
 import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
 import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
-import { Tooltip } from "react-tooltip";
 
-export default function VendorOrderTable({ orders, onChange }) {
+export default function UserOrderTable({ orders, onChange }) {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [sortConfig, setSortConfig] = useState({
     key: "",
@@ -20,7 +16,7 @@ export default function VendorOrderTable({ orders, onChange }) {
   const handleFilter = (filters) => {
     // when filter component change something
 
-    if (filters === null) {
+    if (filters === null || filters === undefined) {
       setFilteredItems(orders); // clear filters
       return;
     }
@@ -68,12 +64,8 @@ export default function VendorOrderTable({ orders, onChange }) {
     setIsCreatingOrder(true);
     const order = await GenerateNewOrder();
     if (onChange) onChange(order);
+    if (order == null) console.log("Handle me with popup - i dont have quantity to order");
     setIsCreatingOrder(false);
-  }
-
-  async function UpdateOrdersStatus() {
-    await AutoChangeAllVendorOrdersStatus();
-    if (onChange) onChange(null);
   }
 
   function GenerateTableRows(ordersToRender) {
@@ -87,7 +79,7 @@ export default function VendorOrderTable({ orders, onChange }) {
     // filteredOrders = orders after sort (if applied) and after filter (if applied)
 
     return filteredOrders.map((order) => (
-      <VendorOrderRow key={order.OrderId} order={order} onChange={onChange} />
+      <VendorOrderRow key={order.OrderId} order={order} onChange={null} />
     ));
   }
 
@@ -147,9 +139,10 @@ export default function VendorOrderTable({ orders, onChange }) {
 
   function getAllOrdersNames() {
     const uniqueNames = new Set();
-    orders.forEach((order) => {
-      uniqueNames.add(order.ItemName);
-    });
+    if (orders)
+      orders.forEach((order) => {
+        uniqueNames.add(order.ItemName);
+      });
     return Array.from(uniqueNames);
   }
 
@@ -164,28 +157,18 @@ export default function VendorOrderTable({ orders, onChange }) {
     <>
       <div className="flex-1 p-3 overflow-hidden">
         <div className="flex flex-col items-center ">
-          {onChange && (
-            <div className="w-full mt-4 mb-2">
-              <button
-                onClick={CreateNewOrder}
-                className="float-right m-5 px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
-              >
-                + Add Order
-              </button>
-
-              <button
-                onClick={UpdateOrdersStatus}
-                className="float-right m-5 px-4 py-2 font-bold text-white bg-violet-400 rounded-full hover:bg-violet-700"
-              >
-
-                Auto-update Orders
-              </button>
-            </div>
-          )}
+          <div className="w-full mt-4 mb-2">
+            <button
+              onClick={CreateNewOrder}
+              className="float-right m-5 px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
+            >
+              + Add Order
+            </button>
+          </div>
           <div className="flex flex-col flex-1 w-full mx-2">
             <div className="w-full mb-2 border border-gray-300 border-solid rounded shadow-sm">
               <div className="px-2 py-3 bg-gray-200 border-b border-gray-200 border-solid">
-                {onChange ? "Orders from vendor" : "History"}
+                {onChange ? "Orders from users" : "History"}
               </div>
               <Card>
                 <FilterForm
@@ -270,9 +253,9 @@ export default function VendorOrderTable({ orders, onChange }) {
                           <span>▼</span>
                         )}
                       </th>
-                      {onChange && (
+                      {/* {onChange && (
                         <th className="w-1/4 px-6 py-2 border">Actions</th>
-                      )}
+                      )} */}
                     </tr>
                   </thead>
                   <tbody>{GenerateTableRows(filteredOrders)}</tbody>

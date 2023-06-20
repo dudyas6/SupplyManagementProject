@@ -1,7 +1,18 @@
 import axios from "axios";
 import { GetRandomItem } from "./ItemsHandler";
 
-class SingleOrder {
+export class Order {
+  constructor(OrderId, ItemName, PurchaseDate, Quantity, Status, TotalPrice) {
+    this.OrderId = OrderId;
+    this.ItemName = ItemName;
+    this.PurchaseDate = PurchaseDate;
+    this.Quantity = Quantity;
+    this.Status = Status;
+    this.TotalPrice = TotalPrice;
+  }
+}
+
+class SingleOrder extends Order {
   constructor(
     OrderId,
     ItemName,
@@ -11,12 +22,7 @@ class SingleOrder {
     TotalPrice,
     IsAddedToWarehouse
   ) {
-    this.OrderId = OrderId;
-    this.ItemName = ItemName;
-    this.PurchaseDate = PurchaseDate;
-    this.Quantity = Quantity;
-    this.Status = Status;
-    this.TotalPrice = TotalPrice;
+    super(OrderId, ItemName, PurchaseDate, Quantity, Status, TotalPrice);
     this.IsAddedToWarehouse = IsAddedToWarehouse;
   }
 }

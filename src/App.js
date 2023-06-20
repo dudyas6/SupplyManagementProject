@@ -15,6 +15,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
+import { TrackingPageUser } from "./components/Pages/TrackingUsersOrders/TrackingPageUser";
 
 
 function App() {
@@ -25,7 +26,8 @@ function App() {
         <Route element={<AuthenticatedLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/warehouse" element={<InventoryPage />} />
-          <Route path="/tracking" element={<TrackingPage />} />
+          <Route path="/trackingOrdersVendor" element={<TrackingPage />} />
+          <Route path="/trackingOrdersUsers" element={<TrackingPageUser />} />
         </Route>
       </Routes>
     </Router>
