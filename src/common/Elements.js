@@ -112,14 +112,14 @@ export function CreateOrderPopup({ onClose, onSubmit, item }) {
     setOrderAmount(event.target.value);
   };
 
-  function handleSubmit(orderAmount) {
+  async function handleSubmit(orderAmount) {
     if (orderAmount <= 0) {
       setFailureText("Amount value must be positive number.");
       return;
     }
-    const orderId = onSubmit(item.ItemName, orderAmount, item.Price);
+    const orderId = await onSubmit(item.ItemName, orderAmount, item.Price);
     if (orderId !== -1) {
-      setSuccessText("Order created successfully");
+      setSuccessText("Order created successfully, Order Id #" + orderId);
       setFailureText("");
       setTimeout(() => {
         onClose(false);
