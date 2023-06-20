@@ -113,9 +113,14 @@ export function CreateOrderPopup({ onClose, onSubmit, item }) {
   };
 
   function handleSubmit(orderAmount) {
+    if (orderAmount <= 0) {
+      setFailureText("Amount value must be positive number.");
+      return;
+    }
     const orderId = onSubmit(item.ItemName, orderAmount, item.Price);
     if (orderId !== -1) {
       setSuccessText("Order created successfully");
+      setFailureText("");
       setTimeout(() => {
         onClose(false);
       }, 2000);
@@ -160,7 +165,7 @@ export function CreateOrderPopup({ onClose, onSubmit, item }) {
                 </button>
               </div>
               <div className="text-center bg-green-400">{successText}</div>
-              <div className="text-center bg-red-400">{failureText}</div>
+              <div className="text-center bg-red-300">{failureText}</div>
             </div>
           </div>
         </div>

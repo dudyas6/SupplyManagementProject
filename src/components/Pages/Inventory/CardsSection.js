@@ -135,7 +135,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
   }
 
   async function handleCreateOrderRequest(item, orderAmount, itemPrice) {
-    const order = await CreateNewVendorOrder(item, orderAmount);
+    const order = await CreateNewVendorOrder(item, orderAmount, itemPrice);
     return order.OrderId;
   }
 
