@@ -17,11 +17,6 @@ export default function VendorOrderRow({ order }) {
       <td className="py-2 text-center border">{order.Quantity}</td>
       <td className="py-2 text-center border">{order.Status}</td>
       <td className="py-2 text-center border">{order.TotalPrice}</td>
-      <td className="flex items-center justify-center py-2 border">
-        <button>
-          <img className="w-10 h-10" src={editImg} alt="edit" />
-        </button>
-      </td>
     </tr>
   );
 }

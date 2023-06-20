@@ -63,14 +63,9 @@ export async function GenerateNewOrder() {
     calcTotPrice
   );
 
-  const thenFunction = (res) => {
-    console.log(res.data);
-  };
-
   return axios
     .post(`http://localhost:3001/orders/vendor/add/`, order)
     .then((res) => {
-      thenFunction(res);
       return res.data;
     })
     .catch((error) => {

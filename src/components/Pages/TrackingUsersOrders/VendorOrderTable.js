@@ -141,7 +141,6 @@ export default function VendorOrderTable({ orders, onChange }) {
                           : "▼"}
                       </th>{" "}
                       <th className="w-1/4 px-6 py-2 border">Actions</th>{" "}
-                      {/* Pending, shipping, recieve ? */}
                     </tr>
                   </thead>
                   <tbody>{generateTableRows(orders)}</tbody>

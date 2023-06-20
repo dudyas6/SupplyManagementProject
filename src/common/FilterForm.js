@@ -73,7 +73,7 @@ function FilterForm({ data, onFilter, filterConfig }) {
             <div className="flex space-x-2 items-center">
               <div className="w-12 text-center">{sanitizedRangeValue[0]}</div>
               <Range
-                values={sanitizedRangeValue}
+                values={[sanitizedRangeValue[0], Math.ceil(sanitizedRangeValue[1])]}
                 step={step}
                 min={min}
                 max={Math.ceil(max)}

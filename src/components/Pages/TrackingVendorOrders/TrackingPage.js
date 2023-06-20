@@ -2,7 +2,7 @@ import React from "react";
 import { VendorStatisticsCubes } from "./VendorStatisticsCubes";
 import VendorOrderStatistics from "./VendorOrderStatistics";
 import { Card } from "../../../common/Elements";
-import { GetAllOrders } from "../../../backend/DataFetching/VendorOrdersHandler";
+import { GetAllOrders, StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import VendorOrderTable from "./VendorOrderTable";
 
 export function TrackingPage() {
@@ -28,6 +28,8 @@ export function TrackingPage() {
       if (updatedOrders.length > 1) setOrders(updatedOrders);
       else setOrders(orders.concat(updatedOrders));
   }
+
+  
   
   return (
     <>
@@ -41,8 +43,12 @@ export function TrackingPage() {
       {/* TABLE OF ORDERS */}
 
       <Card title="Orders from vendor">
-        <VendorOrderTable orders={orders} onChange={handleTableChange} />
+        <VendorOrderTable orders={orders.filter((order) => !(order.Status === StatusEnum.COMPLETED && order.IsAddedToWarehouse))} onChange={handleTableChange} />
+        <hr className="my-8 border-t-4 border-blue-600 rounded-full transition-all duration-300" />
+        <VendorOrderTable orders={orders.filter((order) => order.Status === StatusEnum.COMPLETED && order.IsAddedToWarehouse)} onChange={null}/>
       </Card>
     </>
   );
 }
+
+

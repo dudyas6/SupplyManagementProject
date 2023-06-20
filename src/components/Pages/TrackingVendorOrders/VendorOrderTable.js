@@ -4,7 +4,6 @@ import {
   GenerateNewOrder,
   AutoChangeAllVendorOrdersStatus,
 } from "../../../backend/DataFetching/VendorOrdersHandler";
-import FilterComponent from "../../../common/FilterComponent";
 import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
 import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
@@ -30,7 +29,6 @@ export default function VendorOrderTable({ orders, onChange }) {
     const filterQuantityRange = filters["Quantity"];
     const filterStatus = filters["Status"];
     const filterTotalPrice = filters["TotalPrice"];
-    console.log(filterPurchaseDate);
 
     const filteredOrders = orders.filter((order) => {
       // The actual filter
@@ -57,10 +55,8 @@ export default function VendorOrderTable({ orders, onChange }) {
           : true)
       );
     });
-    
-    setFilteredItems(sortedOrders(filteredOrders)); 
 
-
+    setFilteredItems(sortedOrders(filteredOrders));
   };
 
   async function CreateNewOrder() {
@@ -70,13 +66,13 @@ export default function VendorOrderTable({ orders, onChange }) {
     if (isCreatingOrder) return;
     setIsCreatingOrder(true);
     const order = await GenerateNewOrder();
-    onChange(order);
+    if (onChange) onChange(order);
     setIsCreatingOrder(false);
   }
 
   async function UpdateOrdersStatus() {
     await AutoChangeAllVendorOrdersStatus();
-    onChange(null);
+    if (onChange) onChange(null);
   }
 
   function GenerateTableRows(ordersToRender) {
@@ -102,16 +98,17 @@ export default function VendorOrderTable({ orders, onChange }) {
     setSortConfig({ key, direction });
   };
 
-  const sortedOrders = (ordersToSort) => [...ordersToSort].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === "asc" ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === "asc" ? 1 : -1;
-    }
-    return 0;
-  }); 
-  
+  const sortedOrders = (ordersToSort) =>
+    [...ordersToSort].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === "asc" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+
   React.useEffect(() => {
     if (!orders || !Array.isArray(orders)) {
       console.log("Orders is not an array:", orders);
@@ -122,7 +119,7 @@ export default function VendorOrderTable({ orders, onChange }) {
     const ordersToSort = filteredOrders ? filteredOrders : orders;
 
     // Sort the orders
-    sortedOrders(ordersToSort)
+    sortedOrders(ordersToSort);
 
     setFilteredItems(sortedOrders);
   }, [orders, sortConfig]);
@@ -166,27 +163,28 @@ export default function VendorOrderTable({ orders, onChange }) {
     <>
       <div className="flex-1 p-3 overflow-hidden">
         <div className="flex flex-col items-center ">
-          <div className="w-full mt-4 mb-2">
-            <button
-              onClick={CreateNewOrder}
-              className="float-right m-5 px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
-            >
-              + Add Order
-            </button>
-            <button
-              onClick={UpdateOrdersStatus}
-              className="float-right m-5 px-4 py-2 font-bold text-white bg-violet-400 rounded-full hover:bg-violet-700"
-            >
-              Auto-update Orders
-            </button>
-          </div>
+          {onChange && (
+            <div className="w-full mt-4 mb-2">
+              <button
+                onClick={CreateNewOrder}
+                className="float-right m-5 px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
+              >
+                + Add Order
+              </button>
+              <button
+                onClick={UpdateOrdersStatus}
+                className="float-right m-5 px-4 py-2 font-bold text-white bg-violet-400 rounded-full hover:bg-violet-700"
+              >
+                Auto-update Orders
+              </button>
+            </div>
+          )}
           <div className="flex flex-col flex-1 w-full mx-2">
             <div className="w-full mb-2 border border-gray-300 border-solid rounded shadow-sm">
               <div className="px-2 py-3 bg-gray-200 border-b border-gray-200 border-solid">
-                Orders from vendor
+                {onChange ? "Orders from vendor" : "History"}
               </div>
               <Card>
-                {/* <FilterComponent orders={orders} onFilter={handleFilter} /> */}
                 <FilterForm
                   data={orders}
                   onFilter={handleFilter}
@@ -269,7 +267,9 @@ export default function VendorOrderTable({ orders, onChange }) {
                           <span>▼</span>
                         )}
                       </th>
-                      <th className="w-1/4 px-6 py-2 border">Actions</th>
+                      {onChange && (
+                        <th className="w-1/4 px-6 py-2 border">Actions</th>
+                      )}
                     </tr>
                   </thead>
                   <tbody>{GenerateTableRows(filteredOrders)}</tbody>

@@ -71,7 +71,7 @@ async function AddItem(itemToAdd) {
   }
 }
 
-async function AddCompletedOrdersToWarehouse() {
+async function AddCompletedOrdersToWarehouse(res) {
   /* The function searchs for orders whice their status is "Completed".
    *  For each order, add the item to warehouse
    */
@@ -89,10 +89,9 @@ async function AddCompletedOrdersToWarehouse() {
         );
       }
     }
-
-    console.log("Completed orders added to warehouse successfully");
+    return res.status(200).json("Completed orders added to warehouse successfully");
   } catch (err) {
-    console.log("Error updating orders: " + err);
+    return res.status(400).json("Error updating orders: " + err);
   }
 }
 
@@ -143,7 +142,7 @@ router.route("/update-orders").get((req, res) => UpdateOrders(req, res));
 
 router
   .route("/completed-orders-change")
-  .get((req, res) => AddCompletedOrdersToWarehouse(req, res));
+  .get((req, res) => AddCompletedOrdersToWarehouse(res));
 
 router
   .route("/get-completed-orders")

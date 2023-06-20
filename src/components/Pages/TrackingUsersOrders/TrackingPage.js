@@ -41,6 +41,9 @@ export function TrackingPage() {
 
       <Card title="Orders from user - changeeeeeeeeeeeee content">
         <VendorOrderTable />
+
+        <VendorOrderTable />
+
       </Card>
     </>
   );
