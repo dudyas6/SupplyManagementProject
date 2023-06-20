@@ -5,6 +5,9 @@ import {
   UpdateItem,
 } from "../../../backend/DataFetching/ItemsHandler";
 const ItemCard = ({ item, handleChangeItems }) => {
+  const [image, setImage] = React.useState("");
+  const [imageValid, setImageValid] = React.useState(false);
+
   const {
     ItemId,
     ItemImage,
@@ -14,6 +17,22 @@ const ItemCard = ({ item, handleChangeItems }) => {
     CurrentQuantity,
     MinimumQuantity,
   } = item;
+
+  React.useEffect(() => {
+    const img = new Image();
+    let invalid_img_url =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIYNXKzO7XHDK_mlo4aCPhsrLG61t-L_IezADgIeKu7Wb7ih9jblI73x92fANb6238jHU&usqp=CAU";
+    img.src = ItemImage;
+    img.onload = () => {
+      setImageValid(true);
+      setImage(ItemImage);
+    };
+    img.onerror = () => {
+      setImageValid(false);
+      setImage(invalid_img_url);
+    };
+  }, [ItemImage]);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedItem, setEditedItem] = useState(item);
@@ -142,7 +161,7 @@ const ItemCard = ({ item, handleChangeItems }) => {
       </div>
       <img
         className="p-8 rounded-t-lg w-52 h-52 object-contain"
-        src={ItemImage}
+        src={image}
         alt="product"
       />
       <div className="px-5 pb-5">
