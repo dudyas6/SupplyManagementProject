@@ -4,17 +4,28 @@ import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
 import AddItemPopup from "./AddItemPopup";
 import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
+import { ErrorDialog } from "../../../common/Elements";
+import { CreateOrderPopup } from "../../../common/Elements";
 
 export default function CardsSection({ items, orders, handleChangeItems }) {
   const [showPopup, setShowPopup] = React.useState(false);
   const [filteredItems, setFilteredItems] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [productName, setProductName] = useState("");
+  const [showCreateItemPopup, setShowCreateItemPopup] = useState(false);
   function GenerateCards() {
     const itemsToIterate = filteredItems ? filteredItems : items;
     return itemsToIterate.map((item) => (
       <ItemCard
         key={item.ItemId}
         item={item}
+        itemOrders={orders.filter((order) => {
+          return order.ItemName === item.ItemName;
+        })}
+        showErrorPopupHandle={showErrorPopupHandle}
+        setShowCreateItemPopupHandle={setShowCreateItemPopupHandle}
         handleChangeItems={handleChangeItems}
       />
     ));
@@ -26,7 +37,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
       setFilteredItems(items);
       return;
     }
-   
+
     const itemsToWorkWith = filteredItems ? filteredItems : items;
     const itemsAfterFilter = [];
 
@@ -112,6 +123,21 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
     setShowPopup(!showPopup);
   }
 
+  function showErrorPopupHandle(msg) {
+    setErrorMsg(msg);
+    setShowErrorPopup(!showErrorPopup);
+  }
+
+  function setShowCreateItemPopupHandle(product) {
+    setProductName(product);
+    setShowCreateItemPopup(!showCreateItemPopup);
+  }
+
+  function handleCreateOrderRequest(orderAmount) {
+     //TO-DO - add the order to the DB
+     //TO-DO - show MSG on success
+  }
+
   return (
     <>
       <div className="w-full mt-4 mb-2 inline-block">
@@ -145,7 +171,18 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
           </button>
         </div>
       </Card>
-      {showPopup && <AddItemPopup onClose={addItemPopupHandle} handleChangeItems={handleChangeItems} />}
+      {showPopup && (
+        <AddItemPopup
+          onClose={addItemPopupHandle}
+          handleChangeItems={handleChangeItems}
+        />
+      )}
+      {showErrorPopup && (
+        <ErrorDialog messageToShow={errorMsg} onClose={setShowErrorPopup} />
+      )}
+      {showCreateItemPopup && (
+        <CreateOrderPopup onClose={setShowCreateItemPopup} onSubmit={handleCreateOrderRequest} productName={productName}  />
+      )}
       <div className="flex flex-wrap justify-center mt-20 gap-10">
         {GenerateCards()}
       </div>

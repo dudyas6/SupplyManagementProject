@@ -4,7 +4,7 @@ import {
   DeleteItem,
   UpdateItem,
 } from "../../../backend/DataFetching/ItemsHandler";
-const ItemCard = ({ item, handleChangeItems }) => {
+const ItemCard = ({ item, handleChangeItems, itemOrders, showErrorPopupHandle, setShowCreateItemPopupHandle }) => {
   const [image, setImage] = React.useState("");
   const [imageValid, setImageValid] = React.useState(false);
 
@@ -49,15 +49,17 @@ const ItemCard = ({ item, handleChangeItems }) => {
   };
 
   const handleCreateOrder = () => {
-    // Handle create order functionality
-    // add popup of how many items to order
-    // add popup of are you sure
-    // add popup of success
+    setShowCreateItemPopupHandle(item.ItemName);
   };
   
   const onDelete = async () => {
     toggleDropdown();
-    // Handle delete functionality - add popup of are you sure and delete all orders of it
+    if (itemOrders.filter((order) => order.Status !== "Completed").length > 0) {
+      showErrorPopupHandle(
+        "Cannot delete item while there are orders in progress"
+      );
+      return;
+    }
     await DeleteItem(item.ItemId);
     handleChangeItems(null);
   };

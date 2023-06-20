@@ -37,7 +37,7 @@ export function WideCubeWithClick({ inx, big, small, additionText, onClick }) {
   const borderColorName = splittedColor[1] + "-" + splittedColor[2];
   return (
     <div
-      onClick={onClick} 
+      onClick={onClick}
       className={`border-l-8 border-${borderColorName} md:w-1/4 m-4 ${colors[colorIndex]} rounded-md shadow-md hover:${bgColors[bgColorIndex]} cursor-pointer`}
     >
       <div className="flex flex-col items-center justify-center h-full">
@@ -75,6 +75,84 @@ export function YesNoDialog({ messageToShow, onClose, onSubmit }) {
           >
             No
           </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ErrorDialog({ messageToShow, onClose }) {
+  return (
+    <div>
+      <div className="fixed top-0 bottom-0 left-0 right-0 bg-black opacity-60 z-20"></div>
+      <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center z-30">
+        <div className="flex flex-col p-4 rounded-lg bg-white-lightest">
+          <div className="relative">
+            <div className="text-center mb-6">{messageToShow}</div>
+            <div className="flex justify-center items-center">
+              <button
+                className="w-28 h-12 mr-4 font-bold text-white bg-green-500 hover:bg-green-700"
+                onClick={() => onClose(false)}
+              >
+                Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function CreateOrderPopup({ onClose, onSubmit, productName }) {
+  const [orderAmount, setOrderAmount] = React.useState("");
+
+  const handleInputChange = (event) => {
+    setOrderAmount(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    // Call the onSubmit function and pass the orderAmount
+    onSubmit(orderAmount);
+  };
+
+  return (
+    <div>
+      <div className="fixed top-0 bottom-0 left-0 right-0 bg-black opacity-60 z-20"></div>
+      <div className="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center z-30">
+        <div className="flex flex-col p-4 rounded-lg bg-white-lightest">
+          <div className="relative">
+            <div className="flex flex-col gap-2">
+              <div className="text-center">
+                {"Please enter amount to order"}
+              </div>
+              <label>Product : {productName}</label>
+              <div>
+                <label>Amount : </label>
+                <input
+                  type="number"
+                  min={0}
+                  value={orderAmount}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex justify-center items-center">
+                <button
+                  className="w-28 h-8 mr-4 font-bold text-white bg-green-500 hover:bg-green-700"
+                  onClick={() => handleSubmit(orderAmount)}
+                >
+                  Submit
+                </button>
+                <button
+                  className="w-28 h-8 mr-4 font-bold text-white bg-red-500 hover:bg-red-700"
+                  onClick={() => onClose(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -139,8 +217,18 @@ export class PopupWithInput extends React.Component {
   }
 }
 
-export function TableCell(nameText,valueText,onChangeFunction,itemProperty,sizeProperty,isEditing) {
-  const size = sizeProperty === "small" ? "w-full text-center bg-gray-600 text-white" : "w-full bg-gray-600 text-white";
+export function TableCell(
+  nameText,
+  valueText,
+  onChangeFunction,
+  itemProperty,
+  sizeProperty,
+  isEditing
+) {
+  const size =
+    sizeProperty === "small"
+      ? "w-full text-center bg-gray-600 text-white"
+      : "w-full bg-gray-600 text-white";
   return (
     <>
       {isEditing ? (
