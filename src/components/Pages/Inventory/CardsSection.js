@@ -4,6 +4,7 @@ import FilterForm from "../../../common/FilterForm";
 import { Card } from "../../../common/Elements";
 import AddItemPopup from "./AddItemPopup";
 import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
+import { CreateNewVendorOrder } from "../../../backend/DataFetching/VendorOrdersHandler";
 import { ErrorDialog } from "../../../common/Elements";
 import { CreateOrderPopup } from "../../../common/Elements";
 
@@ -13,7 +14,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [productName, setProductName] = useState("");
+  const [product, setProduct] = useState(null);
   const [showCreateItemPopup, setShowCreateItemPopup] = useState(false);
   function GenerateCards() {
     const itemsToIterate = filteredItems ? filteredItems : items;
@@ -128,14 +129,14 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
     setShowErrorPopup(!showErrorPopup);
   }
 
-  function setShowCreateItemPopupHandle(product) {
-    setProductName(product);
+  function setShowCreateItemPopupHandle(item) {
+    setProduct(item);
     setShowCreateItemPopup(!showCreateItemPopup);
   }
 
-  function handleCreateOrderRequest(orderAmount) {
-     //TO-DO - add the order to the DB
-     //TO-DO - show MSG on success
+  async function handleCreateOrderRequest(item, orderAmount, itemPrice) {
+    const order = await CreateNewVendorOrder(item, orderAmount);
+    return order.OrderId;
   }
 
   return (
@@ -181,7 +182,11 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
         <ErrorDialog messageToShow={errorMsg} onClose={setShowErrorPopup} />
       )}
       {showCreateItemPopup && (
-        <CreateOrderPopup onClose={setShowCreateItemPopup} onSubmit={handleCreateOrderRequest} productName={productName}  />
+        <CreateOrderPopup
+          onClose={setShowCreateItemPopup}
+          onSubmit={handleCreateOrderRequest}
+          item={product}
+        />
       )}
       <div className="flex flex-wrap justify-center mt-20 gap-10">
         {GenerateCards()}

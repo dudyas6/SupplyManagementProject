@@ -49,7 +49,7 @@ const ItemCard = ({ item, handleChangeItems, itemOrders, showErrorPopupHandle, s
   };
 
   const handleCreateOrder = () => {
-    setShowCreateItemPopupHandle(item.ItemName);
+    setShowCreateItemPopupHandle(item);
   };
   
   const onDelete = async () => {

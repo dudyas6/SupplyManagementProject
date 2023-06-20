@@ -1,5 +1,4 @@
 import React from "react";
-
 export function Card({ title, children }) {
   return (
     <div className="max-w-fitxl rounded overflow-hidden shadow-lg mt-8">
@@ -104,17 +103,26 @@ export function ErrorDialog({ messageToShow, onClose }) {
   );
 }
 
-export function CreateOrderPopup({ onClose, onSubmit, productName }) {
+export function CreateOrderPopup({ onClose, onSubmit, item }) {
   const [orderAmount, setOrderAmount] = React.useState("");
+  const [successText, setSuccessText] = React.useState("");
+  const [failureText, setFailureText] = React.useState("");
 
   const handleInputChange = (event) => {
     setOrderAmount(event.target.value);
   };
 
-  const handleSubmit = () => {
-    // Call the onSubmit function and pass the orderAmount
-    onSubmit(orderAmount);
-  };
+  function handleSubmit(orderAmount) {
+    const orderId = onSubmit(item.ItemName, orderAmount, item.Price);
+    if (orderId !== -1) {
+      setSuccessText("Order created successfully");
+      setTimeout(() => {
+        onClose(false);
+      }, 2000);
+    } else {
+      setFailureText("Order creation failed");
+    }
+  }
 
   return (
     <div>
@@ -126,7 +134,7 @@ export function CreateOrderPopup({ onClose, onSubmit, productName }) {
               <div className="text-center">
                 {"Please enter amount to order"}
               </div>
-              <label>Product : {productName}</label>
+              <label>Product : {item.ItemName}</label>
               <div>
                 <label>Amount : </label>
                 <input
@@ -151,6 +159,8 @@ export function CreateOrderPopup({ onClose, onSubmit, productName }) {
                   Close
                 </button>
               </div>
+              <div className="text-center bg-green-400">{successText}</div>
+              <div className="text-center bg-red-400">{failureText}</div>
             </div>
           </div>
         </div>
