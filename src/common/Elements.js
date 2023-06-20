@@ -139,7 +139,7 @@ export function CreateOrderPopup({ onClose, onSubmit, item }) {
                 <label>Amount : </label>
                 <input
                   type="number"
-                  min={0}
+                  min={1}
                   value={orderAmount}
                   onChange={handleInputChange}
                   className="border border-gray-300 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
