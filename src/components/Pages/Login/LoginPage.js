@@ -55,14 +55,14 @@ export default function LoginPage() {
     <>
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <img src={logo} alt="Logo" className="mb-20"/>
-        <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+        <div className="w-full max-w-xl px-12 py-10 bg-white rounded shadow-md">
           <div className="flex flex-col items-center mb-6">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuCA_pyAUH6qj935MfUrKdydYYQ-9y40uC0A&usqp=CAU"
               alt="Login"
               className="w-32 h-32 mb-4 rounded-full"
             />
-            <h2 className="mb-2 text-2xl font-bold">Login</h2>
+            <h2 className="mb-2 text-3xl font-bold">Login</h2>
           </div>
           <LoginForm
             setUsername={setUsername}

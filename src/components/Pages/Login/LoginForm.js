@@ -3,7 +3,7 @@ export default function LoginForm({ setUsername, setPassword, ValidateLogin }) {
     <form className="w-full">
       <div className="mb-6">
         <label
-          className="block mb-2 text-sm font-bold text-gray-700"
+          className="block mb-2 text-lg font-bold text-gray-700"
           htmlFor="username"
         >
           Username
@@ -18,7 +18,7 @@ export default function LoginForm({ setUsername, setPassword, ValidateLogin }) {
       </div>
       <div className="mb-6">
         <label
-          className="block mb-2 text-sm font-bold text-gray-700"
+          className="block mb-2 text-lg font-bold text-gray-700"
           htmlFor="password"
         >
           Password
@@ -37,7 +37,7 @@ export default function LoginForm({ setUsername, setPassword, ValidateLogin }) {
             e.preventDefault();
             ValidateLogin();
           }}
-          className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+          className="px-4 py-2 text-xl font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
         >
           Login
         </button>
