@@ -53,10 +53,8 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center bg-gray-100">
-      <img src={logo} alt="Logo" className=""/>
-      </div>
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <img src={logo} alt="Logo" className="mb-20"/>
         <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
           <div className="flex flex-col items-center mb-6">
             <img
