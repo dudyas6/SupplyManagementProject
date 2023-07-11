@@ -226,3 +226,70 @@ export const StockChart = () => {
     />
   );
 };
+/////////////////////
+
+
+const barChartData = {
+  series: [
+    {
+      name: "Items with 0 Quantity",
+      data: [0, 12], 
+    },
+    {
+      name: "Items under Min Quantity",
+      data: [20,0], 
+    }
+  ],
+  options: {
+    chart: {
+      type: "bar",
+      height: 400,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false, 
+        columnWidth: "55%",
+        endingShape: "rounded",
+      },
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    xaxis: {
+      categories: ["Items under Min Quantity", "Items with 0 Quantity"],
+      
+    },
+    yaxis: {
+      title: {
+        text: "Quantity",
+      },
+    },
+    colors: ["#ff0000", "#ffa500"], 
+
+  },
+};
+
+export const BarChart = () => {
+  return (
+    <Chart
+      options={barChartData.options}
+      series={barChartData.series}
+      type="bar"
+      height={400}
+    />
+  );
+};
+
+
+//////////////////////
+
+
+export function DonutChart({options, series}) {
+  return (
+      <Chart
+        options={options}
+        series={series}
+        type="donut"
+      />
+  );
+};
