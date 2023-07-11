@@ -1,4 +1,5 @@
 import React from "react";
+import Chart from "react-apexcharts";
 
 export const StatisticsCubes = () => {
   return (
@@ -107,13 +108,121 @@ export const RefillTable = () => {
   );
 };
 
-export const StockGraph = () => {
+
+function OneRectangleDataStats({ title, description, bigNumber, changePercentage, icon}) {
+  changePercentage = parseInt(changePercentage);
+  const isPositiveChange = changePercentage > 0;
+
   return (
-    <div className="bg-white rounded shadow">
-      <h2 className="px-4 py-3 border-b">Stock Preparation Graph</h2>
-      {
-        // TODO: Add graph later!
-      }
+    <div className="flex items-center rounded-lg shadow-lg bg-white p-4">
+      {/* Order icon */}
+      <div className="flex items-center justify-center bg-purple-500 rounded-full w-12 h-12">
+        {icon === "pendingOrders" && (
+          <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+        )}
+        {icon === "completedOrders" && (
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+          )}
+      </div>
+      {/* Content */}
+      <div className="ml-4">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="text-sm text-gray-500">{description}</p>
+        <div className="flex items-center mt-2">
+          <span className="text-4xl font-bold">{bigNumber}</span>
+          <div className="flex items-center ml-2">
+            {isPositiveChange ? (
+              <>
+                <span className="text-green-500 text-sm font-semibold ml-1">{changePercentage}%</span>
+                <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              </>
+            ) : (
+              <>
+                <span className="text-red-500 text-sm font-semibold ml-1">{changePercentage}%</span>
+                <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="h-2 bg-gray-200 rounded-full mt-2">
+          <div className="h-full bg-purple-500 rounded-full" style={{ width: '70%' }}></div>
+        </div>
+      </div>
     </div>
+  );
+}
+
+export const RectangleDataStats = () => {
+  
+  return (
+    <div className="flex flex-wrap justify-center gap-20">
+      <OneRectangleDataStats title="Pending Orders" description="This Week" bigNumber="100" changePercentage="10" icon="completedOrders"/>
+      <OneRectangleDataStats title="Completed Orders" description="This Month" bigNumber="200" changePercentage="-5" icon="pendingOrders"/>
+      <OneRectangleDataStats title="Some title" description="some description" bigNumber="123" changePercentage="-5" icon="pendingOrders"/>
+      <OneRectangleDataStats title="Some title" description="some description" bigNumber="321" changePercentage="5" icon="pendingOrders"/>
+      {/* Add more instances of OneRectangleDataStats as needed */}
+    </div>
+  );
+};
+
+
+
+const chartData = {
+  series: [
+    {
+      name: "Revenues",
+      data: [1000, 1200, 800, 1500, 2000, 1800],
+      color: "#47bf81", // green
+
+    },
+    {
+      name: "Expenses",
+      data: [800, 900, 700, 1100, 1500, 1300],
+      color: "#e84a6a", // light-red
+
+    },
+  ],
+  options: {
+    chart: {
+      id: "stock-chart",
+    },
+    xaxis: {
+      categories: ["January", "February", "March", "April", "May", "June"],
+    },
+    yaxis: [
+      {
+        title: {
+          text: "Revenues",
+        },
+      },
+      {
+        opposite: true,
+        title: {
+          text: "Expenses",
+        },
+      },
+    ],
+    stroke: {
+      curve: "smooth",
+    },
+  },
+};
+
+export const StockChart = () => {
+  return (
+    <Chart
+      options={chartData.options}
+      series={chartData.series}
+      type="line"
+      height={400}
+    />
   );
 };
