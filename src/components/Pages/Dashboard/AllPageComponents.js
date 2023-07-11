@@ -109,7 +109,7 @@ export const RefillTable = () => {
 };
 
 
-function OneRectangleDataStats({ title, description, bigNumber, changePercentage, icon}) {
+export function OneRectangleDataStats({ title, description, bigNumber, changePercentage, icon}) {
   changePercentage = parseInt(changePercentage);
   const isPositiveChange = changePercentage > 0;
 
@@ -160,63 +160,68 @@ function OneRectangleDataStats({ title, description, bigNumber, changePercentage
   );
 }
 
-export const RectangleDataStats = () => {
-  
+export function RectangleDataStats({ dataStatsArr }) {
+  console.log(dataStatsArr)
   return (
     <div className="flex flex-wrap justify-center gap-20">
-      <OneRectangleDataStats title="Pending Orders" description="This Week" bigNumber="100" changePercentage="10" icon="completedOrders"/>
-      <OneRectangleDataStats title="Completed Orders" description="This Month" bigNumber="200" changePercentage="-5" icon="pendingOrders"/>
-      <OneRectangleDataStats title="Some title" description="some description" bigNumber="123" changePercentage="-5" icon="pendingOrders"/>
-      <OneRectangleDataStats title="Some title" description="some description" bigNumber="321" changePercentage="5" icon="pendingOrders"/>
-      {/* Add more instances of OneRectangleDataStats as needed */}
+      {dataStatsArr.map((dataStat, index) => (
+        <OneRectangleDataStats
+          key={index}
+          title={dataStat.title}
+          description={dataStat.description}
+          bigNumber={dataStat.bigNumber}
+          changePercentage={dataStat.changePercentage}
+          icon={dataStat.icon}
+        />
+      ))}
     </div>
   );
-};
+}
 
 
 
-const chartData = {
-  series: [
-    {
-      name: "Revenues",
-      data: [1000, 1200, 800, 1500, 2000, 1800],
-      color: "#47bf81", // green
 
-    },
-    {
-      name: "Expenses",
-      data: [800, 900, 700, 1100, 1500, 1300],
-      color: "#e84a6a", // light-red
 
-    },
-  ],
-  options: {
-    chart: {
-      id: "stock-chart",
-    },
-    xaxis: {
-      categories: ["January", "February", "March", "April", "May", "June"],
-    },
-    yaxis: [
+export function StockChart({revenues, expenses, months}){
+  const chartData = {
+    series: [
       {
-        title: {
-          text: "Revenues",
-        },
+        name: "Revenues",
+        data: revenues,//[1000, 1200, 800, 1500, 2000, 1800],
+        color: "#47bf81", // green
+  
       },
       {
-        opposite: true,
-        title: {
-          text: "Expenses",
-        },
+        name: "Expenses",
+        data: expenses, //[800, 900, 700, 1100, 1500, 1300],
+        color: "#e84a6a", // light-red
       },
     ],
-    stroke: {
-      curve: "smooth",
+    options: {
+      chart: {
+        id: "stock-chart",
+      },
+      xaxis: {
+        categories: months,//["January", "February", "March", "April", "May", "June"],
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Revenues",
+          },
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Expenses",
+          },
+        },
+      ],
+      stroke: {
+        curve: "smooth",
+      },
     },
-  },
-};
-
-export const StockChart = () => {
+  };
   return (
     <Chart
       options={chartData.options}
@@ -229,15 +234,18 @@ export const StockChart = () => {
 /////////////////////
 
 
+
+export const BarChart = ({underMin, equalZero}) => {
+  
 const barChartData = {
   series: [
     {
       name: "Items with 0 Quantity",
-      data: [0, 12], 
+      data: [0, equalZero], 
     },
     {
       name: "Items under Min Quantity",
-      data: [20,0], 
+      data: [underMin,0], 
     }
   ],
   options: {
@@ -268,8 +276,6 @@ const barChartData = {
 
   },
 };
-
-export const BarChart = () => {
   return (
     <Chart
       options={barChartData.options}
@@ -304,6 +310,7 @@ export const DonutChart = ({topItemsLabels, topItemsValues}) => {
         options={donutChartData.options}
         series={donutChartData.series}
         type="donut"
+        height={500}
       />
   );
 };
