@@ -22,7 +22,9 @@ export class SingleItem {
 
 export function GetAllItems() {
   return axios
-    .get(`https://supply-api.vercel.app/items/get/`)
+  //http://localhost:3001/
+  //https://supply-api.vercel.app/
+    .get(`http://localhost:3001/items/get/`)
     .then((response) => {
       const data = response.data.map((product) => {
         const item = new SingleItem(
@@ -45,7 +47,7 @@ export function GetAllItems() {
 
 export function GetRandomItem() {
   return axios
-    .get(`https://supply-api.vercel.app/items/getRandomItem/`)
+    .get(`http://localhost:3001/items/getRandomItem/`)
     .then((response) => {
       const randomId = Math.floor(Math.random() * response.data.length);
       const data = response.data[randomId];
@@ -69,7 +71,7 @@ export function GetRandomItem() {
 export function InsertNewItem(item, thenFunction) {
   console.log(item);
   return axios
-    .post(`https://supply-api.vercel.app/items/add/`, item)
+    .post(`http://localhost:3001/items/add/`, item)
     .then((res) => {
       thenFunction();
       return res.data;
@@ -81,7 +83,7 @@ export function InsertNewItem(item, thenFunction) {
 
 export async function UpdateItem(itemId, item) {
   return axios
-    .put(`https://supply-api.vercel.app/items/update/${itemId}`, item)
+    .put(`http://localhost:3001/items/update/${itemId}`, item)
     .then((res) => {
       return res.data;
     })
@@ -92,7 +94,7 @@ export async function UpdateItem(itemId, item) {
 
 export function DeleteItem(itemId) {
   axios
-    .delete(`https://supply-api.vercel.app/items/delete/${itemId}`)
+    .delete(`http://localhost:3001/items/delete/${itemId}`)
     .then((res) => {
       console.log(res.data);
     })

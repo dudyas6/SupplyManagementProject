@@ -38,7 +38,7 @@ export async function GenerateNewOrder() {
   );
 
   return axios
-    .post(`https://supply-api.vercel.app/orders/users/add/`, order)
+    .post(`http://localhost:3001/orders/users/add/`, order)
     .then(async (res) => {
       return res.data;
     })
@@ -49,7 +49,7 @@ export async function GenerateNewOrder() {
 }
 export function GetOrderOfAllUsers() {
   return axios
-    .get(`https://supply-api.vercel.app/orders/users/get/`)
+    .get(`http://localhost:3001/orders/users/get/`)
     .then((response) => {
       const data = response.data.map((order) => {
         const item = new Order(
@@ -72,7 +72,7 @@ export function GetOrderOfAllUsers() {
 // // The function delete an order by ID
 // export function DeleteOrder(orderId) {
 //   return axios
-//     .delete(`https://supply-api.vercel.app/orders/vendor/delete/${orderId}`)
+//     .delete(`http://localhost:3001/orders/vendor/delete/${orderId}`)
 //     .then((res) => {
 //       console.log(res.data);
 //     })
