@@ -33,7 +33,7 @@ export default function LoginPage() {
 
   const getUsersData = () => {
     axios
-      .get(`http://localhost:3001/users/get`)
+      .get(`https://supply-management-api.vercel.app/users/get`)
       .then((response) => {
         setUsers(response.data);
       })
