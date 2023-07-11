@@ -24,7 +24,6 @@ function App() {
   const currentUser = JSON.parse(userJson);
 
   return (
-      <div>
         <Router>
           <Routes>
             <Route element={<AuthenticatedLayout />}>
@@ -48,7 +47,6 @@ function App() {
             </Route>
           </Routes>
         </Router>
-      </div>
   );
 }
 

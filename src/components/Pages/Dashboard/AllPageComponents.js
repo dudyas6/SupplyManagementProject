@@ -284,11 +284,25 @@ export const BarChart = () => {
 //////////////////////
 
 
-export function DonutChart({options, series}) {
+export const DonutChart = ({topItemsLabels, topItemsValues}) => {
+  const donutChartData = {
+    options: {
+      labels: topItemsLabels,
+      colors: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+      legend: {
+        position: 'bottom', // Set the legend position to bottom
+        offsetY: 5, // Adjust the vertical offset of the legend from the bottom
+        itemMargin: {
+          horizontal: 5, // Adjust the horizontal spacing between legend items
+        },
+      },
+    },
+    series: topItemsValues, // Replace these values with your actual data
+  };
   return (
       <Chart
-        options={options}
-        series={series}
+        options={donutChartData.options}
+        series={donutChartData.series}
         type="donut"
       />
   );

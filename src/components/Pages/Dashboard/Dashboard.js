@@ -9,11 +9,9 @@ import {
 } from "./AllPageComponents";
 import { Helmet } from "react-helmet";
 
-import { useContext } from "react";
-
 export const DashboardPage = () => {
+
   return (
-    <div>
       <div>
         <Helmet>
           <title>FastTrack - Dashboard</title>
@@ -42,11 +40,10 @@ export const DashboardPage = () => {
 
           <section className="mt-20">
             <h1>Top 5 Best-Selling Items</h1>
-            <DonutChart options={donutChartData.options} series={donutChartData.series}/>
+            <DonutChart topItemsLabels={['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']} topItemsValues={[10, 20, 15, 5, 30]}/>
           </section>
         </main>
         {/* ... Footer and other sections */}
       </div>
-    </div>
   );
 };
