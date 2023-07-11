@@ -9,7 +9,7 @@ const vendor_order = require("./models/vendor_order.model.js");
 // Server uses
 app.use(express.json());
 app.use(cors({
-  origin: "https://supply-api.vercel.app/",
+  origin: "https://supply-api.vercel.app",
 }));
 
 // Routes
