@@ -74,14 +74,13 @@ export default function LoginPage() {
             ValidateLogin={ValidateLogin}
           />
         </div>
-
         {signInStatus === "success" && (
-          <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+          <div className="w-full max-w-xl px-8 py-6 bg-white rounded shadow-md">
             <SuccessLabel innerText={labelMsg} />
           </div>
         )}
         {signInStatus === "error" && (
-          <div className="w-full max-w-md px-8 py-6 bg-white rounded shadow-md">
+          <div className="w-full max-w-xl px-8 py-6 bg-white rounded shadow-md">
             <ErrorLabel innerText={labelMsg} />
           </div>
         )}
