@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const PORT = 3001; // Choose a port number
 const cron = require('node-cron');
-const vendor_order = require("./src/backend/models/vendor_order.model.js");
+const vendor_order = require("./models/vendor_order.model.js");
 
 // Server uses
 app.use(express.json());
@@ -13,10 +13,10 @@ app.use(cors({
 }));
 
 // Routes
-const itemsRoute = require("./src/backend/routes/items");
-const usersRoute = require("./src/backend/routes/users");
-const vendorOrdersRoute = require("./src/backend/routes/vendor_orders");
-const usersOrdersRoute = require("./src/backend/routes/users_orders");
+const itemsRoute = require("./routes/items");
+const usersRoute = require("./routes/users");
+const vendorOrdersRoute = require("./routes/vendor_orders");
+const usersOrdersRoute = require("./routes/users_orders");
 
 // App Uses
 app.use("/items", itemsRoute);
