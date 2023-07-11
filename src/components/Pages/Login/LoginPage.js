@@ -4,6 +4,7 @@ import axios from "axios";
 import { SuccessLabel, ErrorLabel } from "../../../common/LittleLabels";
 import LoginForm from "./LoginForm";
 import logo from "../../../assets/images/logo.png";
+import { Helmet } from "react-helmet";
 
 export default function LoginPage() {
   const [users, setUsers] = useState([]);
@@ -53,8 +54,11 @@ export default function LoginPage() {
 
   return (
     <>
+      <Helmet>
+        <title>FastTrack - Login</title>
+      </Helmet>
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <img src={logo} alt="Logo" className="mb-20"/>
+        <img src={logo} alt="Logo" className="mb-20" />
         <div className="w-full max-w-xl px-12 py-10 bg-white rounded shadow-md">
           <div className="flex flex-col items-center mb-6">
             <img

@@ -7,7 +7,8 @@ function Sidebar() {
     <ul className="flex flex-col list-reset">
     <SidebarRow content="Dashboard" href="/dashboard" faIcon="fa-tachometer-alt"/>
     <SidebarRow content="Inventory management" href="/warehouse" faIcon="fa-wpforms"/>
-    <SidebarRow content="Track orders" href="/trackingOrdersVendor" faIcon="fa-wpforms"/>
+    <SidebarRow content="Track vendor orders" href="/trackingOrdersVendor" faIcon="fa-wpforms"/>
+    <SidebarRow content="Track users orders" href="/trackingOrdersUsers" faIcon="fa-wpforms"/>
     </ul>
   </aside>
   );

@@ -3,6 +3,7 @@ import { Card } from "../../../common/Elements";
 import { GetOrderOfAllUsers } from "../../../backend/DataFetching/UsersOrdersHandler";
 import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import UserOrderTable from "./UserOrderTable";
+import { Helmet } from "react-helmet";
 
 export function TrackingPageUser() {
   const [orders, setOrders] = React.useState([]);
@@ -32,6 +33,9 @@ export function TrackingPageUser() {
   
   return (
     <>
+     <Helmet>
+        <title>FastTrack - Track users orders</title>
+      </Helmet>
       {/* STATISTICS */}
 
       <Card title="Relevant issues">

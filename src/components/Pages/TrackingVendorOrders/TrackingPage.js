@@ -4,6 +4,8 @@ import VendorOrderStatistics from "./VendorOrderStatistics";
 import { Card } from "../../../common/Elements";
 import { GetAllOrders, StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import VendorOrderTable from "./VendorOrderTable";
+import { Helmet } from "react-helmet";
+
 
 export function TrackingPage() {
   const [orders, setOrders] = React.useState([]);
@@ -33,6 +35,9 @@ export function TrackingPage() {
   
   return (
     <>
+     <Helmet>
+        <title>FastTrack - Track vendor orders</title>
+      </Helmet>
       {/* STATISTICS */}
 
       <Card title="Relevant issues">

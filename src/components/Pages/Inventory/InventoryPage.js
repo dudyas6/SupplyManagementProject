@@ -4,6 +4,7 @@ import { Card } from "../../../common/Elements";
 import { GetAllItems } from "../../../backend/DataFetching/ItemsHandler";
 import { GetAllOrders } from "../../../backend/DataFetching/VendorOrdersHandler";
 import CardsSection from "./CardsSection";
+import { Helmet } from "react-helmet";
 
 export function InventoryPage() {
   // The main of Inventory page
@@ -35,6 +36,9 @@ export function InventoryPage() {
 
   return (
     <>
+     <Helmet>
+        <title>FastTrack - Manage Inventory</title>
+      </Helmet>
       <Card title="Warehouse Statistics">
         <InventoryStatisticsCubes items={items} />
       </Card>
