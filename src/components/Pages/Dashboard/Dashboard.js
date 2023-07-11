@@ -1,14 +1,13 @@
 import React from "react";
 import { StatisticsCubes, RefillTable, StockChart,RectangleDataStats} from "./AllPageComponents";
 import { Helmet } from "react-helmet";
-import { DarkModeContext } from "../../../App";
+
 import { useContext } from "react";
 
 export const DashboardPage = () => {
-  const darkMode = useContext(DarkModeContext);
 
   return (
-    <div className={darkMode ? "dark-mode" : ""}>
+    <div>
       <div>
         <Helmet>
           <title>FastTrack - Dashboard</title>

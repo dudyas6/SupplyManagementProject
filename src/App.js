@@ -18,22 +18,13 @@ import {
   Outlet,
 } from "react-router-dom";
 import { TrackingPageUser } from "./components/Pages/TrackingUsersOrders/TrackingPageUser";
-export const DarkModeContext = React.createContext();
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setDarkMode((prevDarkMode) => !prevDarkMode);
-  };
-
   const userJson = sessionStorage.getItem("currentUser");
   const currentUser = JSON.parse(userJson);
 
   return (
-    <DarkModeContext.Provider value={darkMode}>
-      <div className={darkMode ? "dark-mode" : ""}>
-        <button onClick={toggleDarkMode}>Toggle Dark Mode</button>
+      <div>
         <Router>
           <Routes>
             <Route element={<AuthenticatedLayout />}>
@@ -58,7 +49,6 @@ function App() {
           </Routes>
         </Router>
       </div>
-    </DarkModeContext.Provider>
   );
 }
 
