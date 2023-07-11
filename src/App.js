@@ -18,22 +18,13 @@ import {
   Outlet,
 } from "react-router-dom";
 import { TrackingPageUser } from "./components/Pages/TrackingUsersOrders/TrackingPageUser";
-export const DarkModeContext = React.createContext();
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    console.log(darkMode);
-  };
   const userJson = sessionStorage.getItem("currentUser");
   const currentUser = JSON.parse(userJson);
 
   return (
-    <DarkModeContext.Provider value={darkMode}>
-      <div className={darkMode ? "dark-mode" : ""}>
-        <button onClick={toggleDarkMode}>Toggle Dark Mode</button>
+      <div>
         <Router>
           <Routes>
             <Route element={<AuthenticatedLayout />}>
@@ -58,12 +49,11 @@ function App() {
           </Routes>
         </Router>
       </div>
-    </DarkModeContext.Provider>
   );
 }
 
 function AuthenticatedLayout() {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 
   const userJson = sessionStorage.getItem("currentUser");
   const currentUser = JSON.parse(userJson);
@@ -79,9 +69,9 @@ function AuthenticatedLayout() {
   return (
     <div className="mx-auto bg-grey-400">
       <div className="flex flex-col justify-center min-h-screen">
-        <Header currentUser={currentUser} OnClick={handleSidebarToggle} />
+        <Header currentUser={currentUser} handleSidebar={handleSidebarToggle} />
         <div className="flex flex-1">
-          <Sidebar className={` ${isSidebarOpen ? "block" : "none"}`} />
+          <Sidebar isSidebarOpen={isSidebarOpen} />
           <div className="flex-1 p-3 overflow-hidden bg-white-300">
             <Outlet />
           </div>
