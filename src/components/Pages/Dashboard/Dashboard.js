@@ -15,7 +15,6 @@ import { GetAllOrders, GetWeeklyOrders, StatusEnum } from "../../../backend/Data
 import { Card } from "../../../common/Elements";
 
 export function DashboardPage() {
-
   const [current_previous_percentagePending, setCurrentPreviousPercentagePending] = useState([0]*3);
   const [current_previous_percentageCompleted, setCurrentPreviousPercentageCompleted] = useState([0]*3);
 
@@ -26,12 +25,10 @@ export function DashboardPage() {
   async function fetchData() {
     try {
       const responsePending = await GetWeeklyOrders("Pending"); 
-      const { currentWeekCountP, previousWeekCountP, changePercentageP } = responsePending;
-      setCurrentPreviousPercentagePending([currentWeekCountP, previousWeekCountP, changePercentageP]);
+      setCurrentPreviousPercentagePending(responsePending);
 
       const responseCompleted = await GetWeeklyOrders("Completed"); 
-      const { currentWeekCountC, previousWeekCountC, changePercentageC } = responseCompleted;
-      setCurrentPreviousPercentageCompleted([currentWeekCountC, previousWeekCountC, changePercentageC]);
+      setCurrentPreviousPercentageCompleted(responseCompleted);
 
 
     } catch (error) {
@@ -60,7 +57,7 @@ export function DashboardPage() {
         title={"Completed Orders"}
           description={ "This Week"}
           bigNumber={current_previous_percentageCompleted[0]}
-          changePercentage={current_previous_percentageCompleted[1]}
+          changePercentage={current_previous_percentageCompleted[2]}
           icon={"completedOrders"}
         />
 

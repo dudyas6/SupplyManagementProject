@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const vendor_order = require("../models/vendor_order.model.js");
 const items = require("../models/item.model.js");
-const moment = require('moment');
+const moment = require("moment");
 
 function GetAllOrders(req, res) {
   vendor_order
@@ -11,42 +11,27 @@ function GetAllOrders(req, res) {
 }
 
 
-
-// StatusEnum - completed pending etc
-// function GetWeeklyOrders(req, res, status) {
-//   try {
-
-//   // i want:
-//   // find order by status and current week
-//   // return the count & change in percantage compare to last week
-
-//   const today = moment();
-//   const startOfWeek = today.clone().startOf('week').format('YYYY-MM-DD'); 
-//   const endOfWeek = today.clone().endOf('week').format('YYYY-MM-DD'); 
-//   vendor_order
-//     .find({ Status: status }) //, PurchaseDate: { $gte: startOfWeek, $lte: endOfWeek }
-//     .then((order) => res.json(order))
-//     .catch((err) => res.status(400).json("Error: " + err));
-//   }catch (error) {
-//       console.error("Error fetching orders:", error);
-//       res.status(400).json("Error: " + error);
-//     }
-// }
-
-
 function GetWeeklyOrders(req, res, status) {
   try {
     const today = moment();
 
     // current week range
-    const startOfWeek = today.clone().startOf('week').format('YYYY-MM-DD'); 
-    const endOfWeek = today.clone().endOf('week').format('YYYY-MM-DD'); 
-  
-    // previous week range
-    const startOfPreviousWeek = today.clone().startOf('week').subtract(1, 'week').format('YYYY-MM-DD');
-    const endOfPreviousWeek = today.clone().endOf('week').subtract(1, 'week').format('YYYY-MM-DD');
+    const startOfWeek = today.clone().startOf("week").format("YYYY-MM-DD");
+    const endOfWeek = today.clone().endOf("week").format("YYYY-MM-DD");
 
-    // Find orders by status and within the current week
+    // previous week range
+    const startOfPreviousWeek = today
+      .clone()
+      .startOf("week")
+      .subtract(1, "week")
+      .format("YYYY-MM-DD");
+    const endOfPreviousWeek = today
+      .clone()
+      .endOf("week")
+      .subtract(1, "week")
+      .format("YYYY-MM-DD");
+
+    // query of current week
     const currentWeekOrdersPromise = vendor_order.find({
       Status: status,
       PurchaseDate: {
@@ -55,7 +40,7 @@ function GetWeeklyOrders(req, res, status) {
       },
     });
 
-    // Find orders by status and within the previous week
+    // query of last week
     const previousWeekOrdersPromise = vendor_order.find({
       Status: status,
       PurchaseDate: {
@@ -73,11 +58,11 @@ function GetWeeklyOrders(req, res, status) {
         const previousWeekOrderCount = previousWeekOrders.length;
 
         // calc
-      //   const percentageChange =
-      //     (currentWeekOrderCount - previousWeekOrderCount) /
-      // (currentWeekOrderCount+previousWeekOrderCount) *
-      //     100;
-          const percentageChange = ((currentWeekOrderCount - previousWeekOrderCount) * 100)
+        const percentageChange = previousWeekOrderCount === 0 ? currentWeekOrderCount :
+          ((currentWeekOrderCount - previousWeekOrderCount) /
+            previousWeekOrderCount) *
+          100;
+
         // Construct the response object
         const responseData = {
           currentWeekCount: currentWeekOrderCount,
@@ -93,7 +78,6 @@ function GetWeeklyOrders(req, res, status) {
     res.status(400).json("Error: " + error);
   }
 }
-
 
 function UpdateOrders(req, res) {
   vendor_order
@@ -176,7 +160,9 @@ async function AddCompletedOrdersToWarehouse(res) {
         );
       }
     }
-    return res.status(200).json("Completed orders added to warehouse successfully");
+    return res
+      .status(200)
+      .json("Completed orders added to warehouse successfully");
   } catch (err) {
     return res.status(400).json("Error updating orders: " + err);
   }
@@ -211,19 +197,21 @@ function AddOrderToDB(req, res) {
 
 function GetCompletedOrdersNotAdded(req, res) {
   vendor_order
-  .find({ Status: "Completed", IsAddedToWarehouse: false })
-  .then((orders) => res.json(orders))
-  .catch((err) => res.status(400).json("Error: " + err));
-
-
+    .find({ Status: "Completed", IsAddedToWarehouse: false })
+    .then((orders) => res.json(orders))
+    .catch((err) => res.status(400).json("Error: " + err));
 }
 /* --------------------------
    --------- ROUTES ---------
    -------------------------- */
 
-   router.route("/get").get((req, res) => GetAllOrders(req, res));
-   router.route("/get/Completed").get((req, res) => GetWeeklyOrders(req, res, "Completed"));
-   router.route("/get/Pending").get((req, res) => GetWeeklyOrders(req, res, "Pending"));
+router.route("/get").get((req, res) => GetAllOrders(req, res));
+router
+  .route("/get/Completed")
+  .get((req, res) => GetWeeklyOrders(req, res, "Completed"));
+router
+  .route("/get/Pending")
+  .get((req, res) => GetWeeklyOrders(req, res, "Pending"));
 
 router.route("/add").post((req, res) => AddOrderToDB(req, res));
 
@@ -236,7 +224,6 @@ router
 router
   .route("/get-completed-orders")
   .get((req, res) => GetCompletedOrdersNotAdded(req, res));
-
 
 router.route("/delete/:id").delete((req, res) => {
   const OrderId = req.params.id;

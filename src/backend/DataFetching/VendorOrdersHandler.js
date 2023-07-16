@@ -145,19 +145,12 @@ export function GetWeeklyOrders(status) {
   return axios
     .get(`http://localhost:3001/orders/vendor/get/${status}`)
     .then((response) => {
-      const data = response.data.map((order) => {
-        const item = new SingleOrder(
-          order.OrderId,
-          order.ItemName,
-          order.PurchaseDate,
-          order.Quantity,
-          order.Status,
-          order.TotalPrice,
-          order.IsAddedToWarehouse
-        );
-        return item;
-      });
-      return data;
+      const dataArray = [
+        response.data.currentWeekCount,
+        response.data.previousWeekCount,
+        response.data.changePercentage
+      ];
+    return dataArray;
     })
     .catch((error) => {
       console.error(error);
