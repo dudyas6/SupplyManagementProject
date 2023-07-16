@@ -52,6 +52,10 @@
   color: #fff;
 }
 
+.header-title {
+  font-family: 'Handlee', cursive;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

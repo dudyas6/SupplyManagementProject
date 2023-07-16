@@ -50,9 +50,9 @@ function ProgressBar({ first }) {
     <div className="w-full">
       <div className="w-full mt-2 shadow bg-grey-light">
         <div
-          className="py-1 text-lg leading-none text-center text-white bg-teal-500"
+          className="py-1 text-lg leading-none text-center text-white bg-blue-500 rounded-lg"
           style={{ width: `${first}%` }} >
-          Completed orders: {first}%
+          Completed Orders : {first}%
         </div>
       </div>
     </div>

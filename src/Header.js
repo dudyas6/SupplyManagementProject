@@ -8,7 +8,7 @@ function Header({ currentUser, handleSidebar }) {
     window.location.href = "/"; // login page
   };
   return (
-    <header className="bg-nav">
+    <header className="bg-blue-600 rounded-sm">
       <div className="flex justify-between">
         <div className="inline-flex items-center p-1 mx-3">
           <i
@@ -16,8 +16,13 @@ function Header({ currentUser, handleSidebar }) {
             onClick={handleSidebar}
           ></i>
           <div className="hidden p-2 mr-2 text-white no-underline md:flex lg:flex">
-            Welcome {currentUser.username}
+            <p className="font-semibold pr-2">Welcome</p>{" "}
+            {currentUser.username}
           </div>
+        </div>
+        <div className="text-white self-center flex flex-row gap-2">
+          <img src={logo} alt="logo" className="h-5 w-5" />
+          <p className="font-semibold header-title">FastTrack</p>
         </div>
         <div className="flex flex-row items-center p-1">
           <div className="flex items-center p-2 text-white no-underline md:flex lg:flex">

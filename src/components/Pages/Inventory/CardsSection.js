@@ -144,7 +144,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
       <div className="w-full mt-4 mb-2 inline-block">
         <button
           onClick={() => setShowPopup(true)}
-          className="float-right w-52 h-24 px-4 py-2 font-bold text-white bg-green-500 rounded-3xl hover:bg-green-700"
+          className="float-right m-5 px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700"
         >
           + Create Item
         </button>

@@ -53,7 +53,7 @@ export const VendorStatisticsCubes = ({ orders, onChange }) => {
           big={`${parseFloat(totCost).toFixed(2)}$`}
           small="Total Cost"
         />
-        <Cube inx={i++} big={totQuantity} small="Purchased quantity" />
+        <Cube inx={i++} big={totQuantity} small="Purchased Quantity" />
         <Cube inx={i++} big={totPending} small="Pending Orders" />
       </div>
       <div className="flex flex-wrap justify-center ">
