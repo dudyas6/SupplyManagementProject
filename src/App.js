@@ -70,7 +70,7 @@ function AuthenticatedLayout() {
         <Header currentUser={currentUser} handleSidebar={handleSidebarToggle} />
         <div className="flex flex-1">
           <Sidebar isSidebarOpen={isSidebarOpen} />
-          <div className="flex-1 p-3 overflow-hidden bg-white-300">
+          <div className="flex-1 p-3 bg-sky-50 z-10">
             <Outlet />
           </div>
         </div>
