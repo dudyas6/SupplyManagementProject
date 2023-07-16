@@ -13,19 +13,85 @@ function GetAllOrders(req, res) {
 
 
 // StatusEnum - completed pending etc
+// function GetWeeklyOrders(req, res, status) {
+//   try {
+
+//   // i want:
+//   // find order by status and current week
+//   // return the count & change in percantage compare to last week
+
+//   const today = moment();
+//   const startOfWeek = today.clone().startOf('week').format('YYYY-MM-DD'); 
+//   const endOfWeek = today.clone().endOf('week').format('YYYY-MM-DD'); 
+//   vendor_order
+//     .find({ Status: status }) //, PurchaseDate: { $gte: startOfWeek, $lte: endOfWeek }
+//     .then((order) => res.json(order))
+//     .catch((err) => res.status(400).json("Error: " + err));
+//   }catch (error) {
+//       console.error("Error fetching orders:", error);
+//       res.status(400).json("Error: " + error);
+//     }
+// }
+
+
 function GetWeeklyOrders(req, res, status) {
   try {
-  const today = moment();
-  const startOfWeek = today.clone().startOf('week').format('YYYY-MM-DD'); // Start of the current week (Sunday)
-  const endOfWeek = today.clone().endOf('week').format('YYYY-MM-DD'); // End of the current week (Saturday)
-  vendor_order
-    .find({ Status: status }) //, PurchaseDate: { $gte: startOfWeek, $lte: endOfWeek }
-    .then((order) => res.json(order))
-    .catch((err) => res.status(400).json("Error: " + err));
-  }catch (error) {
-      console.error("Error fetching orders:", error);
-      res.status(400).json("Error: " + error);
-    }
+    const today = moment();
+
+    // current week range
+    const startOfWeek = today.clone().startOf('week').format('YYYY-MM-DD'); 
+    const endOfWeek = today.clone().endOf('week').format('YYYY-MM-DD'); 
+  
+    // previous week range
+    const startOfPreviousWeek = today.clone().startOf('week').subtract(1, 'week').format('YYYY-MM-DD');
+    const endOfPreviousWeek = today.clone().endOf('week').subtract(1, 'week').format('YYYY-MM-DD');
+
+    // Find orders by status and within the current week
+    const currentWeekOrdersPromise = vendor_order.find({
+      Status: status,
+      PurchaseDate: {
+        $gte: startOfWeek,
+        $lte: endOfWeek,
+      },
+    });
+
+    // Find orders by status and within the previous week
+    const previousWeekOrdersPromise = vendor_order.find({
+      Status: status,
+      PurchaseDate: {
+        $gte: startOfPreviousWeek,
+        $lte: endOfPreviousWeek,
+      },
+    });
+
+    // Fetch both current week and previous week orders concurrently
+    Promise.all([currentWeekOrdersPromise, previousWeekOrdersPromise])
+      .then(([currentWeekOrders, previousWeekOrders]) => {
+        // Perform necessary calculations for count and percentage change
+
+        const currentWeekOrderCount = currentWeekOrders.length;
+        const previousWeekOrderCount = previousWeekOrders.length;
+
+        // calc
+      //   const percentageChange =
+      //     (currentWeekOrderCount - previousWeekOrderCount) /
+      // (currentWeekOrderCount+previousWeekOrderCount) *
+      //     100;
+          const percentageChange = ((currentWeekOrderCount - previousWeekOrderCount) * 100)
+        // Construct the response object
+        const responseData = {
+          currentWeekCount: currentWeekOrderCount,
+          previousWeekCount: previousWeekOrderCount,
+          changePercentage: percentageChange,
+        };
+
+        res.json(responseData);
+      })
+      .catch((err) => res.status(400).json("Error: " + err));
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(400).json("Error: " + error);
+  }
 }
 
 
@@ -157,7 +223,7 @@ function GetCompletedOrdersNotAdded(req, res) {
 
    router.route("/get").get((req, res) => GetAllOrders(req, res));
    router.route("/get/Completed").get((req, res) => GetWeeklyOrders(req, res, "Completed"));
-  //  router.route("/get/Pending").get((req, res) => GetWeeklyOrders(req, res, "Pending"));
+   router.route("/get/Pending").get((req, res) => GetWeeklyOrders(req, res, "Pending"));
 
 router.route("/add").post((req, res) => AddOrderToDB(req, res));
 

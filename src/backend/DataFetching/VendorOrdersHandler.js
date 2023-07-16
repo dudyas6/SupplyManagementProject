@@ -141,9 +141,9 @@ export function GetAllOrders() {
 
 
 // StatusEnum - completed pending etc
-export function GetWeeklyOrders() {
+export function GetWeeklyOrders(status) {
   return axios
-    .get(`http://localhost:3001/orders/vendor/get/Completed`)
+    .get(`http://localhost:3001/orders/vendor/get/${status}`)
     .then((response) => {
       const data = response.data.map((order) => {
         const item = new SingleOrder(
