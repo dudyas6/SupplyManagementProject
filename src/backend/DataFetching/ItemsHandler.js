@@ -45,6 +45,41 @@ export function GetAllItems() {
     });
 }
 
+
+
+export function CountItemsUnderMin() {
+  return axios
+    .get(`http://localhost:3001/items/countItemsUnderMin`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+
+export function CountZeroQuantity() {
+  return axios
+    .get(`http://localhost:3001/items/countZeroQuantity`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+export function GetTop5BestSelling() {
+  return axios
+    .get(`http://localhost:3001/items/top5BestSellingItems`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 export function GetRandomItem() {
   return axios
     .get(`http://localhost:3001/items/getRandomItem/`)

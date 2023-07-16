@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const items = require("../models/item.model.js");
-
+const user_orders = require("../models/users_order.model.js");
 function AddItemToDB(req, res) {
   return items
     .findOne({}, {}, { sort: { ItemId: -1 } }) // Find the last item by sorting in descending order of ItemId
@@ -46,6 +46,35 @@ router.route("/get").get((req, res) => {
     .then((items) => res.json(items))
     .catch((err) => res.status(400).json("Error: " + err));
 });
+
+router.route("/countItemsUnderMin").get((req, res) => {
+  items
+    .find({ $expr: { $gt: [{ $subtract: ["$CurrentQuantity", "$MinimumQuantity"] }, 0] } })
+    .then((items) => res.json(items.length))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+router.route("/countZeroQuantity").get((req, res) => {
+  items
+    .find({ CurrentQuantity: 0 })
+    .then((items) => res.json(items.length))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+router.route("/top5BestSellingItems").get((req, res) => {
+  user_orders.aggregate([
+    { $match: { Status: "Completed" } },
+    { $group: { _id: "$ItemName", totalQuantity: { $sum: "$Quantity" } } },
+    { $sort: { totalQuantity: -1 } },
+    { $limit: 5 },
+  ])
+    .then((items) => {
+      const topItemsLabels = items.map((item) => item._id);
+      const topItemsValues = items.map((item) => item.totalQuantity);
+      res.json({ topItemsLabels, topItemsValues });
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 
 router.route("/getRandomItem").get((req, res) => {
   items

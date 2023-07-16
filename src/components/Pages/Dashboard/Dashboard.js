@@ -13,11 +13,16 @@ import { Helmet } from "react-helmet";
 import { DataStatClass } from "./DataStatClass";
 import { GetAllOrders, GetWeeklyOrders, StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import { Card } from "../../../common/Elements";
+import { CountItemsUnderMin, CountZeroQuantity, GetTop5BestSelling } from "../../../backend/DataFetching/ItemsHandler";
 
 export function DashboardPage() {
   const [current_previous_percentagePending, setCurrentPreviousPercentagePending] = useState([0]*3);
   const [current_previous_percentageCompleted, setCurrentPreviousPercentageCompleted] = useState([0]*3);
+  const [cntItemsUnderMin, setCntItemsUnderMin] = useState(0);
+  const [cntItemsZeroQuantity, setCntItemsZeroQuantity] = useState(0);
+  const [topItems, setTopItems] = useState(null);
 
+  //top5BestSellingItems
   React.useEffect(() => {
     fetchData();
   }, []);
@@ -30,12 +35,23 @@ export function DashboardPage() {
       const responseCompleted = await GetWeeklyOrders("Completed"); 
       setCurrentPreviousPercentageCompleted(responseCompleted);
 
+      const responseUnderMin = await CountItemsUnderMin(); 
+      setCntItemsUnderMin(responseUnderMin);
+
+      const responseZeroQuantity = await CountZeroQuantity(); 
+      setCntItemsZeroQuantity(responseZeroQuantity);
+
+      const { topItemsLabels, topItemsValues } = await GetTop5BestSelling(); 
+      setTopItems({ topItemsLabels, topItemsValues });
 
     } catch (error) {
       console.log(error);
     }
   }
 
+  React.useEffect(()=>{
+    console.log(topItems);
+  }, [topItems])
   return (
       <div>
         <Helmet>
@@ -90,14 +106,16 @@ export function DashboardPage() {
           <Card>
             <section className="mt-20">
             <h1>Bar chart</h1>
-              <BarChart underMin={20} equalZero={12}/>
+              <BarChart underMin={cntItemsUnderMin} equalZero={cntItemsZeroQuantity}/>
             </section>
           </Card>
 
           <Card>
             <section className="mt-20">
               <h1>Top 5 Best-Selling Items</h1>
-              <DonutChart topItemsLabels={['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']} topItemsValues={[10, 20, 15, 5, 30]}/>
+              {topItems && (              
+              <DonutChart topItemsLabels={topItems.topItemsLabels} topItemsValues={topItems.topItemsValues}/>
+              )}
             </section>
           </Card>
 
