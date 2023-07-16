@@ -139,6 +139,32 @@ export function GetAllOrders() {
     });
 }
 
+
+// StatusEnum - completed pending etc
+export function GetWeeklyOrders() {
+  return axios
+    .get(`http://localhost:3001/orders/vendor/get/Completed`)
+    .then((response) => {
+      const data = response.data.map((order) => {
+        const item = new SingleOrder(
+          order.OrderId,
+          order.ItemName,
+          order.PurchaseDate,
+          order.Quantity,
+          order.Status,
+          order.TotalPrice,
+          order.IsAddedToWarehouse
+        );
+        return item;
+      });
+      return data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+
 // The function delete an order by ID
 export function DeleteOrder(orderId) {
   return axios

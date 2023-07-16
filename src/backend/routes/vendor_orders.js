@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const vendor_order = require("../models/vendor_order.model.js");
 const items = require("../models/item.model.js");
+const moment = require('moment');
 
 function GetAllOrders(req, res) {
   vendor_order
@@ -8,6 +9,26 @@ function GetAllOrders(req, res) {
     .then((order) => res.json(order))
     .catch((err) => res.status(400).json("Error: " + err));
 }
+
+
+
+// StatusEnum - completed pending etc
+function GetWeeklyOrders(req, res, status) {
+  try {
+  const today = moment();
+  const startOfWeek = today.clone().startOf('week').format('YYYY-MM-DD'); // Start of the current week (Sunday)
+  const endOfWeek = today.clone().endOf('week').format('YYYY-MM-DD'); // End of the current week (Saturday)
+  vendor_order
+    .find({ Status: status }) //, PurchaseDate: { $gte: startOfWeek, $lte: endOfWeek }
+    .then((order) => res.json(order))
+    .catch((err) => res.status(400).json("Error: " + err));
+  }catch (error) {
+      console.error("Error fetching orders:", error);
+      res.status(400).json("Error: " + error);
+    }
+}
+
+
 function UpdateOrders(req, res) {
   vendor_order
     .find({ Status: { $ne: "Completed" } }) // status not equal to "Completed"
@@ -134,7 +155,9 @@ function GetCompletedOrdersNotAdded(req, res) {
    --------- ROUTES ---------
    -------------------------- */
 
-router.route("/get").get((req, res) => GetAllOrders(req, res));
+   router.route("/get").get((req, res) => GetAllOrders(req, res));
+   router.route("/get/Completed").get((req, res) => GetWeeklyOrders(req, res, "Completed"));
+  //  router.route("/get/Pending").get((req, res) => GetWeeklyOrders(req, res, "Pending"));
 
 router.route("/add").post((req, res) => AddOrderToDB(req, res));
 

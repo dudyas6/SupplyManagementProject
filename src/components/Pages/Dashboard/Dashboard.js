@@ -11,10 +11,30 @@ import {
 } from "./AllPageComponents";
 import { Helmet } from "react-helmet";
 import { DataStatClass } from "./DataStatClass";
+import { GetAllOrders, GetWeeklyOrders, StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 
 
+export function DashboardPage() {
 
-export const DashboardPage = () => {
+  const [pendingOrders, setPendingOrders] = React.useState([]);
+  const [completedOrders, setCompletedOrders] = React.useState([]);
+
+  async function fetchData() {
+    try {
+      console.log("AAAAAA");
+
+      const orders = await GetAllOrders();
+      setCompletedOrders(orders);
+      console.log(completedOrders);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
       <div>
         <Helmet>
@@ -34,7 +54,7 @@ export const DashboardPage = () => {
 
 <OneRectangleDataStats
         title={"Completed Orders"}
-          description={ "This Month"}
+          description={ "This Week"}
           bigNumber={"100"}
           changePercentage={"10"}
           icon={"pendingOrders"}
