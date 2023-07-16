@@ -17,12 +17,14 @@ const itemsRoute = require("./routes/items");
 const usersRoute = require("./routes/users");
 const vendorOrdersRoute = require("./routes/vendor_orders");
 const usersOrdersRoute = require("./routes/users_orders");
+const statisticsRoute = require("./routes/statistics");
 
 // App Uses
 app.use("/items", itemsRoute);
 app.use("/users", usersRoute);
 app.use("/orders/vendor", vendorOrdersRoute);
 app.use("/orders/users", usersOrdersRoute);
+app.use("/statistics", statisticsRoute);
 
 // Serve the client-side code from the 'build' folder
 // app.use(express.static(PATH.join(__dirname, "build")));
