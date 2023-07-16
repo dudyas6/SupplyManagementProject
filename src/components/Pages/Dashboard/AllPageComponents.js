@@ -287,7 +287,6 @@ const barChartData = {
       options={barChartData.options}
       series={barChartData.series}
       type="bar"
-      height={400}
     />
   );
 };

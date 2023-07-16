@@ -104,19 +104,19 @@ export function DashboardPage() {
           </Card>
 
           <Card>
-            <section className="mt-20">
-            <h1>Bar chart</h1>
-              <BarChart underMin={cntItemsUnderMin} equalZero={cntItemsZeroQuantity}/>
-            </section>
-          </Card>
-
-          <Card>
-            <section className="mt-20">
-              <h1>Top 5 Best-Selling Items</h1>
-              {topItems && (              
-              <DonutChart topItemsLabels={topItems.topItemsLabels} topItemsValues={topItems.topItemsValues}/>
-              )}
-            </section>
+            <div className="flex flex-wrap">
+              <div className="w-1/2">
+                    <h1>Top 5 Best-Selling Items</h1>
+                    {topItems && (              
+                      <DonutChart topItemsLabels={topItems.topItemsLabels} topItemsValues={topItems.topItemsValues}/>
+                    )}
+                </div>
+                <div className="w-1/2 h-full">
+                    <h1>Bar chart</h1>
+                    <BarChart underMin={cntItemsUnderMin} equalZero={cntItemsZeroQuantity}/>
+                </div>
+              
+            </div>
           </Card>
 
         </main>
