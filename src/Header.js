@@ -22,7 +22,7 @@ function Header({ currentUser, handleSidebar }) {
         </div>
         <div className="text-white self-center flex flex-row gap-2">
           <img src={logo} alt="logo" className="h-5 w-5" />
-          <p className="font-semibold header-title">FastTrack</p>
+          <p className="font-light header-title">FastTrack</p>
         </div>
         <div className="flex flex-row items-center p-1">
           <div className="flex items-center p-2 text-white no-underline md:flex lg:flex">
