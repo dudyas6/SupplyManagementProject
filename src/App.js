@@ -88,7 +88,7 @@ function AuthenticatedLayout() {
       <div className="flex flex-col justify-center min-h-screen">
         <Header currentUser={currentUser} handleSidebar={handleSidebarToggle} />
         <div className="flex flex-1">
-        {window.innerWidth >= 1024 && <Sidebar isSidebarOpen={isSidebarOpen} />}
+        <Sidebar isSidebarOpen={window.innerWidth >= 1024 ? isSidebarOpen : false} />
           <div className={`flex-1 p-3 bg-sky-50 ${window.innerWidth >= 1024 ? "z-10" : ""}`}>
             <Outlet />
           </div>
