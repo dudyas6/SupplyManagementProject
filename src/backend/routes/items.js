@@ -49,10 +49,16 @@ router.route("/get").get((req, res) => {
 
 router.route("/countItemsUnderMin").get((req, res) => {
   items
-    .find({ $expr: { $gt: [{ $subtract: ["$CurrentQuantity", "$MinimumQuantity"] }, 0] } })
+    .find({
+      $expr: {$and: [{ $lt: [{ $subtract: ["$CurrentQuantity", "$MinimumQuantity"] }, 0] },
+          { $ne: ["$CurrentQuantity", 0] }
+        ]
+      }
+    })
     .then((items) => res.json(items.length))
     .catch((err) => res.status(400).json("Error: " + err));
 });
+
 router.route("/countZeroQuantity").get((req, res) => {
   items
     .find({ CurrentQuantity: 0 })

@@ -36,15 +36,6 @@ export function TrackingPageUser() {
      <Helmet>
         <title>FastTrack - Track users orders</title>
       </Helmet>
-      {/* STATISTICS */}
-
-      <Card title="Relevant issues">
-        {/* <VendorStatisticsCubes orders={orders} onChange={handleTableChange} />{" "}
-        <VendorOrderStatistics orders={orders} /> */}
-      </Card>
-
-      {/* TABLE OF ORDERS */}
-
       <Card title="Orders from vendor">
         <UserOrderTable orders={orders} onChange={handleTableChange} />
         {/* <hr className="my-8 border-t-4 border-blue-600 rounded-full transition-all duration-300" />
