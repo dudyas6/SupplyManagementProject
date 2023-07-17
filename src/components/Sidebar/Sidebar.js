@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import SidebarRow from "./SidebarRow";
 import { List, ListItem, ListItemPrefix } from "@material-tailwind/react";
 import { HiOutlinePresentationChartLine } from "react-icons/hi";
 import { FiTruck } from "react-icons/fi";
@@ -9,11 +8,21 @@ import { MdOutlineDeliveryDining } from "react-icons/md";
 import "../../styles.css";
 
 function Sidebar({ isSidebarOpen }) {
-  const [activeItem, setActiveItem] = useState("dashboard");
+  const [activeItem, setActiveItem] = useState(getWebsiteExtension());
 
   const handleItemClick = (itemName) => {
     setActiveItem(itemName);
   };
+
+  function getWebsiteExtension(urlString) {
+    const parsedUrl = window.location.href;
+    // Extract the extension from the last part of the pathname
+    const parts = parsedUrl.split("/");
+    const lastPart = parts[parts.length - 1];
+    const extension = lastPart.split(".").pop();
+
+    return extension;
+  }
 
   return (
     <aside

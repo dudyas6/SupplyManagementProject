@@ -25,6 +25,7 @@ export function TrackingPage() {
 
   // I did here something like delegate
   async function handleTableChange(updatedOrders) {
+    console.log("called");
     if (updatedOrders == null || updatedOrders === undefined) await fetchData();
     else 
       if (updatedOrders.length > 1) setOrders(updatedOrders);
@@ -50,7 +51,7 @@ export function TrackingPage() {
       <Card title="Orders from vendor">
         <VendorOrderTable orders={orders.filter((order) => !(order.Status === StatusEnum.COMPLETED && order.IsAddedToWarehouse))} onChange={handleTableChange} />
         <hr className="my-8 border-t-4 border-blue-600 rounded-full transition-all duration-300" />
-        <VendorOrderTable orders={orders.filter((order) => order.Status === StatusEnum.COMPLETED && order.IsAddedToWarehouse)} onChange={null}/>
+        <VendorOrderTable orders={orders.filter((order) => (order.Status === StatusEnum.COMPLETED && order.IsAddedToWarehouse))} onChange={null}/>
       </Card>
     </>
   );
