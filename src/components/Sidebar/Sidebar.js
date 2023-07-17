@@ -9,7 +9,7 @@ import "../../styles.css";
 
 function Sidebar({ isSidebarOpen }) {
   const [activeItem, setActiveItem] = useState(getWebsiteExtension());
-  
+
   const handleItemClick = (itemName) => {
     setActiveItem(itemName);
   };
@@ -75,9 +75,11 @@ function Sidebar({ isSidebarOpen }) {
         >
           <ListItem>
             <ListItemPrefix>
-              <FiTruck className="h-5 w-5" />
+              <>
+                <FiTruck className="h-5 w-5" />
+                Track Vendor Orders
+              </>
             </ListItemPrefix>
-            Track Vendor Orders
           </ListItem>
         </Link>
         <Link
