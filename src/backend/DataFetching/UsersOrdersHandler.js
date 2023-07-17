@@ -6,7 +6,7 @@ import { Order } from "./VendorOrdersHandler";
 export async function GenerateNewOrder() {
 
   return axios
-  .get(`http://localhost:3001/orders/users/random`)
+  .get(`http://localhost:3001/items/createRandomItem`)
   .then(async (res) => {
     return res.data;
   })

@@ -114,3 +114,28 @@ export function DeleteItem(itemId) {
       console.log(error);
     });
 }
+
+
+export function GetRandomItem() {
+  return axios
+    // .get(`https://supply-api.vercel.app/items/getRandomItem/`)
+    .get(`http://localhost:3001/items/getRandomItem/`)
+    .then((response) => {
+      console.log(response.data);
+      return response.data;
+      // const item = new SingleItem(
+      //   data.ItemImage,
+      //   data.ItemId,
+      //   data.ItemName,
+      //   data.Description,
+      //   data.Price,
+      //   data.CurrentQuantity,
+      //   data.MinimumQuantity
+      // );
+
+      // return item;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}

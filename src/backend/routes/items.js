@@ -85,6 +85,22 @@ router.route("/top5BestSellingItems").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/getRandomItem").get((req, res) => {
+  items
+    .find()
+    .then((allItems) => {
+      if (allItems.length === 0) {
+        res.status(404).json("No items found");
+      } else {
+        // Select a random item from the available items
+        const randomItemIndex = Math.floor(Math.random() * allItems.length);
+        const randomItem = allItems[randomItemIndex];
+        res.json(randomItem);
+      }
+    })
+    .catch((err) => res.status(400).json("Error retrieving items: " + err));
+});
+
 
 router.route("/add").post((req, res) => {
   AddItemToDB(req, res);
