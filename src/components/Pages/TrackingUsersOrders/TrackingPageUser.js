@@ -1,7 +1,6 @@
 import React from "react";
 import { Card } from "../../../common/Elements";
 import { GetOrderOfAllUsers } from "../../../backend/DataFetching/UsersOrdersHandler";
-import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import UserOrderTable from "./UserOrderTable";
 import { Helmet } from "react-helmet";
 
@@ -34,12 +33,10 @@ export function TrackingPageUser() {
   return (
     <>
      <Helmet>
-        <title>FastTrack - Track users orders</title>
+        <title>FastTrack - Track Users Orders</title>
       </Helmet>
       <Card title="Orders from users">
         <UserOrderTable orders={orders} onChange={handleTableChange} />
-        {/* <hr className="my-8 border-t-4 border-blue-600 rounded-full transition-all duration-300" />
-        <VendorOrderTable orders={orders.filter((order) => order.Status === StatusEnum.COMPLETED && order.IsAddedToWarehouse)} onChange={null}/> */}
       </Card>
     </>
   );

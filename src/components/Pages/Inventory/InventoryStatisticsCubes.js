@@ -34,7 +34,7 @@ export default function InventoryStatisticsCubes({ items }) {
 
       <div className="w-40 h-40 m-4 bg-green-500 rounded-md shadow-md hover:bg-green-600">
         <div className="flex flex-col items-center justify-center h-full">
-          <span className="text-3xl font-bold text-white">{totalRevenue}$</span>
+          <span className="text-3xl font-bold text-white">{totalRevenue.toFixed(2)}$</span>
           <span className="text-base text-gray-200">Expected Revenue</span>
         </div>
       </div>

@@ -23,7 +23,7 @@ export default function VendorOrderRow({ order, onChange }) {
       <td className="py-2 text-center border">{order.PurchaseDate}</td>
       <td className="py-2 text-center border">{order.Quantity}</td>
       <td className="py-2 text-center border">{order.Status}</td>
-      <td className="py-2 text-center border">{order.TotalPrice}</td>
+      <td className="py-2 text-center border">{order.TotalPrice.toFixed(2)+"$"}</td>
       {onChange && (
         <td className="flex items-center justify-center py-2 border">
           <button onClick={handleDeleteButtonClick}>
