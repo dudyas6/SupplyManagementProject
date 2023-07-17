@@ -9,7 +9,7 @@ import { MdOutlineDeliveryDining } from "react-icons/md";
 import "../../styles.css";
 
 function Sidebar({ isSidebarOpen }) {
-  const [activeItem, setActiveItem] = useState(null);
+  const [activeItem, setActiveItem] = useState("dashboard");
 
   const handleItemClick = (itemName) => {
     setActiveItem(itemName);
@@ -20,7 +20,7 @@ function Sidebar({ isSidebarOpen }) {
       id="sidebar"
       className={`${
         isSidebarOpen ? "block" : "hidden"
-      } w-1/2 bg-white border-r md:w-1/6 lg:w-1/6 border-side-nav`}
+      } w-1/2 bg-white border-r md:w-1/4 lg:w-1/6 border-side-nav`}
     >
       <List>
         <Link
