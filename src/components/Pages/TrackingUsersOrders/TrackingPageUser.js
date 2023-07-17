@@ -36,7 +36,7 @@ export function TrackingPageUser() {
      <Helmet>
         <title>FastTrack - Track users orders</title>
       </Helmet>
-      <Card title="Orders from vendor">
+      <Card title="Orders from users">
         <UserOrderTable orders={orders} onChange={handleTableChange} />
         {/* <hr className="my-8 border-t-4 border-blue-600 rounded-full transition-all duration-300" />
         <VendorOrderTable orders={orders.filter((order) => order.Status === StatusEnum.COMPLETED && order.IsAddedToWarehouse)} onChange={null}/> */}
