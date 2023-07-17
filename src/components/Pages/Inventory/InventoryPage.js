@@ -15,8 +15,8 @@ export function InventoryPage() {
     try {
       const ItemsResponse = await GetAllItems();
       setItems(ItemsResponse);
-       const ordersRespone = await GetAllOrders();
-       setOrders(ordersRespone);
+      const ordersRespone = await GetAllOrders();
+      setOrders(ordersRespone);
     } catch (error) {
       console.log(error);
     }
@@ -28,23 +28,28 @@ export function InventoryPage() {
 
   async function handleChangeItems(updatedItems) {
     if (updatedItems === null || updatedItems === undefined) {
-      await fetchData();  // for delete / update
+      await fetchData(); // for delete / update
       return;
-    } else if (updatedItems.length > 1) setItems(updatedItems);  // for filtering change
+    } else if (updatedItems.length > 1)
+      setItems(updatedItems); // for filtering change
     else setItems(items.concat(updatedItems)); // for add
   }
 
   return (
     <>
-     <Helmet>
+      <Helmet>
         <title>FastTrack - Manage Inventory</title>
       </Helmet>
       <Card title="Warehouse Statistics">
         <InventoryStatisticsCubes items={items} />
       </Card>
 
-      <Card title="Warehouse Inventory">       
-        <CardsSection items={items} orders={orders} handleChangeItems={handleChangeItems} />
+      <Card title="Warehouse Inventory">
+        <CardsSection
+          items={items}
+          orders={orders}
+          handleChangeItems={handleChangeItems}
+        />
       </Card>
     </>
   );

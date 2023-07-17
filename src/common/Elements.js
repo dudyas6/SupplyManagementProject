@@ -103,7 +103,12 @@ export function ErrorDialog({ messageToShow, onClose }) {
   );
 }
 
-export function CreateOrderPopup({ onClose, onSubmit, item }) {
+export function CreateOrderPopup({
+  onClose,
+  onSubmit,
+  item,
+  handleChangeItems,
+}) {
   const [orderAmount, setOrderAmount] = React.useState("");
   const [successText, setSuccessText] = React.useState("");
   const [failureText, setFailureText] = React.useState("");
@@ -122,6 +127,7 @@ export function CreateOrderPopup({ onClose, onSubmit, item }) {
       setSuccessText("Order created successfully, Order Id #" + orderId);
       setFailureText("");
       setTimeout(() => {
+        handleChangeItems(null);
         onClose(false);
       }, 2000);
     } else {

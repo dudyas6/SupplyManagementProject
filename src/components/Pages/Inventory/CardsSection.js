@@ -16,6 +16,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [product, setProduct] = useState(null);
   const [showCreateItemPopup, setShowCreateItemPopup] = useState(false);
+
   function GenerateCards() {
     const itemsToIterate = filteredItems ? filteredItems : items;
     return itemsToIterate.map((item) => (
@@ -25,6 +26,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
         itemOrders={orders.filter((order) => {
           return order.ItemName === item.ItemName;
         })}
+        isOrderCreated={setIsOrderCreated}
         showErrorPopupHandle={showErrorPopupHandle}
         setShowCreateItemPopupHandle={setShowCreateItemPopupHandle}
         handleChangeItems={handleChangeItems}
@@ -34,24 +36,21 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
 
   function FilterByOrderInProgress() {
     if (buttonClicked) {
-      // remove filter
+      // Remove all filters
       setFilteredItems(items);
       return;
     }
     const itemsToWorkWith = filteredItems ? filteredItems : items;
     const itemsAfterFilter = [];
-    const filteredOrders = orders.filter(order =>{
-      return (order.Status !== StatusEnum.COMPLETED ||
-        (order.Status === StatusEnum.COMPLETED &&
-          !order.IsAddedToWareHouse))
-    });
-    for (const order of orders) {
-    console.log(order);
-    }
-    console.log(filteredOrders);
     for (const item of itemsToWorkWith) {
-      const itemOrders = filteredOrders.filter((order) => order.ItemName === item.ItemName);
-      
+      const itemOrders = orders.filter((order) => {
+        return (
+          order.ItemName === item.ItemName &&
+          (order.Status !== StatusEnum.COMPLETED ||
+            (order.Status === StatusEnum.COMPLETED &&
+              order.IsAddedToWarehouse === false))
+        );
+      });
       if (itemOrders.length > 0) {
         itemsAfterFilter.push(item);
       }
@@ -185,6 +184,7 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
         <CreateOrderPopup
           onClose={setShowCreateItemPopup}
           onSubmit={handleCreateOrderRequest}
+          handleChangeItems={handleChangeItems}
           item={product}
         />
       )}
