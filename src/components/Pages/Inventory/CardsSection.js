@@ -26,7 +26,6 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
         itemOrders={orders.filter((order) => {
           return order.ItemName === item.ItemName;
         })}
-        isOrderCreated={setIsOrderCreated}
         showErrorPopupHandle={showErrorPopupHandle}
         setShowCreateItemPopupHandle={setShowCreateItemPopupHandle}
         handleChangeItems={handleChangeItems}
