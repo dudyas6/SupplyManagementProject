@@ -8,8 +8,8 @@ import { StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 export default function UserOrderTable({ orders, onChange }) {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [sortConfig, setSortConfig] = useState({
-    key: "",
-    direction: "",
+    key: "OrderId",
+    direction: "desc",
   });
   const [filteredOrders, setFilteredItems] = useState([]);
 

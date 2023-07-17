@@ -12,8 +12,8 @@ import { Tooltip } from "react-tooltip";
 export default function VendorOrderTable({ orders, onChange }) {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [sortConfig, setSortConfig] = useState({
-    key: "",
-    direction: "",
+    key: "OrderId",
+    direction: "desc",
   });
   const [filteredOrders, setFilteredItems] = useState([]);
 
@@ -115,7 +115,6 @@ export default function VendorOrderTable({ orders, onChange }) {
       console.log("Orders is not an array:", orders);
       return;
     }
-
     // i want to sort the filtered orders if not empty
     const ordersToSort = filteredOrders ? filteredOrders : orders;
 
