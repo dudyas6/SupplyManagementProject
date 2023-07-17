@@ -22,7 +22,7 @@ export class SingleItem {
 
 export function GetAllStatisticsData() {
   return axios
-    .get(`http://localhost:3001/statistics/get/`)
+    .get(`https://supply-api.vercel.app/statistics/get/`)
     .then((response) => {
         return response.data;
     })
@@ -33,7 +33,7 @@ export function GetAllStatisticsData() {
 
 export function InsertNewStatisticItem() {
   return axios
-    .post(`http://localhost:3001/statistics/add/`)
+    .post(`https://supply-api.vercel.app/statistics/add/`)
     .then((res) => {
       return res.data;
     })
@@ -44,7 +44,7 @@ export function InsertNewStatisticItem() {
 
 export function GetAvgRevenuesExpenses() {
   return axios
-    .get(`http://localhost:3001/statistics/avgRE/`)
+    .get(`https://supply-api.vercel.app/statistics/avgRE/`)
     .then((res) => {
       return res.data;
     })
