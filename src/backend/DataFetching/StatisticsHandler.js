@@ -24,7 +24,7 @@ export function GetAllStatisticsData() {
   return axios
     .get(`http://localhost:3001/statistics/get/`)
     .then((response) => {
-        console.log(response.data);
+        return response.data;
     })
     .catch((error) => {
       console.error(error);

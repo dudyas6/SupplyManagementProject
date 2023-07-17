@@ -177,7 +177,6 @@ export default function VendorOrderTable({ orders, onChange }) {
                 onClick={UpdateOrdersStatus}
                 className="float-right m-5 px-4 py-2 font-bold text-white bg-violet-400 rounded-full hover:bg-violet-700"
               >
-
                 Auto-update Orders
               </button>
             </div>
@@ -195,88 +194,90 @@ export default function VendorOrderTable({ orders, onChange }) {
                 />
               </Card>
               <div className="p-3">
-                <table className="w-full rounded table-responsive">
-                  <thead>
-                    <tr>
-                      <th
-                        className="w-1/12 px-2 py-2 border cursor-pointer"
-                        onClick={() => sortTable("OrderId")}
-                      >
-                        Order ID
-                        {sortConfig.key === "OrderId" &&
-                        sortConfig.direction === "asc" ? (
-                          <span>▲</span>
-                        ) : (
-                          <span>▼</span>
+                <div className="table-responsive">
+                  <table className="w-full rounded">
+                    <thead>
+                      <tr>
+                        <th
+                          className="w-1/12 px-2 py-2 border cursor-pointer"
+                          onClick={() => sortTable("OrderId")}
+                        >
+                          Order ID
+                          {sortConfig.key === "OrderId" &&
+                          sortConfig.direction === "asc" ? (
+                            <span>▲</span>
+                          ) : (
+                            <span>▼</span>
+                          )}
+                        </th>
+                        <th
+                          className="w-1/6 px-4 py-2 border cursor-pointer"
+                          onClick={() => sortTable("ItemName")}
+                        >
+                          Item Name
+                          {sortConfig.key === "ItemName" &&
+                          sortConfig.direction === "asc" ? (
+                            <span>▲</span>
+                          ) : (
+                            <span>▼</span>
+                          )}
+                        </th>
+                        <th
+                          className="w-1/5 px-4 py-2 border cursor-pointer"
+                          onClick={() => sortTable("PurchaseDate")}
+                        >
+                          Purchase date
+                          {sortConfig.key === "PurchaseDate" &&
+                          sortConfig.direction === "asc" ? (
+                            <span>▲</span>
+                          ) : (
+                            <span>▼</span>
+                          )}
+                        </th>
+                        <th
+                          className="w-1/6 px-6 py-2 border cursor-pointer"
+                          onClick={() => sortTable("Quantity")}
+                        >
+                          Quantity
+                          {sortConfig.key === "Quantity" &&
+                          sortConfig.direction === "asc" ? (
+                            <span>▲</span>
+                          ) : (
+                            <span>▼</span>
+                          )}
+                        </th>
+                        <th
+                          className="w-1/4 px-6 py-2 border cursor-pointer"
+                          onClick={() => sortTable("Status")}
+                        >
+                          Status
+                          {sortConfig.key === "Status" &&
+                          sortConfig.direction === "asc" ? (
+                            <span>▲</span>
+                          ) : (
+                            <span>▼</span>
+                          )}
+                        </th>
+                        <th
+                          className="w-1/4 px-6 py-2 border cursor-pointer"
+                          onClick={() => sortTable("TotalPrice")}
+                        >
+                          Total Price
+                          {sortConfig.key === "TotalPrice" &&
+                          sortConfig.direction === "asc" ? (
+                            <span>▲</span>
+                          ) : (
+                            <span>▼</span>
+                          )}
+                        </th>
+                        {onChange && (
+                          <th className="w-1/4 px-6 py-2 border">Actions</th>
                         )}
-                      </th>
-                      <th
-                        className="w-1/6 px-4 py-2 border cursor-pointer"
-                        onClick={() => sortTable("ItemName")}
-                      >
-                        Item Name
-                        {sortConfig.key === "ItemName" &&
-                        sortConfig.direction === "asc" ? (
-                          <span>▲</span>
-                        ) : (
-                          <span>▼</span>
-                        )}
-                      </th>
-                      <th
-                        className="w-1/5 px-4 py-2 border cursor-pointer"
-                        onClick={() => sortTable("PurchaseDate")}
-                      >
-                        Purchase date
-                        {sortConfig.key === "PurchaseDate" &&
-                        sortConfig.direction === "asc" ? (
-                          <span>▲</span>
-                        ) : (
-                          <span>▼</span>
-                        )}
-                      </th>
-                      <th
-                        className="w-1/6 px-6 py-2 border cursor-pointer"
-                        onClick={() => sortTable("Quantity")}
-                      >
-                        Quantity
-                        {sortConfig.key === "Quantity" &&
-                        sortConfig.direction === "asc" ? (
-                          <span>▲</span>
-                        ) : (
-                          <span>▼</span>
-                        )}
-                      </th>
-                      <th
-                        className="w-1/4 px-6 py-2 border cursor-pointer"
-                        onClick={() => sortTable("Status")}
-                      >
-                        Status
-                        {sortConfig.key === "Status" &&
-                        sortConfig.direction === "asc" ? (
-                          <span>▲</span>
-                        ) : (
-                          <span>▼</span>
-                        )}
-                      </th>
-                      <th
-                        className="w-1/4 px-6 py-2 border cursor-pointer"
-                        onClick={() => sortTable("TotalPrice")}
-                      >
-                        Total Price
-                        {sortConfig.key === "TotalPrice" &&
-                        sortConfig.direction === "asc" ? (
-                          <span>▲</span>
-                        ) : (
-                          <span>▼</span>
-                        )}
-                      </th>
-                      {onChange && (
-                        <th className="w-1/4 px-6 py-2 border">Actions</th>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody>{GenerateTableRows(filteredOrders)}</tbody>
-                </table>
+                      </tr>
+                    </thead>
+                    <tbody>{GenerateTableRows(filteredOrders)}</tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

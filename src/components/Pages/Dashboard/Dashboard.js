@@ -14,17 +14,19 @@ import { DataStatClass } from "./DataStatClass";
 import { GetAllOrders, GetWeeklyOrders, StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import { Card } from "../../../common/Elements";
 import { CountItemsUnderMin, CountZeroQuantity, GetTop5BestSelling } from "../../../backend/DataFetching/ItemsHandler";
-import { GetAvgRevenuesExpenses } from "../../../backend/DataFetching/StatisticsHandler";
+import { GetAvgRevenuesExpenses, GetAllStatisticsData } from "../../../backend/DataFetching/StatisticsHandler";
+const moment = require('moment');
 
 export function DashboardPage() {
   const [current_previous_percentagePending, setCurrentPreviousPercentagePending] = useState([0]*3);
   const [current_previous_percentageCompleted, setCurrentPreviousPercentageCompleted] = useState([0]*3);
   const [cntItemsUnderMin, setCntItemsUnderMin] = useState(0);
   const [cntItemsZeroQuantity, setCntItemsZeroQuantity] = useState(0);
+  const [graphRevExp, setGraphRevExp] = useState(null);
   const [topItems, setTopItems] = useState(null);
   const [avgRevExp, setAvgRevExp] = useState(null);
   
-  //top5BestSellingItems
+  
   React.useEffect(() => {
     fetchData();
   }, []);
@@ -48,14 +50,28 @@ export function DashboardPage() {
 
       const { avgRevenue, avgExpenses } = await GetAvgRevenuesExpenses(); 
       setAvgRevExp({ avgRevenue, avgExpenses });
-      console.log({ avgRevenue, avgExpenses })
       
+      const { revenues, expenses } = await GetAllStatisticsData(); 
+      setGraphRevExp({revenues, expenses});
+
     } catch (error) {
       console.log(error);
     }
   }
 
-
+  function getMonthNames() {
+    const monthNames = [];
+    const currentDate = moment();
+    currentDate.subtract(6, 'month');
+    
+    for (let i = 6; i >= 0; i--) {
+      monthNames.push(currentDate.format('MMMM'));
+      currentDate.add(1, 'month');
+    }
+  
+    return monthNames;
+  }
+  
   return (
       <div>
         <Helmet>
@@ -82,19 +98,19 @@ export function DashboardPage() {
         />
 
 <OneRectangleDataStats
-        title={"Average revenues"}
+        title={"Average Revenues"}
           description={ "This Month"}
           bigNumber={avgRevExp ? avgRevExp.avgRevenue.toFixed() : 0}
           changePercentage={null}
-          icon={"pendingOrders"}
+          icon={"trendingUp"}
         />
 
 <OneRectangleDataStats
-        title={"Average expanses"}
+        title={"Average Expanses"}
           description={ "This Month"}
           bigNumber={avgRevExp ? avgRevExp.avgExpenses.toFixed(): 0} 
           changePercentage={null}
-          icon={"pendingOrders"}
+          icon={"trendingDown"}
         />
           </section>
           {/* <section>
@@ -103,7 +119,11 @@ export function DashboardPage() {
           <Card>
           <section className="mt-20">
           <h1>Revenues-Expenses 6 months</h1>
-            <StockChart expenses={[1000, 1200, 800, 1500, 2000, 1800]} revenues={[800, 900, 700, 1100, 1500, 1300]} months={["January", "February", "March", "April", "May", "June"]} />
+          {
+            graphRevExp && (            
+            <StockChart expenses={graphRevExp.expenses} revenues={graphRevExp.revenues} months={getMonthNames()} />
+            )
+          }
           </section>
           </Card>
 

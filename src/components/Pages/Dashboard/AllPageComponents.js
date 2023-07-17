@@ -118,7 +118,7 @@ export function OneRectangleDataStats({ title, description, bigNumber, changePer
   }
 
   return (
-    <div className="flex items-center rounded-lg shadow-lg bg-white p-4">
+    <div className="flex items-center rounded-lg shadow-lg bg-white p-4 ">
       {/* Order icon */}
       <div className="flex items-center justify-center bg-purple-500 rounded-full w-12 h-12">
         {icon === "pendingOrders" && (
@@ -131,6 +131,17 @@ export function OneRectangleDataStats({ title, description, bigNumber, changePer
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         )}
+        { icon ==="trendingUp" &&
+          (<span className="material-symbols-outlined text-white">
+          trending_up
+          </span>)
+        }
+        { icon ==="trendingDown" &&
+          (<span className="material-symbols-outlined text-white">
+          trending_down
+          </span>)
+        }
+        
       </div>
       {/* Content */}
       <div className="ml-4">
@@ -165,7 +176,7 @@ export function OneRectangleDataStats({ title, description, bigNumber, changePer
           )}
         </div>
         <div className="h-2 bg-gray-200 rounded-full mt-2">
-          <div className="h-full bg-purple-500 rounded-full" style={{ width: '70%' }}></div>
+          <div className="h-full bg-purple-500 rounded-full pl-52" style={{ width: '100%' }}></div>
         </div>
       </div>
     </div>
@@ -196,13 +207,13 @@ export function StockChart({revenues, expenses, months}){
     series: [
       {
         name: "Revenues",
-        data: revenues,//[1000, 1200, 800, 1500, 2000, 1800],
+        data: revenues,
         color: "#47bf81", // green
   
       },
       {
         name: "Expenses",
-        data: expenses, //[800, 900, 700, 1100, 1500, 1300],
+        data: expenses, 
         color: "#e84a6a", // light-red
       },
     ],
@@ -211,18 +222,12 @@ export function StockChart({revenues, expenses, months}){
         id: "stock-chart",
       },
       xaxis: {
-        categories: months,//["January", "February", "March", "April", "May", "June"],
+        categories: months,
       },
       yaxis: [
         {
           title: {
-            text: "Revenues",
-          },
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Expenses",
+            text: "Money",
           },
         },
       ],
@@ -249,11 +254,11 @@ export const BarChart = ({underMin, equalZero}) => {
 const barChartData = {
   series: [
     {
-      name: "Items with 0 Quantity",
+      name: "Zero quantity",
       data: [0, equalZero], 
     },
     {
-      name: "Items under Min Quantity",
+      name: "Under Min",
       data: [underMin,0], 
     }
   ],
@@ -273,7 +278,7 @@ const barChartData = {
       enabled: true,
     },
     xaxis: {
-      categories: ["Items under Min Quantity", "Items with 0 Quantity"],
+      categories: ["Under Min".padStart("\u00A0".length*40, "\u00A0"), "Zero quantity".padEnd("\u00A0".length*25, "\u00A0")],
       
     },
     yaxis: {

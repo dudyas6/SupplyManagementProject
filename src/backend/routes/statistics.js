@@ -12,8 +12,8 @@ function AddItemToDB(statisticToAdd) {
     .then(async (lastItem) => {
       const addedStatisticsItem = new statistics({
         Id: lastItem ? lastItem.Id + 1 : 0,
-        Revenue: statisticToAdd.Revenue,
-        Expense: statisticToAdd.Expense,
+        Revenue: statisticToAdd.Revenue.toFixed(),
+        Expense: statisticToAdd.Expense.toFixed(),
         Date: statisticToAdd.Date,
       });
       await addedStatisticsItem.save();
@@ -35,17 +35,18 @@ function GetDataFromDB(req, res) {
       .then(async (result) => {
         if (result.length === 0) {
           const statisticToAdd = await createNewStatistic(date);
-          await AddItemToDB(statisticToAdd);
+          if (!moment().isSame(date, 'month')) // not current month 
+            await AddItemToDB(statisticToAdd);
           return {
             date,
-            revenue: statisticToAdd.Revenue,
-            expense: statisticToAdd.Expense,
+            revenue: statisticToAdd.Revenue.toFixed(),
+            expense: statisticToAdd.Expense.toFixed(),
           };
         } else {
           return {
             date,
-            revenue: result[0].Revenue,
-            expense: result[0].Expense,
+            revenue: result[0].Revenue.toFixed(),
+            expense: result[0].Expense.toFixed(),
           };
         }
       })
@@ -181,6 +182,8 @@ function GetAvgRE(req, res){
       res.status(400).json("Error calculating average revenue.");
     });
 }
+
+
 
 router.route("/get").get((req, res) => {
   GetDataFromDB(req, res);
