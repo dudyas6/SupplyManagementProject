@@ -22,9 +22,9 @@ export class SingleItem {
 
 export function GetAllItems() {
   return axios
-  //http://localhost:3001/
   //https://supply-api.vercel.app/
-    .get(`http://localhost:3001/items/get/`)
+  //https://supply-api.vercel.app/
+    .get(`https://supply-api.vercel.app/items/get/`)
     .then((response) => {
       const data = response.data.map((product) => {
         const item = new SingleItem(
@@ -49,7 +49,7 @@ export function GetAllItems() {
 
 export function CountItemsUnderMin() {
   return axios
-    .get(`http://localhost:3001/items/countItemsUnderMin`)
+    .get(`https://supply-api.vercel.app/items/countItemsUnderMin`)
     .then((response) => {
       return response.data;
     })
@@ -61,7 +61,7 @@ export function CountItemsUnderMin() {
 
 export function CountZeroQuantity() {
   return axios
-    .get(`http://localhost:3001/items/countZeroQuantity`)
+    .get(`https://supply-api.vercel.app/items/countZeroQuantity`)
     .then((response) => {
       return response.data;
     })
@@ -71,7 +71,7 @@ export function CountZeroQuantity() {
 }
 export function GetTop5BestSelling() {
   return axios
-    .get(`http://localhost:3001/items/top5BestSellingItems`)
+    .get(`https://supply-api.vercel.app/items/top5BestSellingItems`)
     .then((response) => {
       return response.data;
     })
@@ -82,7 +82,7 @@ export function GetTop5BestSelling() {
 
 export function GetRandomItem() {
   return axios
-    .get(`http://localhost:3001/items/getRandomItem/`)
+    .get(`https://supply-api.vercel.app/items/getRandomItem/`)
     .then((response) => {
       const randomId = Math.floor(Math.random() * response.data.length);
       const data = response.data[randomId];
@@ -106,7 +106,7 @@ export function GetRandomItem() {
 export function InsertNewItem(item, thenFunction) {
   console.log(item);
   return axios
-    .post(`http://localhost:3001/items/add/`, item)
+    .post(`https://supply-api.vercel.app/items/add/`, item)
     .then((res) => {
       thenFunction();
       return res.data;
@@ -118,7 +118,7 @@ export function InsertNewItem(item, thenFunction) {
 
 export async function UpdateItem(itemId, item) {
   return axios
-    .put(`http://localhost:3001/items/update/${itemId}`, item)
+    .put(`https://supply-api.vercel.app/items/update/${itemId}`, item)
     .then((res) => {
       return res.data;
     })
@@ -129,7 +129,7 @@ export async function UpdateItem(itemId, item) {
 
 export function DeleteItem(itemId) {
   axios
-    .delete(`http://localhost:3001/items/delete/${itemId}`)
+    .delete(`https://supply-api.vercel.app/items/delete/${itemId}`)
     .then((res) => {
       console.log(res.data);
     })
