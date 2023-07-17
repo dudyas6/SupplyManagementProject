@@ -70,7 +70,7 @@ export async function GenerateNewOrder() {
   );
 
   return axios
-    .post(`https://supply-api.vercel.app/orders/vendor/add/`, order)
+    .post(`http://localhost:3001/orders/vendor/add/`, order)
     .then((res) => {
       return res.data;
     })
@@ -105,7 +105,7 @@ export function CreateNewVendorOrder(itemName, quantityToOrder, itemPrice) {
   };
 
   return axios
-    .post(`https://supply-api.vercel.app/orders/vendor/add/`, order)
+    .post(`http://localhost:3001/orders/vendor/add/`, order)
     .then((res) => {
       thenFunction();
       return res.data;
@@ -118,7 +118,7 @@ export function CreateNewVendorOrder(itemName, quantityToOrder, itemPrice) {
 
 export function GetAllOrders() {
   return axios
-    .get(`https://supply-api.vercel.app/orders/vendor/get/`)
+    .get(`http://localhost:3001/orders/vendor/get/`)
     .then((response) => {
       const data = response.data.map((order) => {
         const item = new SingleOrder(
@@ -143,7 +143,7 @@ export function GetAllOrders() {
 // StatusEnum - completed pending etc
 export function GetWeeklyOrders(status) {
   return axios
-    .get(`https://supply-api.vercel.app/orders/vendor/get/${status}`)
+    .get(`http://localhost:3001/orders/vendor/get/${status}`)
     .then((response) => {
       const dataArray = [
         response.data.currentWeekCount,
@@ -161,7 +161,7 @@ export function GetWeeklyOrders(status) {
 // The function delete an order by ID
 export function DeleteOrder(orderId) {
   return axios
-    .delete(`https://supply-api.vercel.app/orders/vendor/delete/${orderId}`)
+    .delete(`http://localhost:3001/orders/vendor/delete/${orderId}`)
     .then((res) => {
       console.log(res.data);
     })
@@ -172,7 +172,7 @@ export function DeleteOrder(orderId) {
 
 export function AutoChangeAllVendorOrdersStatus() {
   return axios
-    .get(`https://supply-api.vercel.app/orders/vendor/update-orders/`)
+    .get(`http://localhost:3001/orders/vendor/update-orders/`)
     .then((res) => {
       return res.data;
     })
@@ -184,7 +184,7 @@ export function AutoChangeAllVendorOrdersStatus() {
 export function GetCompletedAndNotAddedOrders() {
   // Get all completed orders which not added to warehouse yet.
   return axios
-    .get(`https://supply-api.vercel.app/orders/vendor/get-completed-orders/`)
+    .get(`http://localhost:3001/orders/vendor/get-completed-orders/`)
     .then((res) => {
       return res.data;
     })
@@ -196,7 +196,7 @@ export function GetCompletedAndNotAddedOrders() {
 export function AddCompletedOrdersToWarehouse() {
   // Activate the addition to warehouse for all orders which status == completed
   return axios
-    .get(`https://supply-api.vercel.app/orders/vendor/completed-orders-change/`)
+    .get(`http://localhost:3001/orders/vendor/completed-orders-change/`)
     .then((res) => {
       return res.data;
     })
