@@ -9,7 +9,7 @@ import "../../styles.css";
 
 function Sidebar({ isSidebarOpen }) {
   const [activeItem, setActiveItem] = useState(getWebsiteExtension());
-
+  
   const handleItemClick = (itemName) => {
     setActiveItem(itemName);
   };

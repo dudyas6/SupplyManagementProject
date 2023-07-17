@@ -38,20 +38,20 @@ export default function CardsSection({ items, orders, handleChangeItems }) {
       setFilteredItems(items);
       return;
     }
-
     const itemsToWorkWith = filteredItems ? filteredItems : items;
     const itemsAfterFilter = [];
-
+    const filteredOrders = orders.filter(order =>{
+      return (order.Status !== StatusEnum.COMPLETED ||
+        (order.Status === StatusEnum.COMPLETED &&
+          !order.IsAddedToWareHouse))
+    });
+    for (const order of orders) {
+    console.log(order);
+    }
+    console.log(filteredOrders);
     for (const item of itemsToWorkWith) {
-      const itemOrders = orders.filter((order) => {
-        return (
-          order.ItemName === item.ItemName &&
-          (order.Status !== StatusEnum.COMPLETED ||
-            (order.Status === StatusEnum.COMPLETED &&
-              !order.IsAddedToWareHouse))
-        );
-      });
-
+      const itemOrders = filteredOrders.filter((order) => order.ItemName === item.ItemName);
+      
       if (itemOrders.length > 0) {
         itemsAfterFilter.push(item);
       }
