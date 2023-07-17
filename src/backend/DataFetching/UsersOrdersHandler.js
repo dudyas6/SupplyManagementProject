@@ -5,47 +5,57 @@ import { Order,StatusEnum } from "./VendorOrdersHandler";
 
 /// Create random order from vendor - can be deleted later
 export async function GenerateNewOrder() {
+
+  return axios
+  .get(`http://localhost:3001/orders/users/random`)
+  .then(async (res) => {
+    return res.data;
+  })
+  .catch((error) => {
+    console.error(error);
+    return null;
+  });
   /// Generate random order into DB
   // apply today as PurchaseDate
 
-  const currentDate = new Date();
+  // const currentDate = new Date();
 
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based, so we add 1 and pad with leading zero if necessary
-  const day = String(currentDate.getDate()).padStart(2, "0"); // Pad day with leading zero if necessary
+  // const year = currentDate.getFullYear();
+  // const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based, so we add 1 and pad with leading zero if necessary
+  // const day = String(currentDate.getDate()).padStart(2, "0"); // Pad day with leading zero if necessary
 
-  const formattedDate = `${year}-${month}-${day}`;
+  // const formattedDate = `${year}-${month}-${day}`;
 
-  // Get random item
-  var randomItem = await GetRandomItem();
-  if (randomItem === null || randomItem === undefined)
-    randomItem = "Random order";
-  // Get Random quantity...
-  const max = 100.0;
-  const min = 2.2;
-  const randomQuantity = Math.ceil(Math.random() * (max / 2 - min) + min);
-  const randomPPQ = Math.random() * (max - min) + min; // Price Per Quantity
-  const calcTotPrice = (randomQuantity * randomPPQ).toFixed(2);
+  // // Get random item
+  // var randomOrder = await CreateRandomOrder();
+  // if (randomItem === null || randomItem === undefined)
+  //   randomItem = "Random order";
+  // // Get Random quantity...
+  // const max = 100.0;
+  // const min = 2.2;
+  // const randomQuantity = Math.ceil(Math.random() * (max / 2 - min) + min);
+  // const randomPPQ = Math.random() * (max - min) + min; // Price Per Quantity
+  // const calcTotPrice = (randomQuantity * randomPPQ).toFixed(2);
 
-  // create SingleOrder object with item ID and Name
-  const order = new Order(
-    -1,
-    randomItem.ItemName,
-    formattedDate,
-    randomQuantity,
-    StatusEnum.COMPLETED,
-    calcTotPrice
-  );
+  // // create SingleOrder object with item ID and Name
+  // const order = new Order(
+  //   -1,
+  //   randomItem.ItemName,
+  //   formattedDate,
+  //   randomQuantity,
+  //   StatusEnum.COMPLETED,
+  //   calcTotPrice
+  // );
 
-  return axios
-    .post(`http://localhost:3001/orders/users/add/`, order)
-    .then(async (res) => {
-      return res.data;
-    })
-    .catch((error) => {
-      console.error(error);
-      return null;
-    });
+  // return axios
+  //   .post(`http://localhost:3001/orders/users/add/`, order)
+  //   .then(async (res) => {
+  //     return res.data;
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //     return null;
+  //   });
 }
 export function GetOrderOfAllUsers() {
   return axios

@@ -80,29 +80,6 @@ export function GetTop5BestSelling() {
     });
 }
 
-export function GetRandomItem() {
-  return axios
-    .get(`http://localhost:3001/items/getRandomItem/`)
-    .then((response) => {
-      const randomId = Math.floor(Math.random() * response.data.length);
-      const data = response.data[randomId];
-      const item = new SingleItem(
-        data.ItemImage,
-        data.ItemId,
-        data.ItemName,
-        data.Description,
-        data.Price,
-        data.CurrentQuantity,
-        data.MinimumQuantity
-      );
-
-      return data;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
 export function InsertNewItem(item, thenFunction) {
   console.log(item);
   return axios

@@ -52,12 +52,15 @@ function DecreaseItemQuantity(ItemName, quantityToDecrease) {
     .catch((err) => false);
 }
 
+function GenerateRandomOrder() {
+  items.findOne({ Quantity: { $gt: 0 } }).then(availableItem);
+}
 /* --------------------------
    --------- ROUTES ---------
    -------------------------- */
 
 router.route("/get").get((req, res) => GetAllOrders(req, res));
-
+router.route("/get/random").get((req, res) => GenerateRandomOrder(req, res));
 router.route("/add").post((req, res) => AddOrderToDB(req, res));
 
 // router.route("/delete/:id").delete((req, res) => {
