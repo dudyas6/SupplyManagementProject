@@ -108,10 +108,14 @@ export const RefillTable = () => {
   );
 };
 
-
 export function OneRectangleDataStats({ title, description, bigNumber, changePercentage, icon}) {
-  changePercentage = parseInt(changePercentage);
-  const isPositiveChange = changePercentage > 0;
+
+  let isPositiveChange = false;
+  
+  if (changePercentage !== null) {
+    changePercentage = parseInt(changePercentage);
+    isPositiveChange = changePercentage > 0;
+  }
 
   return (
     <div className="flex items-center rounded-lg shadow-lg bg-white p-4">
@@ -119,14 +123,14 @@ export function OneRectangleDataStats({ title, description, bigNumber, changePer
       <div className="flex items-center justify-center bg-purple-500 rounded-full w-12 h-12">
         {icon === "pendingOrders" && (
           <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-          <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-        </svg>
+            <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+          </svg>
         )}
         {icon === "completedOrders" && (
           <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-        </svg>
-          )}
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        )}
       </div>
       {/* Content */}
       <div className="ml-4">
@@ -134,29 +138,31 @@ export function OneRectangleDataStats({ title, description, bigNumber, changePer
         <p className="text-sm text-gray-500">{description}</p>
         <div className="flex items-center mt-2">
           <span className="text-4xl font-bold">{bigNumber}</span>
-          <div className="flex items-center ml-2">
-            {changePercentage === 0 ? (
-              <span className="text-black text-sm font-semibold ml-1">{changePercentage}%</span>
-            ) : (
-              <>
-                {isPositiveChange ? (
-                  <>
-                    <span className="text-green-500 text-sm font-semibold ml-1">{changePercentage}%</span>
-                    <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                    </svg>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-red-500 text-sm font-semibold ml-1">{changePercentage}%</span>
-                    <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                    </svg>
-                  </>
-                )}
-              </>
-            )}
-          </div>
+          {changePercentage !== null && (
+            <div className="flex items-center ml-2">
+              {changePercentage === 0 ? (
+                <span className="text-black text-sm font-semibold ml-1">{changePercentage}%</span>
+              ) : (
+                <>
+                  {isPositiveChange ? (
+                    <>
+                      <span className="text-green-500 text-sm font-semibold ml-1">{changePercentage}%</span>
+                      <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                      </svg>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-red-500 text-sm font-semibold ml-1">{changePercentage}%</span>
+                      <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                      </svg>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
         <div className="h-2 bg-gray-200 rounded-full mt-2">
           <div className="h-full bg-purple-500 rounded-full" style={{ width: '70%' }}></div>
@@ -183,9 +189,6 @@ export function RectangleDataStats({ dataStatsArr }) {
     </div>
   );
 }
-
-
-
 
 
 export function StockChart({revenues, expenses, months}){

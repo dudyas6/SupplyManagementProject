@@ -14,6 +14,7 @@ import { DataStatClass } from "./DataStatClass";
 import { GetAllOrders, GetWeeklyOrders, StatusEnum } from "../../../backend/DataFetching/VendorOrdersHandler";
 import { Card } from "../../../common/Elements";
 import { CountItemsUnderMin, CountZeroQuantity, GetTop5BestSelling } from "../../../backend/DataFetching/ItemsHandler";
+import { GetAvgRevenuesExpenses } from "../../../backend/DataFetching/StatisticsHandler";
 
 export function DashboardPage() {
   const [current_previous_percentagePending, setCurrentPreviousPercentagePending] = useState([0]*3);
@@ -21,7 +22,8 @@ export function DashboardPage() {
   const [cntItemsUnderMin, setCntItemsUnderMin] = useState(0);
   const [cntItemsZeroQuantity, setCntItemsZeroQuantity] = useState(0);
   const [topItems, setTopItems] = useState(null);
-
+  const [avgRevExp, setAvgRevExp] = useState(null);
+  
   //top5BestSellingItems
   React.useEffect(() => {
     fetchData();
@@ -44,14 +46,16 @@ export function DashboardPage() {
       const { topItemsLabels, topItemsValues } = await GetTop5BestSelling(); 
       setTopItems({ topItemsLabels, topItemsValues });
 
+      const { avgRevenue, avgExpenses } = await GetAvgRevenuesExpenses(); 
+      setAvgRevExp({ avgRevenue, avgExpenses });
+      console.log({ avgRevenue, avgExpenses })
+      
     } catch (error) {
       console.log(error);
     }
   }
 
-  React.useEffect(()=>{
-    console.log(topItems);
-  }, [topItems])
+
   return (
       <div>
         <Helmet>
@@ -78,18 +82,18 @@ export function DashboardPage() {
         />
 
 <OneRectangleDataStats
-        title={"Some title"}
-          description={ "This Week"}
-          bigNumber={"200"}
-          changePercentage={"10"}
+        title={"Average revenues"}
+          description={ "This Month"}
+          bigNumber={avgRevExp ? avgRevExp.avgRevenue.toFixed() : 0}
+          changePercentage={null}
           icon={"pendingOrders"}
         />
 
 <OneRectangleDataStats
-        title={"Some title"}
-          description={ "This Week"}
-          bigNumber={"1020"}
-          changePercentage={"-10"}
+        title={"Average expanses"}
+          description={ "This Month"}
+          bigNumber={avgRevExp ? avgRevExp.avgExpenses.toFixed(): 0} 
+          changePercentage={null}
           icon={"pendingOrders"}
         />
           </section>
@@ -98,7 +102,7 @@ export function DashboardPage() {
           </section> */}
           <Card>
           <section className="mt-20">
-          <h1>Line chart</h1>
+          <h1>Revenues-Expenses 6 months</h1>
             <StockChart expenses={[1000, 1200, 800, 1500, 2000, 1800]} revenues={[800, 900, 700, 1100, 1500, 1300]} months={["January", "February", "March", "April", "May", "June"]} />
           </section>
           </Card>
@@ -112,7 +116,7 @@ export function DashboardPage() {
                     )}
                 </div>
                 <div className="w-1/2 h-full">
-                    <h1>Bar chart</h1>
+                    <h1>Items statistics</h1>
                     <BarChart underMin={cntItemsUnderMin} equalZero={cntItemsZeroQuantity}/>
                 </div>
               

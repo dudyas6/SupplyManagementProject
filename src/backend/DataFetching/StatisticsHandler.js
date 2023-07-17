@@ -41,3 +41,15 @@ export function InsertNewStatisticItem() {
       console.log(error);
     });
 }
+
+export function GetAvgRevenuesExpenses() {
+  return axios
+    .get(`http://localhost:3001/statistics/avgRE/`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+

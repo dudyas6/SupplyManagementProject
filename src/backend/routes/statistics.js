@@ -131,8 +131,63 @@ function GetMonthlyOrders(date, type) {
   }
 }
 
+function GetAvgRE(req, res){
+  const today = moment();
+  const startOfMonth = today.clone().startOf('month').format('YYYY-MM-DD');
+  const endOfMonth = today.clone().endOf('month').format('YYYY-MM-DD');
+
+  // Calculate average revenue
+  users_orders.aggregate([
+    {
+      $match: {
+        PurchaseDate: { $gte: startOfMonth, $lte: endOfMonth },
+        Status: "Completed"
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        avgRevenue: { $avg: "$TotalPrice" }
+      }
+    }
+  ])
+    .then((revenueResult) => {
+      const avgRevenue = revenueResult.length > 0 ? revenueResult[0].avgRevenue : 0;
+
+      vendor_order.aggregate([
+        {
+          $match: {
+            PurchaseDate: { $gte: startOfMonth, $lte: endOfMonth },
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            avgExpenses: { $avg: "$TotalPrice" }
+          }
+        }
+      ])
+        .then((expensesResult) => {
+          const avgExpenses = expensesResult.length > 0 ? expensesResult[0].avgExpenses : 0;
+          res.json({ avgRevenue, avgExpenses });
+        })
+        .catch((err) => {
+          console.error("Error calculating average expenses:", err);
+          res.status(400).json("Error calculating average expenses.");
+        });
+    })
+    .catch((err) => {
+      console.error("Error calculating average revenue:", err);
+      res.status(400).json("Error calculating average revenue.");
+    });
+}
+
 router.route("/get").get((req, res) => {
   GetDataFromDB(req, res);
+});
+
+router.route("/avgRE").get((req, res) => {
+  GetAvgRE(req, res);
 });
 
 router.route("/add").post((req, res) => {
