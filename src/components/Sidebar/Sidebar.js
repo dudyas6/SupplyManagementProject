@@ -29,7 +29,7 @@ function Sidebar({ isSidebarOpen }) {
       id="sidebar"
       className={`${
         isSidebarOpen ? "block" : "hidden"
-      } w-2/5 bg-white border-r border-side-nav`}
+      }  ${window.innerWidth < 1024 ? ("w-2/5") : ("w-1/6")} bg-white border-r border-side-nav`}
     >
       <List>
         <Link
