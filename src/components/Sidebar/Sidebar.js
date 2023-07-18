@@ -75,11 +75,9 @@ function Sidebar({ isSidebarOpen }) {
         >
           <ListItem>
             <ListItemPrefix>
-              <>
                 <FiTruck className="h-5 w-5" />
-                Track Vendor Orders
-              </>
             </ListItemPrefix>
+                Track Vendor Orders
           </ListItem>
         </Link>
         <Link
